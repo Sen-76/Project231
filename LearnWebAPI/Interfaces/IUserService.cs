@@ -6,6 +6,6 @@ namespace LearnWebAPI.Interfaces
     public interface IUserService
     {
         Task<User> Login(string user, string password);
-        Task<User> Regis(UserVM user);
+        Task<bool> Regis(UserVM user);
     }
 }

@@ -26,7 +26,7 @@ namespace LearnWebAPI.Controllers
         {
             try
             {
-                var userLogin = _userService.Login(user, password);
+                var userLogin = _userService.Login(user, password).Result;
                 if(userLogin == null)
                 {
                     return NotFound();
@@ -44,8 +44,8 @@ namespace LearnWebAPI.Controllers
         {
             try
             {
-                var userLogin = _userService.Regis(user);
-                if (userLogin == null)
+                var userLogin = _userService.Regis(user).Result;   
+                if (userLogin == false)
                 {
                     return NotFound();
                 }
@@ -57,44 +57,5 @@ namespace LearnWebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
-        //[HttpGet("{id}")]
-        //public IActionResult GetById(string id)
-        //{
-        //    try
-        //    {
-        //        var hanghoa = hanghoas.SingleOrDefault(h => h.Id == Guid.Parse(id));
-        //        if (hanghoa == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            return Ok(hanghoa);
-        //        }
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-        //[HttpPost]
-        //public IActionResult Create(UserVM hanghoaVM)
-        //{
-        //    var hanghoa = new User
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        Name = hanghoaVM.Name,
-        //        Description= hanghoaVM.Description,
-        //        Price= hanghoaVM.Price,
-        //    };
-        //    hanghoas.Add(hanghoa);
-        //    return Ok(new
-        //    {
-        //        Success = true,
-        //        Data = hanghoas
-        //    });
-        //}
     }
 }

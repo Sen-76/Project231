@@ -19,12 +19,20 @@ namespace LearnWebAPI.Services
         {
             return await _context.Users.Where(x => x.Username == user && x.Password == password).FirstOrDefaultAsync();
         }
-        public async Task<User> Regis(UserVM user)
+        public async Task<bool> Regis(UserVM user)
         {
-            var newUser = _mapper.Map<User>(user);
-            _context.Add(newUser);
-            await _context.SaveChangesAsync();
-            return newUser;
+            try
+            {
+                var newUser = _mapper.Map<User>(user);
+                _context.Add(newUser);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
         }
     }
 }

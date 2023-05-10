@@ -8,7 +8,12 @@ namespace LearnWebAPI.AutoMapper
     {
         public MappingProfile()
         {
-            CreateMap<User, UserVM>();
+            CreateMap<User, UserVM>()
+                .ForMember(x => x.Id, otp => otp.MapFrom(src => Guid.NewGuid().ToString()))
+                .ForMember(x => x.Email, otp => otp.MapFrom(src => src.Email ?? ""))
+                .ForMember(x => x.Phone, otp => otp.MapFrom(src => src.Phone ?? ""))
+                .ForMember(x => x.Role, otp => otp.MapFrom(src => src.Role ?? "Member"))
+            ;
         }
     }
 }

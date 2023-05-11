@@ -9,6 +9,7 @@ namespace LearnWebAPI.Models
         }
         #region DBSet
         public DbSet<User> Users { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

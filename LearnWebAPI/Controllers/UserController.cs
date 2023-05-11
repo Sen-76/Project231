@@ -4,6 +4,12 @@ using LearnWebAPI.Models;
 using LearnWebAPI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace LearnWebAPI.Controllers
 {
@@ -21,17 +27,40 @@ namespace LearnWebAPI.Controllers
             _logger = logger;
         }
 
-        [HttpGet("Login")]
-        public IActionResult Login(string user, string password)
+        [HttpPost("RenewToken")]
+        public IActionResult RenewToken(TokenModel model)
+        {
+            var renew = _userService.RenewToken(model);
+            if (renew != null)
+            {
+                return Ok(renew);
+            }
+            return Ok(renew);
+        }
+
+        [HttpPost("Login")]
+        public IActionResult Login(UserLogin user)
         {
             try
             {
-                var userLogin = _userService.Login(user, password).Result;
-                if(userLogin == null)
+                var userLogin = _userService.Login(user).Result;
+                if (userLogin == null)
                 {
-                    return NotFound();
+                    return Ok(new ApiResponse
+                    {
+                        Success = false,
+                        Message = "Invalid username or password"
+                    });
                 }
-                return Ok(userLogin);
+
+                // Cấp token
+                var token = _userService.GenerateToken(userLogin).Result;
+                return Ok(new ApiResponse
+                {
+                    Success = true,
+                    Message = "Authenticate success",
+                    Data = token
+                });
             }
             catch (Exception ex)
             {
@@ -39,12 +68,13 @@ namespace LearnWebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpPost("Regis")]
         public IActionResult Regis(UserVM user)
         {
             try
             {
-                var userLogin = _userService.Regis(user).Result;   
+                var userLogin = _userService.Regis(user).Result;
                 if (userLogin == false)
                 {
                     return NotFound();

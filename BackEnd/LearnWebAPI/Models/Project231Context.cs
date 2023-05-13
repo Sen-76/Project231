@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BackEnd.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LearnWebAPI.Models
 {
@@ -8,8 +9,9 @@ namespace LearnWebAPI.Models
         {
         }
         #region DBSet
-        public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<NewsPaper> NewsPapers { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

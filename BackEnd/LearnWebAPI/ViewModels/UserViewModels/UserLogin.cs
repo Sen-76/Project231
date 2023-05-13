@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LearnWebAPI.ViewModels
+namespace BackEnd.ViewModels.UserViewModels
 {
     public class UserLogin
     {

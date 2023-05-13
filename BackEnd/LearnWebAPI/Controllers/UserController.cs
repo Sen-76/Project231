@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Interfaces;
 using LearnWebAPI.Models;
-using LearnWebAPI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using BackEnd.Interfaces;
+using BackEnd.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +20,14 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddDbContext<Project231Context>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<INewsPaperServce, NewsPaperService>();
 
 builder.Services.Configure<AppSetting>(builder.Configuration.GetSection("AppSettings"));
-
+builder.Services.AddCors(p => p.AddDefaultPolicy(build =>
+{
+    //build.WithOrigins("https://localhost:7123", "http://localhost:3000/");
+    build.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+}));
 var secretKey = builder.Configuration["AppSettings:SecretKey"];
 var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
@@ -46,6 +53,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthentication();
 

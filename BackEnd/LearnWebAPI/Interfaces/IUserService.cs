@@ -1,5 +1,5 @@
-﻿using LearnWebAPI.Models;
-using LearnWebAPI.ViewModels;
+﻿using BackEnd.ViewModels.UserViewModels;
+using LearnWebAPI.Models;
 
 namespace LearnWebAPI.Interfaces
 {

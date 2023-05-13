@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Interfaces;
 using LearnWebAPI.Models;
-using LearnWebAPI.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -17,11 +18,13 @@ namespace LearnWebAPI.Services
         private readonly IMapper _mapper;
         private readonly Project231Context _context;
         private readonly AppSetting _appSettings;
-        public UserService(IMapper mapper, Project231Context context, IOptionsMonitor<AppSetting> optionsMonitor)
+        private readonly ILogger<UserService> _logger;
+        public UserService(IMapper mapper, Project231Context context, IOptionsMonitor<AppSetting> optionsMonitor, ILogger<UserService> logger)
         {
             _mapper = mapper;
             _context = context;
             _appSettings = optionsMonitor.CurrentValue;
+            _logger = logger;
         }
 
         public async Task<TokenModel> GenerateToken(User user)
@@ -176,6 +179,7 @@ namespace LearnWebAPI.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
                     Success= false,
@@ -213,9 +217,11 @@ namespace LearnWebAPI.Services
                     Name = user.Name,
                     Username = user.Username,
                     Password = user.Password,
+                    Avatar = user.Avatar,
+                    DateOfBirth = user.DateOfBirth,
                     Email= user.Email,
                     Phone= user.Phone,
-                    Role = "User"
+                    Role = Models.RoleType.User,
                 };
                 _context.Add(newUsers);
                 await _context.SaveChangesAsync();
@@ -223,7 +229,7 @@ namespace LearnWebAPI.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                _logger.LogError(ex.Message);
                 return false;
             }
         }

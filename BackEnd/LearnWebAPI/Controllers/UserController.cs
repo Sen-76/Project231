@@ -30,7 +30,7 @@ namespace LearnWebAPI.Controllers
         [HttpPost("RenewToken")]
         public IActionResult RenewToken(TokenModel model)
         {
-            var renew = _userService.RenewToken(model);
+            var renew = _userService.RenewToken(model).Result;
             if (renew != null)
             {
                 return Ok(renew);

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BackEnd.Migrations
 {
-    public partial class initdb : Migration
+    public partial class fix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,7 +19,7 @@ namespace BackEnd.Migrations
                     Password = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    Avarae = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Role = table.Column<byte>(type: "tinyint", nullable: false)
                 },
@@ -29,7 +29,7 @@ namespace BackEnd.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NewsPapers",
+                name: "NewsPaper",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -37,16 +37,16 @@ namespace BackEnd.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PublishedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PublishedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    Status = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NewsPapers", x => x.Id);
+                    table.PrimaryKey("PK_NewsPaper", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_NewsPapers_User_UserId",
+                        name: "FK_NewsPaper_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -78,8 +78,8 @@ namespace BackEnd.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_NewsPapers_UserId",
-                table: "NewsPapers",
+                name: "IX_NewsPaper_UserId",
+                table: "NewsPaper",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -91,7 +91,7 @@ namespace BackEnd.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "NewsPapers");
+                name: "NewsPaper");
 
             migrationBuilder.DropTable(
                 name: "RefreshToken");

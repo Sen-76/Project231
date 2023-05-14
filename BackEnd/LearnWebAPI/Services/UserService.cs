@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BackEnd.Models;
+using BackEnd.ViewModels.NewFolder;
 using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Interfaces;
 using LearnWebAPI.Models;
@@ -7,9 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System;
 
 namespace LearnWebAPI.Services
 {
@@ -151,7 +156,7 @@ namespace LearnWebAPI.Services
 
                 // Check 6: Check refresh token isUsed/revoked
                 var jti = tokenInVerification.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
-                if(storedToken.JwtId != jti)
+                if (storedToken.JwtId != jti)
                 {
                     return new ApiResponse
                     {
@@ -206,7 +211,7 @@ namespace LearnWebAPI.Services
         {
             return await _context.Users.Where(x => x.Username == user.Username && x.Password == user.Password).FirstOrDefaultAsync();
         }
-        public async Task<bool> Regis(UserVM user)
+        public async Task<bool> Regis(UserAddVM user)
         {
             try
             {
@@ -232,6 +237,133 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return false;
             }
+        }
+        public async Task<ApiResponse> UpdateUser(UserUpdateVM user)
+        {
+            try
+            {
+                var users = await _context.Users.Where(x => x.Id== user.Id).FirstOrDefaultAsync();
+                if (users != null)
+                {
+                    users.Name = user.Name;
+                    users.Avatar = user.Avatar;
+                    users.DateOfBirth = user.DateOfBirth;
+                    users.Email = user.Email;
+                    users.Phone = user.Phone;
+                    _context.Update(users);
+                    await _context.SaveChangesAsync();
+                    return new ApiResponse
+                    {
+                        Success= true,
+                        Data = users
+                    };
+                }
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = "Account doesn't exist"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= true,
+                };
+            }
+        }
+        public async Task<ApiResponse> SendMail(string Email)
+        {
+            try
+            {
+                var user = await _context.Users.Where(x => x.Email.Equals(Email)).FirstOrDefaultAsync();
+                if (user != null)
+                {
+                    string fromEmail = "ducnmhe150901@fpt.edu.vn";
+                    string password = "sechan76";
+                    string subject = "Sen NewsPaper - Forgot Password";
+                    string verifyString = RandomString(5);
+                    string body = "Your code is: " + verifyString;
+                    var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+                    {
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential(fromEmail, password),
+                        EnableSsl = true
+                    };
+                    var mailMessage = new MailMessage
+                    {
+                        From = new MailAddress(fromEmail),
+                        Subject = subject,
+                        Body = body
+                    };
+                    mailMessage.To.Add(Email);
+                    smtpClient.Send(mailMessage);
+                    return new ApiResponse
+                    {
+                        Success= true,
+                        Message = "Mail Sended",
+                        Data = verifyString
+                    };
+                }
+                else
+                {
+                    return new ApiResponse
+                    {
+                        Success= false,
+                        Message = "Mail doesn't exist."
+                    };
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = ex.Message
+                };
+            }
+
+        }
+        public async Task<ApiResponse> ResetPass(ResetPassVM user)
+        {
+            try
+            {
+                var users = await _context.Users.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
+                if (users != null && user.VerifyString == ".....")
+                {
+                    users.Password = user.Password;
+                    _context.Update(users);
+                    await _context.SaveChangesAsync();
+                    return new ApiResponse
+                    {
+                        Success= true,
+                        Data = users
+                    };
+                }
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = "Account doesn't exist"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= true,
+                };
+            }
+        }
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

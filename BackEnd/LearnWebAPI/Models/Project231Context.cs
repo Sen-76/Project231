@@ -27,6 +27,11 @@ namespace LearnWebAPI.Models
                 e.Property(e => e.Phone).HasMaxLength(13);
                 e.Property(e => e.Role).IsRequired();
             });
+            modelBuilder.Entity<NewsPaper>(e =>
+            {
+                e.ToTable("NewsPaper");
+                e.HasKey(e => e.Id);
+            });
         }
     }
 }

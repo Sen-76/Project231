@@ -9,10 +9,16 @@ namespace BackEnd.Models
         public string Content { get; set; }
         public string? Description { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime PublishedDate { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? PublishedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
         public Guid UserId { get; set; }
-        public User User { get; set; }
-        public bool IsDeleted { get; set; }
+        public User? User { get; set; }
+        public StatusType Status { get; set; }
+    }
+    public enum StatusType : byte
+    {
+        Posted = 0,
+        Published = 1,
+        Deleted = 2,
     }
 }

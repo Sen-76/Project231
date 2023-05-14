@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BackEnd.ViewModels.NewFolder;
 using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Interfaces;
 using LearnWebAPI.Models;
@@ -70,7 +71,7 @@ namespace LearnWebAPI.Controllers
         }
 
         [HttpPost("Regis")]
-        public IActionResult Regis(UserVM user)
+        public IActionResult Regis(UserAddVM user)
         {
             try
             {
@@ -80,6 +81,51 @@ namespace LearnWebAPI.Controllers
                     return NotFound();
                 }
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("UpdateUser")]
+        public IActionResult UpdateUser(UserUpdateVM user)
+        {
+            try
+            {
+                var listNewsPapers = _userService.UpdateUser(user).Result;
+                return Ok(listNewsPapers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        [HttpPost("ForgotPass")]
+        public IActionResult ForgotPass(string Email)
+        {
+            try
+            {
+                var listNewsPapers = _userService.SendMail(Email).Result;
+                return Ok(listNewsPapers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+      
+        [HttpPost("ResetPass")]
+        public IActionResult ResetPass(ResetPassVM user)
+        {
+            try
+            {
+                var listNewsPapers = _userService.ResetPass(user).Result;
+                return Ok(listNewsPapers);
             }
             catch (Exception ex)
             {

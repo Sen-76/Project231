@@ -3,7 +3,6 @@ using LearnWebAPI.Interfaces;
 using LearnWebAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using LearnWebAPI.AutoMapper;
-using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -20,7 +19,8 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddDbContext<Project231Context>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<INewsPaperServce, NewsPaperService>();
+builder.Services.AddTransient<INewsPaperService, NewsPaperService>();
+builder.Services.AddTransient<ICommentService, CommentService>();
 
 builder.Services.Configure<AppSetting>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddCors(p => p.AddDefaultPolicy(build =>

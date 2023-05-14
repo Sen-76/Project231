@@ -10,7 +10,7 @@ using System.Configuration;
 
 namespace BackEnd.Services
 {
-    public class NewsPaperService : INewsPaperServce
+    public class NewsPaperService : INewsPaperService
     {
         private readonly IMapper _mapper;
         private readonly Project231Context _context;
@@ -36,7 +36,7 @@ namespace BackEnd.Services
                     Description = newsPaper.Description,
                     CreatedDate = DateTime.UtcNow,
                     Status = StatusType.Posted,
-                    UserId = Guid.Parse("BAE36096-06E3-4BFD-A310-0BE414AEBE03"),
+                    UserId = Guid.Parse("A0985EB2-6509-4526-BB11-99EDCCD88DDB"),
                 };
                 await _context.AddAsync(newsPapers);
                 await _context.SaveChangesAsync();

@@ -12,6 +12,7 @@ namespace LearnWebAPI.Models
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<NewsPaper> NewsPapers { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,7 +32,22 @@ namespace LearnWebAPI.Models
             {
                 e.ToTable("NewsPaper");
                 e.HasKey(e => e.Id);
+                e.Property(e => e.Title).IsRequired().HasMaxLength(250);
+                e.Property(e => e.Content).IsRequired();
+                e.Property(e => e.CreatedDate).IsRequired();
+                e.Property(e => e.Status).IsRequired();
+                e.HasOne(e => e.User).WithMany().IsRequired().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.NoAction);
             });
+            //modelBuilder.Entity<Comment>(e =>
+            //{
+            //    e.ToTable("NewsPaper");
+            //    e.HasKey(e => e.Id);
+            //    e.Property(e => e.Content).IsRequired();
+            //    e.Property(e => e.PostTime).IsRequired();
+            //    e.Property(e => e.IsDeleted).IsRequired();
+            //    e.HasOne(e => e.NewsPaper).WithMany().IsRequired().HasForeignKey(x => x.NewsPaperId).OnDelete(DeleteBehavior.NoAction);
+            //    e.HasOne(e => e.User).WithMany().IsRequired().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.NoAction);
+            //});
         }
     }
 }

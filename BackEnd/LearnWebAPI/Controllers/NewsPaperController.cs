@@ -17,9 +17,9 @@ namespace BackEnd.Controllers
     public class NewsPaperController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly INewsPaperServce _newsPaperService;
+        private readonly INewsPaperService _newsPaperService;
         private readonly ILogger<ControllerBase> _logger;
-        public NewsPaperController(IMapper mapper, INewsPaperServce newsPaperService, ILogger<ControllerBase> logger)
+        public NewsPaperController(IMapper mapper, INewsPaperService newsPaperService, ILogger<ControllerBase> logger)
         {
             _mapper = mapper;
             _newsPaperService = newsPaperService;

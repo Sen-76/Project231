@@ -5,7 +5,7 @@ using LearnWebAPI.Models;
 
 namespace BackEnd.Interfaces
 {
-    public interface INewsPaperServce
+    public interface INewsPaperService
     {
         Task<PaginatedList<NewsPaper>> GetListNewsPaper(int? pageIndex);
         Task<ApiResponse> AddNewsPaper(NewsPaperAddVM newsPaper);

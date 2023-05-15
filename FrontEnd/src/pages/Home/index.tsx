@@ -107,7 +107,7 @@ function Home() {
                                         </div>
                                     </div>
                                     <div className="single_left_coloum_wrapper gallery">
-                                        <h2 className="title">gallery</h2>
+                                        <h2 className="title">Gallery</h2>
                                         <a className="more" href="#">
                                             more
                                         </a>{' '}
@@ -167,7 +167,7 @@ function Home() {
                                 </div>
                                 <div className="right_coloum floatright">
                                     <div className="single_right_coloum">
-                                        <h2 className="title">from the desk</h2>
+                                        <h2 className="title">From the desk</h2>
                                         <ul>
                                             <li>
                                                 <div className="single_cat_right_content">
@@ -220,7 +220,7 @@ function Home() {
                                         </a>{' '}
                                     </div>
                                     <div className="single_right_coloum">
-                                        <h2 className="title">editorial</h2>
+                                        <h2 className="title">Editorial</h2>
                                         <div className="single_cat_right_content editorial">
                                             {' '}
                                             <img src="images/editorial_img.png" alt="" />

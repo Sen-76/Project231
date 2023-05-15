@@ -4,9 +4,7 @@ function Header() {
         <div>
             <div className="header_area">
                             <div className="logo floatleft">
-                                <a href="#">
-                                    <img src="images/logo.png" alt="" />
-                                </a>
+                                <h2 className='title'><b>M</b>isaelMagazine</h2>
                             </div>
                             <div className="top_menu floatleft">
                                 <ul>

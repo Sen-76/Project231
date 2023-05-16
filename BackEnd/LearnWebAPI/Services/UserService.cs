@@ -31,7 +31,6 @@ namespace LearnWebAPI.Services
             _appSettings = optionsMonitor.CurrentValue;
             _logger = logger;
         }
-
         public async Task<TokenModel> GenerateToken(User user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
@@ -358,6 +357,7 @@ namespace LearnWebAPI.Services
                 };
             }
         }
+     
         private static Random random = new Random();
         public static string RandomString(int length)
         {

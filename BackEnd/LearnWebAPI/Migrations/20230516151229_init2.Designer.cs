@@ -4,6 +4,7 @@ using LearnWebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEnd.Migrations
 {
     [DbContext(typeof(Project231Context))]
-    partial class Project231ContextModelSnapshot : ModelSnapshot
+    [Migration("20230516151229_init2")]
+    partial class init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +23,6 @@ namespace BackEnd.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("BackEnd.Models.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("NewsPaperCategories");
-                });
 
             modelBuilder.Entity("BackEnd.Models.Comment", b =>
                 {
@@ -108,6 +95,26 @@ namespace BackEnd.Migrations
                     b.ToTable("NewsPaper", (string)null);
                 });
 
+            modelBuilder.Entity("BackEnd.Models.NewsPaperCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("NewsPaperId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NewsPaperId");
+
+                    b.ToTable("NewsPaperCategories");
+                });
+
             modelBuilder.Entity("BackEnd.Models.NewsPaperDetail", b =>
                 {
                     b.Property<Guid>("Id")
@@ -136,21 +143,6 @@ namespace BackEnd.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("NewsPaperDetails");
-                });
-
-            modelBuilder.Entity("CategoryNewsPaper", b =>
-                {
-                    b.Property<Guid>("CategoriesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("NewsPapersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("CategoriesId", "NewsPapersId");
-
-                    b.HasIndex("NewsPapersId");
-
-                    b.ToTable("CategoryNewsPaper");
                 });
 
             modelBuilder.Entity("LearnWebAPI.Models.RefreshToken", b =>
@@ -265,6 +257,13 @@ namespace BackEnd.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BackEnd.Models.NewsPaperCategory", b =>
+                {
+                    b.HasOne("BackEnd.Models.NewsPaper", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("NewsPaperId");
+                });
+
             modelBuilder.Entity("BackEnd.Models.NewsPaperDetail", b =>
                 {
                     b.HasOne("BackEnd.Models.NewsPaper", "NewsPaper")
@@ -284,21 +283,6 @@ namespace BackEnd.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CategoryNewsPaper", b =>
-                {
-                    b.HasOne("BackEnd.Models.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BackEnd.Models.NewsPaper", null)
-                        .WithMany()
-                        .HasForeignKey("NewsPapersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("LearnWebAPI.Models.RefreshToken", b =>
                 {
                     b.HasOne("LearnWebAPI.Models.User", "User")
@@ -308,6 +292,11 @@ namespace BackEnd.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BackEnd.Models.NewsPaper", b =>
+                {
+                    b.Navigation("Categories");
                 });
 #pragma warning restore 612, 618
         }

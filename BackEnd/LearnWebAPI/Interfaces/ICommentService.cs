@@ -8,5 +8,6 @@ namespace BackEnd.Interfaces
     {
         Task<PaginatedList<Comment>> GetListComments(int? pageIndex, string NewsPaperId);
         Task<ApiResponse> AddComment(string content, string newspaperId);
+        Task<ApiResponse> DeleteComment(string commentId);
     }
 }

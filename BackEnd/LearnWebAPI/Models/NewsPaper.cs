@@ -14,6 +14,7 @@ namespace BackEnd.Models
         public Guid UserId { get; set; }
         public User? User { get; set; }
         public StatusType Status { get; set; }
+        public List<Category>? Categories { get; set; }
     }
     public enum StatusType : byte
     {

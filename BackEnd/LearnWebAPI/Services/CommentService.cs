@@ -59,5 +59,28 @@ namespace BackEnd.Services
                 };
             }
         }
+        public async Task<ApiResponse> DeleteComment(string commentId)
+        {
+            try
+            {
+                var comment = _context.Comments.Where(x => x.Id == Guid.Parse(commentId)).FirstOrDefault();
+                comment.IsDeleted = true;
+                await _context.AddAsync(comment);
+                await _context.SaveChangesAsync();
+                return new ApiResponse
+                {
+                    Success= true,
+                    Data = comment
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= true,
+                };
+            }
+        }
     }
 }

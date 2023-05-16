@@ -12,7 +12,7 @@ function NewsPaperListManagerment() {
     const [newsPaperList, setNewsPaperList] = useState<IDetailsListNewsPaperState>(DEFAULT_LIST_NEWSPAPER_STATE);
 
     useEffect(() => {
-        newspaperService.getnewsPaperList().then((result: INewsPaper[]) => {
+        newspaperService.getnewsPaperList(1).then((result: INewsPaper[]) => {
             if (result) {
                 setNewsPaperList({ ...newsPaperList, items: result });
             }

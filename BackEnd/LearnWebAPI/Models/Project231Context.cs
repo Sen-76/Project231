@@ -13,6 +13,8 @@ namespace LearnWebAPI.Models
         public DbSet<User> Users { get; set; }
         public DbSet<NewsPaper> NewsPapers { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<NewsPaperDetail> NewsPaperDetails { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -21,16 +21,23 @@ namespace BackEnd.Controllers
         }
 
         [HttpGet("GetListComment")]
-        public IActionResult GetNewsPaperList(int? pageIndex, string newsPaperId)
+        public IActionResult GetListComment(int? pageIndex, string newsPaperId)
         {
             var result = _commentService.GetListComments(pageIndex, newsPaperId).Result;
             return Ok(result);
         }
 
         [HttpPost("AddComment")]
-        public IActionResult AddNewsPaper(string content, string newspaperId)
+        public IActionResult AddComment(string content, string newspaperId)
         {
             var result = _commentService.AddComment(content, newspaperId).Result;
+            return Ok(result);
+        }
+
+        [HttpPost("DeleteComment")]
+        public IActionResult DeleteComment(string commentId)
+        {
+            var result = _commentService.DeleteComment(commentId).Result;
             return Ok(result);
         }
 

@@ -36,7 +36,7 @@ namespace BackEnd.Services
                     Description = newsPaper.Description,
                     CreatedDate = DateTime.UtcNow,
                     Status = StatusType.Posted,
-                    UserId = Guid.Parse("707924F8-0130-4E61-BBAB-E2DD1A998914"),
+                    UserId = Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7"),
                 };
                 await _context.AddAsync(newsPapers);
                 await _context.SaveChangesAsync();

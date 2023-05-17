@@ -32,5 +32,12 @@ namespace BackEnd.Controllers
             var result = _categoryService.DeleteCategory(cateId).Result;
             return Ok(result);
         }
+
+        [HttpGet("GetCate")]
+        public IActionResult GetCate()
+        {
+            var result = _categoryService.ListAllCategory().Result;
+            return Ok(result);
+        }
     }
 }

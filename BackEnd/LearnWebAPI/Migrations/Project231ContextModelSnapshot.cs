@@ -34,7 +34,7 @@ namespace BackEnd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NewsPaperCategories");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("BackEnd.Models.Comment", b =>

@@ -10,6 +10,18 @@ namespace BackEnd.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -77,6 +89,30 @@ namespace BackEnd.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CategoryNewsPaper",
+                columns: table => new
+                {
+                    CategoriesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NewsPapersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryNewsPaper", x => new { x.CategoriesId, x.NewsPapersId });
+                    table.ForeignKey(
+                        name: "FK_CategoryNewsPaper_Categories_CategoriesId",
+                        column: x => x.CategoriesId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryNewsPaper_NewsPaper_NewsPapersId",
+                        column: x => x.NewsPapersId,
+                        principalTable: "NewsPaper",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -104,6 +140,39 @@ namespace BackEnd.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "NewsPaperDetails",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NewsPaperId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Rate = table.Column<int>(type: "int", nullable: true),
+                    Like = table.Column<bool>(type: "bit", nullable: true),
+                    Dislike = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NewsPaperDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NewsPaperDetails_NewsPaper_NewsPaperId",
+                        column: x => x.NewsPaperId,
+                        principalTable: "NewsPaper",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_NewsPaperDetails_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryNewsPaper_NewsPapersId",
+                table: "CategoryNewsPaper",
+                column: "NewsPapersId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_NewsPaperId",
                 table: "Comments",
@@ -120,6 +189,16 @@ namespace BackEnd.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_NewsPaperDetails_NewsPaperId",
+                table: "NewsPaperDetails",
+                column: "NewsPaperId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NewsPaperDetails_UserId",
+                table: "NewsPaperDetails",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_UserId",
                 table: "RefreshToken",
                 column: "UserId");
@@ -128,10 +207,19 @@ namespace BackEnd.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CategoryNewsPaper");
+
+            migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "NewsPaperDetails");
+
+            migrationBuilder.DropTable(
                 name: "RefreshToken");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "NewsPaper");

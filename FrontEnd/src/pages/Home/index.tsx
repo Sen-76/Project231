@@ -2,7 +2,7 @@ import Footer from '../Footer';
 import Header from '../Header';
 import './home.module.scss';
 import './index.scss';
-
+import PopularNews from '../../components/PopularNews';
 function Home() {
     return (
         <div className="container">
@@ -10,7 +10,7 @@ function Home() {
                 <div className="body_wrapper">
                     <div className="center">
                         <Header></Header>
-                        <div className="slider_area">
+                        {/* <div className="slider_area">
                             <div className="slider">
                                 <ul className="bxslider">
                                     <li>
@@ -18,7 +18,7 @@ function Home() {
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="content_area">
                             <div className="main_content floatleft">
                                 <div className="left_coloum floatleft">
@@ -245,7 +245,7 @@ function Home() {
                                 </div>
                             </div>
                             <div className="sidebar floatright">
-                                <div className="single_sidebar">
+                                {/* <div className="single_sidebar">
                                     {' '}
                                     <img src="images/add1.png" alt="" />{' '}
                                 </div>
@@ -260,70 +260,8 @@ function Home() {
                                         </form>
                                         <p className="news-letter-privacy">We do not spam. We value your privacy!</p>
                                     </div>
-                                </div>
-                                <div className="single_sidebar">
-                                    <div className="popular">
-                                        <h2 className="title">Popular</h2>
-                                        <ul>
-                                            <li>
-                                                <div className="single_popular">
-                                                    <p>Sept 24th 2045</p>
-                                                    <h3>
-                                                        Lorem ipsum dolor sit amet conse ctetur adipiscing elit{' '}
-                                                        <a href="#" className="readmore">
-                                                            Read More
-                                                        </a>
-                                                    </h3>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="single_popular">
-                                                    <p>Sept 24th 2045</p>
-                                                    <h3>
-                                                        Lorem ipsum dolor sit amet conse ctetur adipiscing elit{' '}
-                                                        <a href="#" className="readmore">
-                                                            Read More
-                                                        </a>
-                                                    </h3>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="single_popular">
-                                                    <p>Sept 24th 2045</p>
-                                                    <h3>
-                                                        Lorem ipsum dolor sit amet conse ctetur adipiscing elit{' '}
-                                                        <a href="#" className="readmore">
-                                                            Read More
-                                                        </a>
-                                                    </h3>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="single_popular">
-                                                    <p>Sept 24th 2045</p>
-                                                    <h3>
-                                                        Lorem ipsum dolor sit amet conse ctetur adipiscing elit{' '}
-                                                        <a href="#" className="readmore">
-                                                            Read More
-                                                        </a>
-                                                    </h3>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="single_popular">
-                                                    <p>Sept 24th 2045</p>
-                                                    <h3>
-                                                        Lorem ipsum dolor sit amet conse ctetur adipiscing elit{' '}
-                                                        <a href="#" className="readmore">
-                                                            Read More
-                                                        </a>
-                                                    </h3>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <a className="popular_more">more</a>{' '}
-                                    </div>
-                                </div>
+                                </div> */}
+                                <PopularNews />
                                 <div className="single_sidebar">
                                     {' '}
                                     <img src="images/add1.png" alt="" />{' '}

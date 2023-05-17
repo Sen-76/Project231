@@ -2,8 +2,8 @@ const routeConfig = {
     dashboard: '/dashboard',
     home: '/home',
     reduxexamples: '/reduxexamples',
-    lernmui: '/learnmui',
     learnfluentui: '/learnfluentui',
+    tonghop: '/tonghop',
 }
 
 export default routeConfig;

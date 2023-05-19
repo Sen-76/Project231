@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './index.scss';
+import { Link } from 'react-router-dom';
 
 function Register() {
     const [username, setUsername] = useState('');
@@ -25,9 +26,10 @@ function Register() {
     }
 
     return (
-        <div className="container">
+        <div className="register-container">
             <div>
                 <h1 className="RegisterH1">Register Form</h1>
+                <div className='registerLink'><Link to="/Login">Already have an account?</Link></div>
                 <label>
                     <b>Enter Username</b>
                 </label>
@@ -80,7 +82,7 @@ function Register() {
                         Cancel
                     </button>
                     <span className="psw">
-                        Forgot <a href="#">password?</a>
+                        Forgot <Link to="/">password?</Link>
                     </span>
                 </div>
             </div>

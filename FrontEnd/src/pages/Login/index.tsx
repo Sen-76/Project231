@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './index.scss';
+import { Link } from 'react-router-dom';
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -10,10 +11,10 @@ function Login() {
         else setEnable(true);
     };
     return (
-        <div className="container">
+        <div className="login-container">
             <div>
                 <h1 className="loginH1">Login Form</h1>
-                <div className='registerLink'>Does not have an account?</div>
+                <div className='registerLink'><Link to="/Register">Does not have an account?</Link></div>
                 <label>
                     <b>Username</b>
                 </label>

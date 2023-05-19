@@ -17,7 +17,7 @@ input[type='password'] {
 .alert{
     color: red;
 }
-button {
+#button-input {
     background-color: #04aa6d;
     color: white;
     padding: 14px 20px;
@@ -40,7 +40,7 @@ button:hover {
     background-color: #f44336;
 }
 
-.container {
+.register-container {
     padding: 16px;
     width: 400px;
     margin: auto;

@@ -2,6 +2,7 @@ import './index.scss';
 import * as CategoryService from '../../services/categoryService';
 import { ICategory } from '../../components/CategoryAddForm/model';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 function Header() {
     const [CategoryList, SetCategoryList] = useState<ICategory[]>([]);
     useEffect(() => {
@@ -55,7 +56,7 @@ function Header() {
                     </div>
                     <div className="search">
                         <form action="#" method="post" id="search_form">
-                            <input type="text" value="Search news" id="s" />
+                            <input type="text" placeholder="Search news" id="s" />
                             <button className="" type="submit" id="searchform" value="search">
                                 Search
                             </button>
@@ -65,9 +66,9 @@ function Header() {
             </div>
             <div className="main_menu_area">
                 <ul id="nav">
-                    {CategoryList.map((category) => (
-                        <li>
-                            <a href="#">{category.name}</a>
+                    {CategoryList.map((category, key) => (
+                        <li key={key}>
+                            <Link to="#">{category.name}</Link>
                         </li>
                     ))}
                 </ul>

@@ -14,26 +14,29 @@ function Register() {
         } else setEnable(true);
     };
     const RegisterHandle = () => {
-        if (password === password2){
+        if (password === password2) {
             setAlert(false);
             //xử lí gửi dữ liệu đi
-        }else{
+        } else {
             setAlert(true);
         }
-    }
-    const cancelHandle = () => {
-        //thực hiện hành động hủy
-    }
+    };
+    // const cancelHandle = () => {
+    //     //thực hiện hành động hủy
+    // };
 
     return (
         <div className="register-container">
             <div>
                 <h1 className="RegisterH1">Register Form</h1>
-                <div className='registerLink'><Link to="/Login">Already have an account?</Link></div>
+                <div className="registerLink">
+                    <Link to="/Login">Already have an account?</Link>
+                </div>
                 <label>
                     <b>Enter Username</b>
                 </label>
                 <input
+                    className="inputLogin"
                     type="text"
                     id="username-input"
                     placeholder="Enter your username"
@@ -47,6 +50,7 @@ function Register() {
                     <b>Enter Password</b>
                 </label>
                 <input
+                    className="inputLogin"
                     type="password"
                     id="password-input"
                     placeholder="Enter your password"
@@ -60,6 +64,7 @@ function Register() {
                     <b>Enter password again</b>
                 </label>
                 <input
+                    className="inputLogin"
                     type="password"
                     id="password-input"
                     placeholder="Enter your password"
@@ -69,17 +74,13 @@ function Register() {
                 />
                 <br />
                 <br />
-                {alert === true && (
-                    <div className='alert'>Password are not the same!</div>
-                )
-
-                }
+                {alert === true && <div className="alert">Password are not the same!</div>}
                 <button type="submit" id="button-input" disabled={isEnable} onClick={() => RegisterHandle()}>
                     Register
                 </button>
                 <div className="container">
-                    <button onClick={() => cancelHandle} type="button" className="cancelbtn">
-                        Cancel
+                    <button type="button" className="cancelbtn">
+                        <Link to="/home">Cancel</Link>
                     </button>
                     <span className="psw">
                         Forgot <Link to="/">password?</Link>

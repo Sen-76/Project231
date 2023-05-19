@@ -27,7 +27,7 @@ function PopularNews() {
                                         <p>{items.createdDate}</p>
                                         <h3>
                                             {items.title}
-                                            <a href="#" className="readmore">
+                                            <a href="dashboard" className="readmore">
                                                 Read More
                                             </a>
                                         </h3>

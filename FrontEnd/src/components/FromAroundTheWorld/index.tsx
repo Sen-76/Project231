@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as newspaperService from '../../services/newsPaperService';
 import { INewsPaper } from '../PopularNews/model';
+// import DashBoard from '../../pages/DashBoard';
 function FromAroundTheWorld() {
     const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
     useEffect(() => {
@@ -22,7 +23,8 @@ function FromAroundTheWorld() {
                     <img src="https://cdn.pixabay.com/photo/2023/05/10/16/46/butterfly-7984538_640.jpg" alt="" />
                     <h3>{item.title}</h3>
                     <p>{item.content}</p>
-                    <a className="readmore" href="#">
+                    {/* <DashBoard idItem={}></DashBoard> */}
+                    <a className="readmore" href="dashboard">
                         read more
                     </a>
                 </div>

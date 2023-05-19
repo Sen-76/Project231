@@ -27,7 +27,7 @@ function Home() {
                                     </div>
                                     <div className="single_left_coloum_wrapper">
                                         <h2 className="title">Latest Articles</h2>
-                                        <a className="more" href="#">
+                                        <a className="more" href="dashboard">
                                             more
                                         </a>
                                         <LastestArticles></LastestArticles>

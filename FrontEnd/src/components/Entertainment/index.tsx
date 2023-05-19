@@ -22,7 +22,7 @@ function Entertainment(){
                 <div key={key} className="single_cat_right_content">
                     <h3>{item.title}</h3>
                     <p>{item.content}</p>
-                    <a className="readmore" href="#">
+                    <a className="readmore" href="dashboard">
                         read more
                     </a>
                 </div>

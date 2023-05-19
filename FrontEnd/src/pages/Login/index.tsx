@@ -14,11 +14,14 @@ function Login() {
         <div className="login-container">
             <div>
                 <h1 className="loginH1">Login Form</h1>
-                <div className='registerLink'><Link to="/Register">Does not have an account?</Link></div>
+                <div className="registerLink">
+                    <Link to="/Register">Does not have an account?</Link>
+                </div>
                 <label>
                     <b>Username</b>
                 </label>
                 <input
+                    className="inputRegister"
                     type="text"
                     id="username-input"
                     placeholder="Enter your username"
@@ -32,6 +35,7 @@ function Login() {
                     <b>Password</b>
                 </label>
                 <input
+                    className="inputRegister"
                     type="password"
                     id="password-input"
                     placeholder="Enter your password"
@@ -46,7 +50,7 @@ function Login() {
                 </button>
                 <div className="container">
                     <button type="button" className="cancelbtn">
-                        Cancel
+                        <Link to="/home">Cancel</Link>
                     </button>
                     <span className="psw">
                         Forgot <a href="#">password?</a>

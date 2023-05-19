@@ -1,7 +1,7 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
 }
-form {
+.formRegister {
     border: 3px solid #f1f1f1;
 }
 .registerLink{
@@ -9,8 +9,8 @@ form {
     text-decoration: underline;
     margin-bottom: 5px;
 }
-input[type='text'],
-input[type='password'] {
+.inputLogin[type='text'],
+.inputLogin[type='password'] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;

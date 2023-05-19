@@ -1,0 +1,90 @@
+import { useState } from 'react';
+import './index.scss';
+
+function Register() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [password2, setPassword2] = useState('');
+    const [alert, setAlert] = useState(false);
+    const [isEnable, setEnable] = useState(true);
+    const handleKeyUp = () => {
+        if (username.length > 0 && password.length > 0) {
+            setEnable(false);
+        } else setEnable(true);
+    };
+    const RegisterHandle = () => {
+        if (password === password2){
+            setAlert(false);
+            //xử lí gửi dữ liệu đi
+        }else{
+            setAlert(true);
+        }
+    }
+    const cancelHandle = () => {
+        //thực hiện hành động hủy
+    }
+
+    return (
+        <div className="container">
+            <div>
+                <h1 className="RegisterH1">Register Form</h1>
+                <label>
+                    <b>Enter Username</b>
+                </label>
+                <input
+                    type="text"
+                    id="username-input"
+                    placeholder="Enter your username"
+                    value={username}
+                    onKeyUp={handleKeyUp}
+                    onChange={(event) => setUsername(event.target.value)}
+                />
+                <br />
+                <br />
+                <label>
+                    <b>Enter Password</b>
+                </label>
+                <input
+                    type="password"
+                    id="password-input"
+                    placeholder="Enter your password"
+                    onKeyUp={handleKeyUp}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                />
+                <br />
+                <br />
+                <label>
+                    <b>Enter password again</b>
+                </label>
+                <input
+                    type="password"
+                    id="password-input"
+                    placeholder="Enter your password"
+                    onKeyUp={handleKeyUp}
+                    value={password2}
+                    onChange={(event) => setPassword2(event.target.value)}
+                />
+                <br />
+                <br />
+                {alert === true && (
+                    <div className='alert'>Password are not the same!</div>
+                )
+
+                }
+                <button type="submit" id="button-input" disabled={isEnable} onClick={() => RegisterHandle()}>
+                    Register
+                </button>
+                <div className="container">
+                    <button onClick={() => cancelHandle} type="button" className="cancelbtn">
+                        Cancel
+                    </button>
+                    <span className="psw">
+                        Forgot <a href="#">password?</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    );
+}
+export default Register;

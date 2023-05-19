@@ -1,5 +1,20 @@
+import { useEffect, useState } from 'react';
+import * as CategoryService from '../../services/categoryService';
 import './index.scss';
+import { ICategory } from '../../components/CategoryAddForm/model';
 function Footer() {
+    const [CategoryList, SetCategoryList] = useState<ICategory[]>([]);
+    useEffect(() => {
+        CategoryService.listCate()
+            .then((category) => {
+                if (category) {
+                    SetCategoryList(category);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
     return (
         <div>
             <div className="footer_top_area">
@@ -10,38 +25,13 @@ function Footer() {
             </div>
             <div className="footer_bottom_area">
                 <div className="footer_menu">
-                    <ul id="f_menu">
+                <ul id="f_menu">
+                    {CategoryList.map((category) => (
                         <li>
-                            <a href="#">world news</a>
+                            <a href="#">{category.name}</a>
                         </li>
-                        <li>
-                            <a href="#">sports</a>
-                        </li>
-                        <li>
-                            <a href="#">tech</a>
-                        </li>
-                        <li>
-                            <a href="#">business</a>
-                        </li>
-                        <li>
-                            <a href="#">Movies</a>
-                        </li>
-                        <li>
-                            <a href="#">entertainment</a>
-                        </li>
-                        <li>
-                            <a href="#">culture</a>
-                        </li>
-                        <li>
-                            <a href="#">Books</a>
-                        </li>
-                        <li>
-                            <a href="#"> classNameifieds</a>
-                        </li>
-                        <li>
-                            <a href="#">blogs</a>
-                        </li>
-                    </ul>
+                    ))}
+                </ul>
                 </div>
                 <div className="copyright_text">
                     <p>

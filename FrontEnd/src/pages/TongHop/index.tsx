@@ -1,4 +1,4 @@
-import CategoryForm from "../../components/CategoryAddForm";
+import CategoryForm from "../../components/CategoryForm";
 import NewsPaperForm from "../../components/NewsPaperForm";
 
 function TongHop() {

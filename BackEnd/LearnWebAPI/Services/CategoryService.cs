@@ -54,7 +54,7 @@ namespace BackEnd.Services
                 _context.Remove(cate);
                 await _context.SaveChangesAsync();
                 var sqlDeleteQuery = "DELETE FROM [CategoryNewsPaper] WHERE [CategoriesId] = @CategoryId";
-                _context.Database.ExecuteSqlRaw(sqlDeleteQuery,
+                await _context.Database.ExecuteSqlRawAsync(sqlDeleteQuery,
                     new SqlParameter("@CategoryId", cateId));
                 return new ApiResponse
                 {

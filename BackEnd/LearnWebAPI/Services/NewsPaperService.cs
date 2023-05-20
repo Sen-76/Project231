@@ -37,7 +37,7 @@ namespace BackEnd.Services
                     Description = newsPaper.Description,
                     CreatedDate = DateTime.UtcNow,
                     Status = StatusType.Posted,
-                    UserId = Guid.Parse("C1172C91-2059-423E-AC56-6367CE1F20ED"),
+                    UserId = Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7"),
                 };
                 await _context.AddAsync(newsPapers);
                 await _context.SaveChangesAsync();
@@ -52,10 +52,11 @@ namespace BackEnd.Services
                 foreach (var item in newsPaper.CategoryId)
                 {
                     var sqlQuery = "INSERT INTO [CategoryNewsPaper] ([CategoriesId], [NewsPapersId]) VALUES (@CategoryId, @NewsPaperId)";
-                    _context.Database.ExecuteSqlRaw(sqlQuery,
+                    await _context.Database.ExecuteSqlRawAsync(sqlQuery,
                         new SqlParameter("@CategoryId", item),
                         new SqlParameter("@NewsPaperId", newsPapers.Id));
                 }
+                await _context.SaveChangesAsync();
                 return new ApiResponse
                 {
                     Success= true,
@@ -75,7 +76,9 @@ namespace BackEnd.Services
         public async Task<PaginatedList<NewsPaper>> GetListNewsPaper(int? pageIndex)
         {
             //var AllNewsPaper = _context.NewsPapers.Where(x => x.Status == StatusType.Published).AsNoTracking();
-            var AllNewsPaper = _context.NewsPapers.Where(x => x.Status == StatusType.Posted).AsNoTracking();
+            var AllNewsPaper = _context.NewsPapers.Include("Categories")
+                        .Where(x => x.Status == StatusType.Posted)
+                        .AsNoTracking();
             var pageSize = _configuration.GetValue("PageSize", 4);
             var PaginatedNewsPaper = await PaginatedList<NewsPaper>.CreateAsync(AllNewsPaper, pageIndex ?? 1, pageSize);
             return PaginatedNewsPaper;
@@ -98,17 +101,17 @@ namespace BackEnd.Services
                     newsPapers.Description = newsPaper.Description;
                     newsPapers.ModifiedDate = DateTime.UtcNow;
                     _context.Update(newsPapers);
-                    await _context.SaveChangesAsync();
                     var sqlDeleteQuery = "DELETE FROM [CategoryNewsPaper] WHERE [NewsPapersId] = @NewsPaperId";
-                    _context.Database.ExecuteSqlRaw(sqlDeleteQuery,
+                    await _context.Database.ExecuteSqlRawAsync(sqlDeleteQuery,
                         new SqlParameter("@NewsPaperId", newsPapers.Id));
                     foreach (var item in newsPaper.CategoryId)
                     {
                         var sqlAddQuery = "INSERT INTO [CategoryNewsPaper] ([CategoriesId], [NewsPapersId]) VALUES (@CategoryId, @NewsPaperId)";
-                        _context.Database.ExecuteSqlRaw(sqlAddQuery,
-                            new SqlParameter("@CategoryId", item),
-                            new SqlParameter("@NewsPaperId", newsPapers.Id));
+                        await _context.Database.ExecuteSqlRawAsync(sqlAddQuery,
+                             new SqlParameter("@CategoryId", item),
+                             new SqlParameter("@NewsPaperId", newsPapers.Id));
                     }
+                    await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
                         Success= true,

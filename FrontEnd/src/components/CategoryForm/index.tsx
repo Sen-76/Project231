@@ -37,7 +37,7 @@ function CategoryForm() {
                 {
                     listCate.map((category) => (
                         <li key={category.id}>
-                            {category.name}
+                            <span style={{display: 'inline-block', minWidth: 200}}>{category.name}</span> 
                             <button type='button' onClick={() => Delete(category.id)}>Delete</button>
                         </li>
                     ))

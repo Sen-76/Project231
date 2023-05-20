@@ -18,8 +18,8 @@ namespace BackEnd.Models
     }
     public enum StatusType : byte
     {
-        Posted = 0,
-        Published = 1,
-        Deleted = 2,
+            Posted = 0,
+            Published = 1,
+            Deleted = 2,
     }
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as CategoryService from '../../services/categoryService';
 import './index.scss';
-import { ICategory } from '../../components/CategoryAddForm/model';
+import { ICategory } from '../../components/CategoryForm/model';
 function Footer() {
     const [CategoryList, SetCategoryList] = useState<ICategory[]>([]);
     useEffect(() => {

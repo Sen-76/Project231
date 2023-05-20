@@ -1,6 +1,6 @@
 import './index.scss';
 import * as CategoryService from '../../services/categoryService';
-import { ICategory } from '../../components/CategoryAddForm/model';
+import { ICategory } from '../../components/CategoryForm/model';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 function Header() {

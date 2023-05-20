@@ -19,6 +19,7 @@ namespace BackEnd.Controllers
             _categoryService = categoryService;
             _logger = logger;
         }
+
         [HttpPost("AddCate")]
         public IActionResult AddCate(string name)
         {

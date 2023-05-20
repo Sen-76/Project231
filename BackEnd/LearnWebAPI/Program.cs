@@ -22,6 +22,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<INewsPaperService, NewsPaperService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
+builder.Services.AddTransient<INewsDetailService, NewsDetailService>();
 
 builder.Services.Configure<AppSetting>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddCors(p => p.AddDefaultPolicy(build =>

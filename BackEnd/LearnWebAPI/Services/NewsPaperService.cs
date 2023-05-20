@@ -5,6 +5,7 @@ using BackEnd.Paging;
 using BackEnd.ViewModels.NewFolder;
 using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 
@@ -40,6 +41,21 @@ namespace BackEnd.Services
                 };
                 await _context.AddAsync(newsPapers);
                 await _context.SaveChangesAsync();
+                var newsPaperDetail = new NewsPaperDetail()
+                {
+                    Id = Guid.NewGuid(),
+                    NewsPaperId = newsPapers.Id,
+                    UserId = Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7")
+                };
+                await _context.AddAsync(newsPaperDetail);
+                await _context.SaveChangesAsync();
+                foreach (var item in newsPaper.CategoryId)
+                {
+                    var sqlQuery = "INSERT INTO [CategoryNewsPaper] ([CategoriesId], [NewsPapersId]) VALUES (@CategoryId, @NewsPaperId)";
+                    _context.Database.ExecuteSqlRaw(sqlQuery,
+                        new SqlParameter("@CategoryId", item),
+                        new SqlParameter("@NewsPaperId", newsPapers.Id));
+                }
                 return new ApiResponse
                 {
                     Success= true,
@@ -77,13 +93,22 @@ namespace BackEnd.Services
                 var newsPapers = await _context.NewsPapers.Where(x => x.Id.Equals(newsPaper.Id) && x.Status != StatusType.Deleted).FirstOrDefaultAsync();
                 if (newsPapers != null)
                 {
-                    newsPapers.Id = newsPaper.Id;
                     newsPapers.Title = newsPaper.Title;
                     newsPapers.Content = newsPaper.Content;
                     newsPapers.Description = newsPaper.Description;
                     newsPapers.ModifiedDate = DateTime.UtcNow;
                     _context.Update(newsPapers);
                     await _context.SaveChangesAsync();
+                    var sqlDeleteQuery = "DELETE FROM [CategoryNewsPaper] WHERE [NewsPapersId] = @NewsPaperId";
+                    _context.Database.ExecuteSqlRaw(sqlDeleteQuery,
+                        new SqlParameter("@NewsPaperId", newsPapers.Id));
+                    foreach (var item in newsPaper.CategoryId)
+                    {
+                        var sqlAddQuery = "INSERT INTO [CategoryNewsPaper] ([CategoriesId], [NewsPapersId]) VALUES (@CategoryId, @NewsPaperId)";
+                        _context.Database.ExecuteSqlRaw(sqlAddQuery,
+                            new SqlParameter("@CategoryId", item),
+                            new SqlParameter("@NewsPaperId", newsPapers.Id));
+                    }
                     return new ApiResponse
                     {
                         Success= true,

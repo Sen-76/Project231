@@ -34,6 +34,13 @@ namespace BackEnd.Controllers
             return Ok(result);
         }
 
+        [HttpPost("UpdateComment")]
+        public IActionResult UpdateComment(string content, string commentId)
+        {
+            var result = _commentService.UpdateComment(content, commentId).Result;
+            return Ok(result);
+        }
+
         [HttpPost("DeleteComment")]
         public IActionResult DeleteComment(string commentId)
         {

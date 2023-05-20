@@ -39,7 +39,7 @@ namespace BackEnd.Services
                     Content = content,
                     IsDeleted= false,
                     PostTime= DateTime.UtcNow,
-                    UserId = Guid.Parse("A0985EB2-6509-4526-BB11-99EDCCD88DDB"),
+                    UserId = Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7"),
                     NewsPaperId = Guid.Parse(newspaperId),
                 };
                 await _context.AddAsync(comment);
@@ -55,7 +55,30 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
+                    Success= false,
+                };
+            }
+        }
+        public async Task<ApiResponse> UpdateComment(string content, string commentId)
+        {
+            try
+            {
+                var comment = _context.Comments.Where(x => x.Id == Guid.Parse(commentId)).FirstOrDefault();
+                comment.Content = content;
+                _context.Update(comment);
+                await _context.SaveChangesAsync();
+                return new ApiResponse
+                {
                     Success= true,
+                    Data = comment
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= false,
                 };
             }
         }
@@ -65,7 +88,7 @@ namespace BackEnd.Services
             {
                 var comment = _context.Comments.Where(x => x.Id == Guid.Parse(commentId)).FirstOrDefault();
                 comment.IsDeleted = true;
-                await _context.AddAsync(comment);
+                _context.Update(comment);
                 await _context.SaveChangesAsync();
                 return new ApiResponse
                 {

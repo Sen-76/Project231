@@ -4,13 +4,13 @@ using BackEnd.Models;
 using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Models;
 using LearnWebAPI.Services;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace BackEnd.Services
 {
     public class CategoryService : ICategoryService
-
     {
         private readonly IMapper _mapper;
         private readonly Project231Context _context;
@@ -53,6 +53,9 @@ namespace BackEnd.Services
                 var cate = _context.Categories.Where(x => x.Id.Equals(Guid.Parse(cateId))).FirstOrDefault();
                 _context.Remove(cate);
                 await _context.SaveChangesAsync();
+                var sqlDeleteQuery = "DELETE FROM [CategoryNewsPaper] WHERE [CategoriesId] = @CategoryId";
+                _context.Database.ExecuteSqlRaw(sqlDeleteQuery,
+                    new SqlParameter("@CategoryId", cateId));
                 return new ApiResponse
                 {
                     Success= true,

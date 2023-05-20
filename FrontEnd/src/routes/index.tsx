@@ -9,6 +9,8 @@ import Home from '../pages/Home';
 import ReduxExample from '../pages/ReduxExample';
 import LearnFluentUI from '../pages/LearnFluentUi';
 import TongHop from '../pages/TongHop';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
 
 //Public Route
 export const publicRoutes = [
@@ -18,5 +20,8 @@ export const publicRoutes = [
     { path: routeConfig.reduxexamples, component: ReduxExample, layout: HeaderOnly },
     { path: routeConfig.learnfluentui, component: LearnFluentUI, layout: HeaderOnly },
     { path: routeConfig.tonghop, component: TongHop, layout: HeaderOnly },
+    { path: routeConfig.login, component: Login, layout: HeaderOnly },
+    { path: routeConfig.register, component: Register, layout: HeaderOnly },
+
 ];
 export const privateRoutes = [];

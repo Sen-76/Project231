@@ -24,6 +24,7 @@ namespace BackEnd.Services
             {
                 List<NewsPaperDetail> newsdetal = await _context.NewsPaperDetails.Where(x => x.NewsPaperId == Guid.Parse(newsId)).ToListAsync();
                 NewsPaper news = await _context.NewsPapers.Where(x => x.Id == Guid.Parse(newsId)).FirstOrDefaultAsync();
+                User author = await _context.Users.Where(x => x.Id == news.UserId).FirstOrDefaultAsync();
                 var countLike = 0;
                 var countDisLike = 0;
                 var count = 0;
@@ -61,6 +62,7 @@ namespace BackEnd.Services
                 detail.Dislike = countDisLike;
                 detail.VoteCount = count;
                 detail.Rate = averageRate;
+                detail.Author = author;
                 return new ApiResponse
                 {
                     Success= true,

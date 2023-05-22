@@ -5,10 +5,6 @@ import './detail.scss';
 import * as newDetailService from '../../services/newDetailService';
 import { INewsPaper } from '../../components/PopularNews/model';
 
-// interface INewDetailProps {
-//     newId: string;
-// }
-
 function DashBoard() {
     console.log(window.location);
     let locationArray = window.location.pathname.split('/');

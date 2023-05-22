@@ -16,5 +16,6 @@ namespace BackEnd.ViewModels.NewsDetailViewModels
         public int VoteCount { get; set; }
         public int Like { get; set; }
         public int Dislike { get; set; }
+        public User Author { get; set; }
     }
 }

@@ -22,8 +22,8 @@ export const publicRoutes = [
     { path: routeConfig.tonghop, component: TongHop, layout: HeaderOnly },
     { path: routeConfig.login, component: Login, layout: HeaderOnly },
     { path: routeConfig.register, component: Register, layout: HeaderOnly },
-    { path: routeConfig.listNewByCategory, component: Category, layout: HeaderOnly },
-    { path: '/', component: DashBoard, layout: HeaderOnly },
+    { path: routeConfig.listNewByCategory, component: Category },
+    { path: '/', component: Home },
 
 ];
 export const privateRoutes = [];

@@ -3,17 +3,23 @@ import './index.scss';
 import { Link } from 'react-router-dom';
 import { IUserLogin, DefaultUserLogin } from './model';
 import * as userService from '../../services/userService';
+import jwt_decode from 'jwt-decode';
+import { login } from '../../store/userSlice';
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../store/hook";
 
 function Login() {
+    const dispatch = useDispatch();
     const [userLogin, setUserLogin] = useState<IUserLogin>(DefaultUserLogin)
     const [alert, setAlert] = useState<string>('')
+    const userLoginTest = useAppSelector((state) => state.user.UserLogin)
 
     async function Login() {
         await userService.login(userLogin).then((result) => {
-            if(result.success == false) {
+            if (result.success == false) {
                 setAlert(result.message);
-            }else{
-                console.log(result.data);
+            } else {
+                dispatch(login(jwt_decode(result.data.accessToken)))
             }
         }).catch((error) => {
             console.error(error);
@@ -50,7 +56,7 @@ function Login() {
                     value={userLogin.password}
                     onChange={(event) => setUserLogin({ ...userLogin, password: event.target.value })}
                 />
-                <span style={{color: 'red'}}>{alert}</span>
+                <span style={{ color: 'red' }}>{alert}</span>
                 <br />
                 <br />
                 <button type="submit" id="button-input" onClick={Login}>

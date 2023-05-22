@@ -16,6 +16,11 @@ function Header() {
                 console.error(error);
             });
     }, []);
+    // const handleReload= (event: React.MouseEvent<HTMLAnchorElement>) => {
+    //     event.preventDefault();
+    //     console.log("handle: " );
+    //     window.location.reload();
+    // };
     return (
         <div>
             <div className="header_area">
@@ -27,7 +32,7 @@ function Header() {
                 <div className="top_menu floatleft">
                     <ul>
                         <li>
-                            <a href="home">Home</a>
+                            <Link to="/home">Home</Link>
                         </li>
                         <li>
                             <a href="#">About</a>
@@ -68,7 +73,7 @@ function Header() {
                 <ul id="nav">
                     {CategoryList.map((category, key) => (
                         <li key={key}>
-                            <Link to="#">{category.name}</Link>
+                            <Link to={`/listNews/${category.name}`}>{category.name}</Link>
                         </li>
                     ))}
                 </ul>

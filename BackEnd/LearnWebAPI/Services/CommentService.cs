@@ -39,7 +39,7 @@ namespace BackEnd.Services
                     Content = content,
                     IsDeleted= false,
                     PostTime= DateTime.UtcNow,
-                    UserId = Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7"),
+                    UserId = Guid.Parse("C1172C91-2059-423E-AC56-6367CE1F20ED"),
                     NewsPaperId = Guid.Parse(newspaperId),
                 };
                 await _context.AddAsync(comment);

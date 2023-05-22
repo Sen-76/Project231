@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import * as newspaperService from '../../services/newsPaperService';
 import { INewsPaper } from '../PopularNews/model';
+import { Link } from 'react-router-dom';
 
-function Entertainment(){
+function Entertainment() {
     const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
     useEffect(() => {
         newspaperService
@@ -21,10 +22,10 @@ function Entertainment(){
             {newsPaperList.map((item, key) => (
                 <div key={key} className="single_cat_right_content">
                     <h3>{item.title}</h3>
-                    <p>{item.content}</p>
-                    <a className="readmore" href="dashboard">
+                    <p>{item.description}</p>
+                    <Link className="readmore" to={`/newsdetail/${item.id}`}>
                         read more
-                    </a>
+                    </Link>
                 </div>
             ))}
         </>

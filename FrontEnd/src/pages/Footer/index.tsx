@@ -26,8 +26,8 @@ function Footer() {
             <div className="footer_bottom_area">
                 <div className="footer_menu">
                 <ul id="f_menu">
-                    {CategoryList.map((category) => (
-                        <li>
+                    {CategoryList.map((category, key) => (
+                        <li key={key}>
                             <a href="#">{category.name}</a>
                         </li>
                     ))}

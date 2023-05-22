@@ -7,6 +7,7 @@ const routeConfig = {
     tonghop: '/tonghop',
     login: '/login',
     register: '/register',
+    listNewByCategory: '/listNews/:category',
 };
 
 export default routeConfig;

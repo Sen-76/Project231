@@ -3,20 +3,45 @@ import Footer from '../Footer';
 import Header from '../Header';
 import './detail.scss';
 import * as newDetailService from '../../services/newDetailService';
+import * as commentService from '../../services/commentService';
 import { INewsPaper } from '../../components/PopularNews/model';
+import LastestArticles from '../../components/LastestArticles';
+import { useParams } from 'react-router-dom';
 
+interface IComment {
+    commentId: string;
+    newsPaperId: string;
+    newsPaper: null;
+    userId: string;
+    user: null;
+    content: string;
+    postTime: string;
+    isDeleted: false;
+}
 function DashBoard() {
-    console.log(window.location);
-    let locationArray = window.location.pathname.split('/');
-    let newId = locationArray[locationArray.length - 1];
-    console.log(newId);
+    const { id } = useParams();
     const [newDetail, setNewDetail] = useState<INewsPaper>();
+    const [commentList, setCommentList] = useState<IComment[]>();
     useEffect(() => {
         newDetailService
-            .getNewDetail(newId)
+            .getNewDetail(id || '')
             .then((result: INewsPaper) => {
                 if (result) {
+                    console.log(result);
                     setNewDetail(result);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+    useEffect(() => {
+        commentService
+            .getCommentofNew(1, id || '')
+            .then((result: IComment[]) => {
+                if (result) {
+                    console.log(result);
+                    setCommentList(result);
                 }
             })
             .catch((error) => {
@@ -36,7 +61,7 @@ function DashBoard() {
                                     <div className="single_post_area">
                                         <h2 className="post_title wow ">{newDetail?.title}</h2>
                                         <div>
-                                            <b>Author:</b>
+                                            <b>Author:</b> {newDetail?.author.name}
                                         </div>
                                         <div>
                                             <b>Date:</b> {newDetail?.createdDate}
@@ -106,37 +131,38 @@ function DashBoard() {
                             <div className="d-flex justify-content-center row">
                                 <div className="col-md-8">
                                     <div className="d-flex flex-column comment-section">
-                                        <div className="bg-white p-2">
-                                            <div className="info">
-                                                <div className="item1">
-                                                    <img
-                                                        className="rounded-circle"
-                                                        src="https://i.imgur.com/RpzrMR2.jpg"
-                                                        width="40"
-                                                    />
+                                        {commentList?.map((comment, key) => (
+                                            <div key={key}>
+                                                <div className="bg-white p-2">
+                                                    <div className="info">
+                                                        <div className="item1">
+                                                            <img
+                                                                className="rounded-circle"
+                                                                src="https://i.imgur.com/RpzrMR2.jpg"
+                                                                width="40"
+                                                                alt=""
+                                                            />
+                                                        </div>
+                                                        <div className="item2">
+                                                            {' '}
+                                                            <span className="d-block font-weight-bold name"></span>
+                                                        </div>
+                                                        <div className="item3">{comment.postTime}</div>
+                                                    </div>
+                                                    <div className="mt-2">
+                                                        <p className="comment-text">{comment.content}</p>
+                                                    </div>
                                                 </div>
-                                                <div className="item2">
-                                                    {' '}
-                                                    <span className="d-block font-weight-bold name">Marry Andrews</span>
+                                                <div className="reaction">
+                                                    <button className="ml-1">Like</button>
+
+                                                    <button className="ml-1">Comment</button>
+
+                                                    <button className="ml-1">Share</button>
                                                 </div>
-                                                <div className="item3">Shared publicly - Jan 2020</div>
                                             </div>
-                                            <div className="mt-2">
-                                                <p className="comment-text">
-                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                                    aliquip ex ea commodo consequat.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="reaction">
-                                            <button className="ml-1">Like</button>
+                                        ))}
 
-                                            <button className="ml-1">Comment</button>
-
-                                            <button className="ml-1">Share</button>
-                                        </div>
                                         <div className="bg-light p-2">
                                             <div className="addcomment">
                                                 <div className="item1">
@@ -166,6 +192,16 @@ function DashBoard() {
                                 </div>
                             </div>
                         </div>
+                        <div>
+                            <div className="single_left_coloum_wrapper">
+                                <h2 className="title">Latest Articles</h2>
+                                <a className="more" href="dashboard">
+                                    more
+                                </a>
+                                <LastestArticles></LastestArticles>
+                            </div>
+                        </div>
+
                         <Footer></Footer>
                     </div>
                 </div>

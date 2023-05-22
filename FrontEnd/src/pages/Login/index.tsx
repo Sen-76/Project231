@@ -1,15 +1,24 @@
 import { useState } from 'react';
 import './index.scss';
 import { Link } from 'react-router-dom';
+import { IUserLogin, DefaultUserLogin } from './model';
+import * as userService from '../../services/userService';
 
 function Login() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [isEnable, setEnable] = useState(true);
-    const handleKeyUp = () => {
-        if (username.length > 0 && password.length > 0) setEnable(false);
-        else setEnable(true);
-    };
+    const [userLogin, setUserLogin] = useState<IUserLogin>(DefaultUserLogin)
+    const [alert, setAlert] = useState<string>('')
+
+    async function Login() {
+        await userService.login(userLogin).then((result) => {
+            if(result.success == false) {
+                setAlert(result.message);
+            }else{
+                console.log(result.data);
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
     return (
         <div className="login-container">
             <div>
@@ -25,9 +34,8 @@ function Login() {
                     type="text"
                     id="username-input"
                     placeholder="Enter your username"
-                    value={username}
-                    onKeyUp={handleKeyUp}
-                    onChange={(event) => setUsername(event.target.value)}
+                    value={userLogin.username}
+                    onChange={(event) => setUserLogin({ ...userLogin, username: event.target.value })}
                 />
                 <br />
                 <br />
@@ -39,13 +47,13 @@ function Login() {
                     type="password"
                     id="password-input"
                     placeholder="Enter your password"
-                    onKeyUp={handleKeyUp}
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
+                    value={userLogin.password}
+                    onChange={(event) => setUserLogin({ ...userLogin, password: event.target.value })}
                 />
+                <span style={{color: 'red'}}>{alert}</span>
                 <br />
                 <br />
-                <button type="submit" id="button-input" disabled={isEnable}>
+                <button type="submit" id="button-input" onClick={Login}>
                     Login
                 </button>
                 <div className="container">

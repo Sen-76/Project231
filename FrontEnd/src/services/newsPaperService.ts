@@ -1,5 +1,4 @@
 import * as request from '../utils/httpRequest';
-import axios from 'axios';
 export interface INewsPaperAdd {
     title: string;
     content: string;

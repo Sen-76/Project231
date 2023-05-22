@@ -14,7 +14,6 @@ function Home() {
                 <div className="body_wrapper">
                     <div className="center">
                         <Header></Header>
-
                         <div className="content_area">
                             <div className="main_content floatleft">
                                 <div className="left_coloum floatleft">

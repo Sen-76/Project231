@@ -1,5 +1,5 @@
 const routeConfig = {
-    dashboard: '/dashboard',
+    dashboard: '/dashboard/:id',
     home: '/home',
     reduxexamples: '/reduxexamples',
     learnfluentui: '/learnfluentui',

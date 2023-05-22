@@ -1,8 +1,32 @@
+import { useEffect, useState } from 'react';
 import Footer from '../Footer';
 import Header from '../Header';
 import './detail.scss';
-// import 'bootstrap/4.4.1/css/bootstrap.min.css';
+import * as newDetailService from '../../services/newDetailService';
+import { INewsPaper } from '../../components/PopularNews/model';
+
+// interface INewDetailProps {
+//     newId: string;
+// }
+
 function DashBoard() {
+    console.log(window.location);
+    let locationArray = window.location.pathname.split('/');
+    let newId = locationArray[locationArray.length - 1];
+    console.log(newId);
+    const [newDetail, setNewDetail] = useState<INewsPaper>();
+    useEffect(() => {
+        newDetailService
+            .getNewDetail(newId)
+            .then((result: INewsPaper) => {
+                if (result) {
+                    setNewDetail(result);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
     return (
         <div>
             <div className="container">
@@ -14,43 +38,15 @@ function DashBoard() {
                             <div className="row">
                                 <div className="middle_bar">
                                     <div className="single_post_area">
-                                        <h2 className="post_title wow ">Giá xăng dầu hôm nay 15/5: Tiếp tục giảm </h2>
+                                        <h2 className="post_title wow ">{newDetail?.title}</h2>
                                         <div>
-                                            <b>Author:</b> Mohamed Kuddus Mia
+                                            <b>Author:</b>
                                         </div>
                                         <div>
-                                            <b>Date:</b> Thursday,December 01,2045
+                                            <b>Date:</b> {newDetail?.createdDate}
                                         </div>
 
-                                        <div className="single_post_content">
-                                            <p>
-                                                In nec leo vulputate, faucibus arcu eget, tempus neque. Aliquam erat
-                                                volutpat. Pellentesque tempus nulla diam, eu laoreet urna imperdiet a.
-                                                Sed accumsan diam libero, a vestibulum purus bibendum pellentesque. Sed
-                                                elit nunc, malesuada lobortis dui eget, fringilla fringilla nisi.
-                                                Vestibulum malesuada dignissim ante nec malesuada. Donec at fermentum
-                                                tellus. Etiam nisl enim, consectetur nec nisi eget, hendrerit
-                                                sollicitudin neque. Donec ut tincidunt sem. Curabitur faucibus, risus
-                                                eget ultrices volutpat, massa dui condimentum neque, non bibendum libero
-                                                orci a ante. Sed vulputate sed felis ultrices venenatis. Lorem ipsum
-                                                dolor sit amet, consectetur adipiscing elit. Pellentesque sed orci id
-                                                ipsum congue pharetra ut sit amet leo. Donec posuere lacus sit amet eros
-                                                vestibulum euismod. Etiam sollicitudin nunc quis lectus mollis
-                                                adipiscing. Aenean scelerisque tristique viverra.
-                                            </p>
-
-                                            <p>
-                                                Quisque nec laoreet orci. Praesent eu mauris et nisl sodales dapibus non
-                                                sit amet velit. Suspendisse quis auctor ligula. Suspendisse ut orci
-                                                aliquam, viverra orci in, cursus velit. Phasellus auctor ipsum felis, at
-                                                ultricies sapien commodo sed. Morbi cursus dictum ipsum, vel faucibus
-                                                ligula tincidunt vitae. Phasellus vehicula eros quis nunc egestas
-                                                vestibulum. Nulla non urna odio. Phasellus faucibus leo ante, in
-                                                ultrices odio congue id. Nam molestie gravida ullamcorper. Sed dignissim
-                                                volutpat cursus. Duis viverra diam nec arcu viverra, pulvinar faucibus
-                                                magna luctus.
-                                            </p>
-                                        </div>
+                                        <div className="single_post_content">{newDetail?.content}</div>
                                         {/* phân trang */}
                                         <div className="post_footer">
                                             <ul className="post_pager">
@@ -147,17 +143,15 @@ function DashBoard() {
                                         </div>
                                         <div className="bg-light p-2">
                                             <div className="addcomment">
-                                                <div className='item1'>
+                                                <div className="item1">
                                                     <img
                                                         className="rounded-circle"
                                                         src="https://i.imgur.com/RpzrMR2.jpg"
                                                         width="40"
                                                     />
                                                 </div>
-                                                <div className='item2'>
-                                                    <input
-                                                        placeholder={'Write your comment here...'}
-                                                    ></input>
+                                                <div className="item2">
+                                                    <input placeholder={'Write your comment here...'}></input>
                                                 </div>
                                             </div>
                                             <div className="actionAddComment">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import * as categoryService from '../../services/categoryService';
-import * as newspaperService from '../../services/newsPaperService';
+import * as categoryService from '../../../services/categoryService';
+import * as newspaperService from '../../../services/newsPaperService';
 import { INewsPaper, DEFAULTS_NEW, INewsPaperAdd } from './model';
 import { ICategory } from '../CategoryForm/model';
 

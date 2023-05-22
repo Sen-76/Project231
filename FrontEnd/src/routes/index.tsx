@@ -1,7 +1,6 @@
 import routeConfig from '../config/routes';
 //Lyaouts
 import HeaderOnly from '../layout/headerOnly';
-// import Default from '../layout/default';
 
 //Pages
 import DashBoard from '../pages/DashBoard';
@@ -16,8 +15,8 @@ import Category from '../pages/Category/category';
 
 //Public Route
 export const publicRoutes = [
-    { path: routeConfig.dashboard, component: DashBoard, layout: HeaderOnly },
-    { path: routeConfig.home, component: Home, layout: HeaderOnly },
+    { path: routeConfig.dashboard, component: DashBoard },
+    { path: routeConfig.home, component: Home },
     { path: routeConfig.reduxexamples, component: ReduxExample, layout: HeaderOnly },
     { path: routeConfig.learnfluentui, component: LearnFluentUI, layout: HeaderOnly },
     { path: routeConfig.tonghop, component: TongHop, layout: HeaderOnly },

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import * as newspaperService from '../../services/newsPaperService';
+import * as newspaperService from '../../../services/newsPaperService';
 import { INewsPaper } from '../PopularNews/model';
 import { Link } from 'react-router-dom';
 
@@ -18,7 +18,11 @@ function LastestArticles() {
             });
     }, []);
     return (
-        <>
+        <div className="single_left_coloum_wrapper">
+            <h2 className="title">Latest Articles</h2>
+            <a className="more" href="dashboard">
+                more
+            </a>
             {newsPaperList.map((item, key) => (
                 <div key={key} className="single_left_coloum floatleft">
                     <h3>{item.title}</h3>
@@ -28,7 +32,7 @@ function LastestArticles() {
                     </Link>
                 </div>
             ))}
-        </>
+        </div>
     );
 }
 export default LastestArticles;

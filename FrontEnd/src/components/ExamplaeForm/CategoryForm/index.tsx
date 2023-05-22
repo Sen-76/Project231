@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import * as categoryService from '../../services/categoryService';
+import * as categoryService from '../../../services/categoryService';
 import { ICategory } from './model';
 
 function CategoryForm() {

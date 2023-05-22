@@ -1,5 +1,5 @@
 import { INewsPaper } from './model';
-import * as newspaperService from '../../services/newsPaperService';
+import * as newspaperService from '../../../services/newsPaperService';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 

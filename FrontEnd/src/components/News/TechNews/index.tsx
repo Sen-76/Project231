@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import * as newspaperService from '../../services/newsPaperService';
+import * as newspaperService from '../../../services/newsPaperService';
 import { INewsPaper } from '../PopularNews/model';
 import { Link } from 'react-router-dom';
 
-function Entertainment() {
+function TechNews() {
     const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
     useEffect(() => {
         newspaperService
@@ -18,9 +18,13 @@ function Entertainment() {
             });
     }, []);
     return (
-        <>
+        <div className="single_left_coloum_wrapper single_cat_left">
+            <h2 className="title">Tech News</h2>
+            <a className="more" href="#">
+                more
+            </a>
             {newsPaperList.map((item, key) => (
-                <div key={key} className="single_cat_right_content">
+                <div key={key} className="single_cat_left_content floatleft">
                     <h3>{item.title}</h3>
                     <p>{item.description}</p>
                     <Link className="readmore" to={`/newsdetail/${item.id}`}>
@@ -28,7 +32,7 @@ function Entertainment() {
                     </Link>
                 </div>
             ))}
-        </>
+        </div>
     );
 }
-export default Entertainment;
+export default TechNews;

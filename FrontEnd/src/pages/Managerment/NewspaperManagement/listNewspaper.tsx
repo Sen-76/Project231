@@ -10,6 +10,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 const columns: GridColDef[] = [
     { field: 'img', headerName: 'IMG', width: 70, filterable: true },
@@ -53,14 +54,20 @@ export default function ListNewspaper() {
         <React.Fragment>
             <div className="titleCategoryM">Category:</div>
 
-            <div className="formSearchM">
-                <input className='inputSearchM'
-                    placeholder="Search"
-                />
-                <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-                    <SearchOutlinedIcon />
-                </IconButton>
-                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+            <div className="formHeadM">
+                <div>
+                    <Button variant="outlined">
+                        <DeleteOutlinedIcon></DeleteOutlinedIcon>
+                        Delete
+                    </Button>
+                </div>
+                <div className='formSearchM'>
+                    <input className="inputSearchM" placeholder="Search" />
+                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                        <SearchOutlinedIcon />
+                    </IconButton>
+                    <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                </div>
             </div>
             <Button variant="outlined" startIcon={<AddIcon />}>
                 Write

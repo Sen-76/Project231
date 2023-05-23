@@ -83,7 +83,7 @@ export default function Dashboard({children}: IDefaultOnlyProps) {
                 <AppBar position="absolute" open={open}>
                     <Toolbar
                         sx={{
-                            pr: '24px', // keep right padding when drawer closed
+                            pr: '24px', backgroundColor: "#19776E" // keep right padding when drawer closed
                         }}
                     >
                         <IconButton

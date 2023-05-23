@@ -67,6 +67,7 @@ export default function ListUser() {
                     pageSizeOptions={[5, 10]}
                     checkboxSelection
                 />
+                <div className=""></div>
             </div>
         </React.Fragment>
     );

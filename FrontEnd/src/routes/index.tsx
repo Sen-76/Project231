@@ -13,7 +13,7 @@ import Register from '../pages/Register';
 import Category from '../pages/Category/category';
 import SignIn from '../pages/SignIn/SignIn';
 import SignUp from '../pages/SignUp/SignUp';
-import Dashboard from '../pages/Managerment/dashboard/DashBoard';
+import Dashboard from '../pages/Managerment/dashboard/DashBoardManagement';
 
 
 //Public Route

@@ -6,11 +6,11 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import CategoryIcon from '@mui/icons-material/Category';
-import BuildRoundedIcon from '@mui/icons-material/BuildRounded';
+import LogoutIcon from '@mui/icons-material/Logout';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import { useEffect, useState } from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { Collapse, List } from '@mui/material';
+import { Collapse, Link, List } from '@mui/material';
 import * as CategoryService from '../../../services/categoryService';
 import { ICategory } from '../../../components/ExamplaeForm/CategoryForm/model';
 
@@ -33,6 +33,7 @@ export default function MainListItems() {
     const handleClick = () => {
         setOpen(!open);
     };
+
     return (
         <React.Fragment>
             <ListItemButton>
@@ -70,12 +71,20 @@ export default function MainListItems() {
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                     {CategoryList.map((category, key) => (
-                        <ListItemButton  key={key} sx={{ pl: 12 }}>
+                        <ListItemButton key={key} sx={{ pl: 12 }}>
                             <ListItemText primary={category.name} />
                         </ListItemButton>
                     ))}
                 </List>
             </Collapse>
+            <Link href="/signin">
+                <ListItemButton>
+                    <ListItemIcon>
+                        <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout" />
+                </ListItemButton>
+            </Link>
         </React.Fragment>
     );
 }

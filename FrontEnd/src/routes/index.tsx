@@ -13,7 +13,8 @@ import Register from '../pages/Register';
 import Category from '../pages/Category/category';
 import SignIn from '../pages/SignIn/SignIn';
 import SignUp from '../pages/SignUp/SignUp';
-import Dashboard from '../pages/Managerment/dashboard/DashBoardManagement';
+import DashboardAdmin from '../components/Admin/DashboardManagement/DashBoardManagement';
+import ListNewspaper from '../pages/Managerment/NewspaperManagement/listNewspaper';
 
 
 //Public Route
@@ -28,7 +29,10 @@ export const publicRoutes = [
     { path: routeConfig.listNewByCategory, component: Category },
     { path: routeConfig.signin, component: SignIn, layout: HeaderOnly  },
     { path: routeConfig.signup, component: SignUp, layout: HeaderOnly  },
-    { path: routeConfig.adminDashboard, component:  Dashboard, layout: HeaderOnly},
+    // { path: routeConfig.adminDashboard, component:  Dashboard, layout: HeaderOnly},
+    { path: routeConfig.newspaperManagement, component:  ListNewspaper, layout: DashboardAdmin},
+    { path: routeConfig.userManagement, component:  ListNewspaper, layout: DashboardAdmin},
+    { path: routeConfig.commentManagement, component:  ListNewspaper, layout: DashboardAdmin},
     { path: '/', component: Home },
 
 ];

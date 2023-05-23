@@ -1,6 +1,6 @@
 import styles from './default.module.scss';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from '../../components/User/Header';
+import Footer from '../../components/User/Footer';
 interface IDefaultOnlyProps {
     children: JSX.Element;
 }

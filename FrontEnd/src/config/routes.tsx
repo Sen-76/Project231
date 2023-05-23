@@ -11,6 +11,9 @@ const routeConfig = {
     adminDashboard: '/management',
     signin: '/signin',
     signup: '/signup',
+    newspaperManagement: '/newspaperManagement',
+    userManagement: '/userManagement',
+    commentManagement: '/commentManagement'
 };
 
 export default routeConfig;

@@ -8,6 +8,9 @@ const routeConfig = {
     login: '/login',
     register: '/register',
     listNewByCategory: '/listNews/:category',
+    adminDashboard: '/management',
+    signin: '/signin',
+    signup: '/signup',
 };
 
 export default routeConfig;

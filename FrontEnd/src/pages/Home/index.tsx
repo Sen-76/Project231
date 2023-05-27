@@ -10,25 +10,13 @@ function Home() {
     return (
         <div className="content_area" >
             <div className="main_content floatleft">
-                <div className="left_coloum floatleft">
-                    <FromAroundTheWorld></FromAroundTheWorld>
-                    <LastestArticles></LastestArticles>
-                    <Gallery></Gallery>
-                    <TechNews></TechNews>
-                </div>
-                <div className="right_coloum floatright">
-                    <Entertainment></Entertainment>
-                </div>
+                <FromAroundTheWorld></FromAroundTheWorld>
+                <LastestArticles></LastestArticles>
+                <Gallery></Gallery>
+                <TechNews></TechNews>
             </div>
             <div className="sidebar floatright">
                 <PopularNews />
-                <div className="single_sidebar">
-                    <img src="images/add1.png" alt="" />
-                </div>
-                <div className="single_sidebar">
-                    <h2 className="title">ADD</h2>
-                    <img src="images/add2.png" alt="" />
-                </div>
             </div>
         </div >
     );

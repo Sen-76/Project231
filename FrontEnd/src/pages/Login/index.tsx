@@ -13,6 +13,7 @@ function Login() {
     const [userLogin, setUserLogin] = useState<IUserLogin>(DefaultUserLogin)
     const [alert, setAlert] = useState<string>('')
     const userLoginTest = useAppSelector((state) => state.user.UserLogin)
+    console.log(userLoginTest)
 
     async function Login() {
         await userService.login(userLogin).then((result) => {

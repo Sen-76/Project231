@@ -1,4 +1,6 @@
-﻿namespace LearnWebAPI.Models
+﻿using BackEnd.Models;
+
+namespace LearnWebAPI.Models
 {
     public class User
     {
@@ -11,6 +13,7 @@
         public string Avatar { get; set; }
         public DateTime DateOfBirth { get; set; }
         public RoleType Role { get; set; }
+        public StatusType Status { get; set; }
     }
 
     public enum RoleType : byte
@@ -20,5 +23,12 @@
         Leader = 2,
         Editor = 3,
         Admin = 4
+    }
+
+    public enum StatusType : byte
+    {
+        NotActive = 0,
+        Active = 1,
+        Banned = 2
     }
 }

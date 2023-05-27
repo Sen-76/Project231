@@ -1,53 +1,114 @@
 import * as React from 'react';
-import AddIcon from '@mui/icons-material/Add';
-import Title from '../../../components/Admin/DashboardManagement/title';
-import * as newspaperService from '../../../services/newsPaperService';
-import { useEffect, useState } from 'react';
-import { INewsPaper } from '../../../components/NewsPaperListManager/model';
 import { Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import AddIcon from '@mui/icons-material/Add';
 
-const columns: GridColDef[] = [
-    { field: 'img', headerName: 'IMG', width: 70, filterable: true },
-    { field: 'title', headerName: 'Title', width: 230, filterable: true },
-    { field: 'content', headerName: 'Content', width: 230, filterable: true },
-    { field: 'createdDate', headerName: 'Created Date', width: 130, filterable: true },
-    { field: 'modifiedDate', headerName: 'Modified Date', width: 130, filterable: true },
-    { field: 'publishedDate', headerName: 'Published Date', width: 130, filterable: true },
-    { field: 'description', headerName: 'Description', width: 230, filterable: true },
-    {
-        field: '',
-        headerName: 'Action',
-        width: 230,
-        sortable: false,
-        renderCell: (params) => (
-            <div>
-                <Button variant="outlined" startIcon={<EditIcon />}></Button>
-                <Button variant="outlined" startIcon={<DeleteOutlineIcon />}></Button>
-                <Button variant="outlined" startIcon={<VisibilityIcon />}></Button>
-            </div>
-        ),
-    },
-];
+import Title from '../../../components/Admin/DashboardManagement/title';
+import * as userService from '../../../services/userService';
+import { useEffect, useState } from 'react';
 
+enum ERole {
+    User = 0,
+    Writer = 1,
+    Leader = 2,
+    Editor = 3,
+    Admin = 4,
+}
+enum EStatus {
+    NotActive = 0,
+    Active = 1,
+    Banned = 2
+}
+interface IUser {
+    avatar: string;
+    dateOfBirth: string;
+    email: string;
+    id: string;
+    name: string;
+    password: string;
+    phone: string;
+    role: ERole;
+    status: EStatus;
+    username: string;
+}
 export default function ListUser() {
-    const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
+    const [userList, setUserList] = useState<IUser[]>([]);
+    const [reload, setReloadt] = useState<boolean>(false);
     useEffect(() => {
-        newspaperService
-            .getnewsPaperList(1)
-            .then((result: INewsPaper[]) => {
+        userService.fetchUser(1)
+            .then((result) => {
                 if (result) {
-                    setNewsPaperList(result);
+                    result.forEach((item: IUser) => {
+                        setUserList((prevUserList) => [
+                            ...prevUserList,
+                            {
+                                name: item.name,
+                                avatar: item.avatar,
+                                dateOfBirth: item.dateOfBirth,
+                                id: item.id,
+                                password: item.password,
+                                phone: item.phone,
+                                role: ERole[item.role as unknown as keyof typeof ERole],
+                                status: EStatus[item.status as unknown as keyof typeof EStatus],
+                                username: item.username,
+                                email: item.email,
+                            },
+                        ]);
+                    });
                 }
             })
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
-
+    }, [reload]);
+    const columns: GridColDef[] = [
+        { field: 'name', headerName: 'Name', width: 70, filterable: true },
+        { field: 'username', headerName: 'Username', width: 230, filterable: true },
+        { field: 'password', headerName: 'Password', width: 230, filterable: true },
+        { field: 'email', headerName: 'Email', width: 130, filterable: true },
+        { field: 'phone', headerName: 'Phone', width: 130, filterable: true },
+        { field: 'avatar', headerName: 'Avatar', width: 130, filterable: true },
+        { field: 'dateOfBirth', headerName: 'Date Of Birth', width: 230, filterable: true },
+        { field: 'role', headerName: 'Role', width: 130, filterable: true },
+        { field: 'status', headerName: 'Status', width: 130, filterable: true },
+        {
+            field: '',
+            headerName: 'Action',
+            width: 230,
+            sortable: false,
+            renderCell: (params) => (
+                <div>
+                    <Button variant="outlined" startIcon={<EditIcon />}>Edit</Button>
+                    <Button variant="outlined" startIcon={<DeleteOutlineIcon />} onClick={() => BanUser(params.row.id)}>Ban</Button>
+                    <Button variant="outlined" startIcon={<DeleteOutlineIcon />} onClick={() => UnBanUser(params.row.id)}>UnBan</Button>
+                    <Button variant="outlined" startIcon={<VisibilityIcon />}>View</Button>
+                </div>
+            ),
+        },
+    ];
+    async function BanUser(id: string) {
+        userService.banUser(id).then((result) => {
+            if (result === true) {
+                setUserList([])
+                setReloadt(!reload)
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+    async function UnBanUser(id: string) {
+        userService.unbanUser(id).then((result) => {
+            if (result === true) {
+                setUserList([])
+                setReloadt(!reload)
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
     return (
         <React.Fragment>
             <Title>Newspaper Management</Title>
@@ -57,17 +118,15 @@ export default function ListUser() {
 
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
-                    rows={newsPaperList}
+                    rows={userList}
                     columns={columns}
                     initialState={{
                         pagination: {
-                            paginationModel: { page: 0, pageSize: 5 },
+                            paginationModel: { page: 0, pageSize: 10 },
                         },
                     }}
-                    pageSizeOptions={[5, 10]}
                     checkboxSelection
                 />
-                <div className=""></div>
             </div>
         </React.Fragment>
     );

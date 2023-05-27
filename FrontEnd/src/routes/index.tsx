@@ -15,6 +15,7 @@ import SignIn from '../pages/SignIn/SignIn';
 import SignUp from '../pages/SignUp/SignUp';
 import DashboardAdmin from '../components/Admin/DashboardManagement/DashBoardManagement';
 import ListNewspaper from '../pages/Managerment/NewspaperManagement/listNewspaper';
+import ListUser from '../pages/Managerment/UserManagement/listUser';
 
 
 //Public Route
@@ -29,9 +30,11 @@ export const publicRoutes = [
     { path: routeConfig.listNewByCategory, component: Category },
     { path: routeConfig.signin, component: SignIn, layout: HeaderOnly  },
     { path: routeConfig.signup, component: SignUp, layout: HeaderOnly  },
-    // { path: routeConfig.adminDashboard, component:  Dashboard, layout: HeaderOnly},
+
+    //admin routes
+    // { path: routeConfig.adminDashboard, component: Dashboard, layout: HeaderOnly},
     { path: routeConfig.newspaperManagement, component:  ListNewspaper, layout: DashboardAdmin},
-    { path: routeConfig.userManagement, component:  ListNewspaper, layout: DashboardAdmin},
+    { path: routeConfig.userManagement, component:  ListUser, layout: DashboardAdmin},
     { path: routeConfig.commentManagement, component:  ListNewspaper, layout: DashboardAdmin},
     { path: '/', component: Home },
 

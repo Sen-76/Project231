@@ -12,5 +12,6 @@ namespace BackEnd.Interfaces
         Task<ApiResponse> UpdateNewsPaper(NewsPaperUpdateVM newsPaper);
         Task<ApiResponse> DeleteNewsPaper(Guid id);
         Task<ApiResponse> PublishNewsPaper(Guid id);
+        Task<ApiResponse> GetNewsPaperByCate(string cate);
     }
 }

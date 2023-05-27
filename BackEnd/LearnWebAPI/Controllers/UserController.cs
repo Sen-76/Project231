@@ -3,6 +3,7 @@ using BackEnd.ViewModels.NewFolder;
 using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Interfaces;
 using LearnWebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -26,6 +27,23 @@ namespace LearnWebAPI.Controllers
             _mapper = mapper;
             _userService = userService;
             _logger = logger;
+        }
+
+        private User GetCurrentUser()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity != null)
+            {
+                var userClaims = identity.Claims;
+
+                return new User
+                {
+                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
+                    Role = RoleType.User
+                };
+            }
+            return null;
         }
 
         [HttpPost("RenewToken")]
@@ -90,6 +108,7 @@ namespace LearnWebAPI.Controllers
         }
 
         [HttpPost("UpdateUser")]
+        [Authorize(Roles = "Administrator")]
         public IActionResult UpdateUser(UserUpdateVM user)
         {
             try

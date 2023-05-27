@@ -3,6 +3,7 @@ import type { RootState } from '../store'
 
 export interface UserLogin {
     Id: string;
+    role: string;
     TokenId: string;
     Username: string;
     email: string;
@@ -20,6 +21,7 @@ export interface IUserSlice {
 const initialState: IUserSlice = {
     UserLogin: {
         Id: '',
+        role: '',
         TokenId: '',
         Username: '',
         email: '',

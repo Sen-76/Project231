@@ -1,5 +1,4 @@
 const routeConfig = {
-    // dashboard: '/dashboard',
     dashboard: '/newsdetail/:id',
     home: '/home',
     reduxexamples: '/reduxexamples',
@@ -8,9 +7,11 @@ const routeConfig = {
     login: '/login',
     register: '/register',
     listNewByCategory: '/listNews/:category',
-    adminDashboard: '/management',
     signin: '/signin',
     signup: '/signup',
+
+    //admin routes
+    adminDashboard: '/management',
     newspaperManagement: '/newspaperManagement',
     userManagement: '/userManagement',
     commentManagement: '/commentManagement'

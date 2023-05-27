@@ -54,3 +54,11 @@ export const publishnewsPaper = async (id: string) => {
         console.log(error);
     }
 };
+export const listnewsPaperByCate = async (id: string) => {
+    try {
+        const res = await request.get('NewsPaper/GetNewsPaperByCate?id=' + id);
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};

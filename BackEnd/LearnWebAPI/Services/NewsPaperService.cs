@@ -3,10 +3,12 @@ using BackEnd.Interfaces;
 using BackEnd.Models;
 using BackEnd.Paging;
 using BackEnd.ViewModels.NewFolder;
+using BackEnd.ViewModels.NewsPaperViewModels;
 using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Configuration;
 
 namespace BackEnd.Services
@@ -35,9 +37,10 @@ namespace BackEnd.Services
                     Title = newsPaper.Title,
                     Content = newsPaper.Content,
                     Description = newsPaper.Description,
+                    Image = newsPaper.Image,
                     CreatedDate = DateTime.UtcNow,
-                    Status = StatusType.Posted,
-                    UserId = Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7"),
+                    Status = Models.StatusType.Posted,
+                    UserId = Guid.Parse("1a6e8503-ee14-4ee9-95c1-9e5d2205e653"),
                 };
                 await _context.AddAsync(newsPapers);
                 await _context.SaveChangesAsync();
@@ -45,7 +48,7 @@ namespace BackEnd.Services
                 {
                     Id = Guid.NewGuid(),
                     NewsPaperId = newsPapers.Id,
-                    UserId = Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7")
+                    UserId = Guid.Parse("1a6e8503-ee14-4ee9-95c1-9e5d2205e653")
                 };
                 await _context.AddAsync(newsPaperDetail);
                 await _context.SaveChangesAsync();
@@ -77,11 +80,29 @@ namespace BackEnd.Services
         {
             //var AllNewsPaper = _context.NewsPapers.Where(x => x.Status == StatusType.Published).AsNoTracking();
             var AllNewsPaper = _context.NewsPapers.Include("Categories")
-                        .Where(x => x.Status == StatusType.Posted)
+                        .Where(x => x.Status != Models.StatusType.Deleted)
                         .AsNoTracking();
             var pageSize = _configuration.GetValue("PageSize", 4);
             var PaginatedNewsPaper = await PaginatedList<NewsPaper>.CreateAsync(AllNewsPaper, pageIndex ?? 1, pageSize);
             return PaginatedNewsPaper;
+        }
+        public async Task<ApiResponse> GetNewsPaperByCate(string cateId)
+        {
+            var categoryId = Guid.Parse(cateId);
+            var test = _context.NewsPapers.Take(10)
+                .Where(x => x.Categories.Any(c => c.Id == categoryId))
+                .ToList();
+            var cates = await _context.Categories.Where(x => x.Id == categoryId).FirstOrDefaultAsync();
+            var testt = new NewsPaperByCateVM()
+            {
+                cate = cates,
+                news = test
+            };
+            return new ApiResponse
+            {
+                Success= true,
+                Data = testt
+            };
         }
 
         public NewsPaper isExist(Guid id)
@@ -93,12 +114,13 @@ namespace BackEnd.Services
         {
             try
             {
-                var newsPapers = await _context.NewsPapers.Where(x => x.Id.Equals(newsPaper.Id) && x.Status != StatusType.Deleted).FirstOrDefaultAsync();
+                var newsPapers = await _context.NewsPapers.Where(x => x.Id.Equals(newsPaper.Id) && x.Status != Models.StatusType.Deleted).FirstOrDefaultAsync();
                 if (newsPapers != null)
                 {
                     newsPapers.Title = newsPaper.Title;
                     newsPapers.Content = newsPaper.Content;
                     newsPapers.Description = newsPaper.Description;
+                    newsPapers.Image = newsPaper.Image;
                     newsPapers.ModifiedDate = DateTime.UtcNow;
                     _context.Update(newsPapers);
                     var sqlDeleteQuery = "DELETE FROM [CategoryNewsPaper] WHERE [NewsPapersId] = @NewsPaperId";
@@ -141,7 +163,7 @@ namespace BackEnd.Services
                 var newsPaper = await _context.NewsPapers.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
                 if (newsPaper != null)
                 {
-                    newsPaper.Status = StatusType.Deleted;
+                    newsPaper.Status = Models.StatusType.Deleted;
                     _context.Update(newsPaper);
                     await _context.SaveChangesAsync();
                     return new ApiResponse
@@ -170,10 +192,10 @@ namespace BackEnd.Services
         {
             try
             {
-                var newsPaper = await _context.NewsPapers.Where(x => x.Id.Equals(id) && x.Status == StatusType.Posted).FirstOrDefaultAsync();
+                var newsPaper = await _context.NewsPapers.Where(x => x.Id.Equals(id) && x.Status == Models.StatusType.Posted).FirstOrDefaultAsync();
                 if (newsPaper != null)
                 {
-                    newsPaper.Status = StatusType.Published;
+                    newsPaper.Status = Models.StatusType.Published;
                     _context.Update(newsPaper);
                     await _context.SaveChangesAsync();
                     return new ApiResponse

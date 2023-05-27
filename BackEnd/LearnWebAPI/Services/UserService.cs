@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using BackEnd.Models;
-using BackEnd.ViewModels.NewFolder;
 using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Interfaces;
 using LearnWebAPI.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -14,7 +11,8 @@ using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System;
+using BackEnd.Models;
+using BackEnd.Paging;
 
 namespace LearnWebAPI.Services
 {
@@ -23,13 +21,15 @@ namespace LearnWebAPI.Services
         private readonly IMapper _mapper;
         private readonly Project231Context _context;
         private readonly AppSetting _appSettings;
+        private readonly IConfiguration _configuration;
         private readonly ILogger<UserService> _logger;
-        public UserService(IMapper mapper, Project231Context context, IOptionsMonitor<AppSetting> optionsMonitor, ILogger<UserService> logger)
+        public UserService(IMapper mapper, Project231Context context, IOptionsMonitor<AppSetting> optionsMonitor, ILogger<UserService> logger, IConfiguration configuration)
         {
             _mapper = mapper;
             _context = context;
             _appSettings = optionsMonitor.CurrentValue;
             _logger = logger;
+            _configuration = configuration;
         }
         public async Task<TokenModel> GenerateToken(User user)
         {
@@ -40,6 +40,7 @@ namespace LearnWebAPI.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Role, user.Role.ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -50,7 +51,7 @@ namespace LearnWebAPI.Services
 
                     new Claim("TokenId", Guid.NewGuid().ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(120),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey
                 (secretKeyBytes), SecurityAlgorithms.HmacSha512Signature)
             };
@@ -226,6 +227,7 @@ namespace LearnWebAPI.Services
                     Email= user.Email,
                     Phone= user.Phone,
                     Role = Models.RoleType.User,
+                    Status = Models.StatusType.Active
                 };
                 _context.Add(newUsers);
                 await _context.SaveChangesAsync();
@@ -357,13 +359,135 @@ namespace LearnWebAPI.Services
                 };
             }
         }
-     
+
         private static Random random = new Random();
         public static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        //Admin
+        public async Task<ApiResponse> FetchAllUser(int? pageIndex)
+        {
+            try
+            {
+                var AllUser = _context.Users.AsNoTracking();
+                var pageSize = _configuration.GetValue("PageSize", 10);
+                var PaginatedUser = await PaginatedList<User>.CreateAsync(AllUser, pageIndex ?? 1, pageSize);
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = "Fetch Success",
+                    Data= PaginatedUser
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = ex.ToString()
+                };
+            }
+
+        }
+        public async Task<ApiResponse> BanUser(string id)
+        {
+            try
+            {
+                var user = await _context.Users.Where(x => x.Id.Equals(Guid.Parse(id))).FirstOrDefaultAsync();
+                if (user != null)
+                {
+                    user.Status = Models.StatusType.Banned;
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                    return new ApiResponse
+                    {
+                        Success= true,
+                        Data = user
+                    };
+                }
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = "User is no longer exist"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = ex.Message.ToString()
+                };
+            }
+        }
+        public async Task<ApiResponse> UnBanUser(string id)
+        {
+            try
+            {
+                var user = await _context.Users.Where(x => x.Id.Equals(Guid.Parse(id))).FirstOrDefaultAsync();
+                if (user != null)
+                {
+                    user.Status = Models.StatusType.Active;
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                    return new ApiResponse
+                    {
+                        Success= true,
+                        Data = user
+                    };
+                }
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = "User is no longer exist"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = ex.Message.ToString()
+                };
+            }
+        }
+        public async Task<ApiResponse> UpdateUser(string id)
+        {
+            try
+            {
+                var user = await _context.Users.Where(x => x.Id.Equals(Guid.Parse(id))).FirstOrDefaultAsync();
+                if (user != null)
+                {
+                    user.Status = Models.StatusType.Active;
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                    return new ApiResponse
+                    {
+                        Success= true,
+                        Data = user
+                    };
+                }
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = "User is no longer exist"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = ex.Message.ToString()
+                };
+            }
         }
     }
 }

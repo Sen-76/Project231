@@ -45,6 +45,21 @@ namespace BackEnd.Controllers
             }
         }
 
+        [HttpGet("GetNewsPaperByCate")]
+        public IActionResult GetNewsPaperByCate(string id)
+        {
+            try
+            {
+                var listNewsPapers = _newsPaperService.GetNewsPaperByCate(id).Result;
+                return Ok(listNewsPapers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("AddNewsPaper")]
         public IActionResult AddNewsPaper(NewsPaperAddVM newsPaper)
         {

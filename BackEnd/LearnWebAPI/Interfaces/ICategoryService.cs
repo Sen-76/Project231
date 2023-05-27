@@ -7,6 +7,5 @@ namespace BackEnd.Interfaces
         Task<ApiResponse> AddCategory(string name);
         Task<ApiResponse> DeleteCategory(string cateId);
         Task<ApiResponse> ListAllCategory();
-
     }
 }

@@ -10,6 +10,7 @@ export interface INewsPaper {
     like: number;
     dislike: number;
     author: IAuthor;
+    image: string;
 }
 
 export interface IAuthor {

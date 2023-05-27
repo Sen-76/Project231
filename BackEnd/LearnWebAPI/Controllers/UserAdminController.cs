@@ -39,5 +39,11 @@ namespace BackEnd.Controllers
             var result = _userService.UnBanUser(id).Result;
             return Ok(result);
         }
+        [HttpPost("UpdateUser")]
+        public IActionResult UpdateUser(User user)
+        {
+            var result = _userService.AdminUpdateUser(user).Result;
+            return Ok(result);
+        }
     }
 }

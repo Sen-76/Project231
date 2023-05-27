@@ -84,7 +84,7 @@ function DashBoard() {
                                     </li>
                                 </ul>
                             </div>
-                            <div className="social_area wow fadeInLeft">
+                            {/* <div className="social_area wow fadeInLeft">
                                 <ul>
                                     <li>
                                         <a href="dashboard">
@@ -112,7 +112,7 @@ function DashBoard() {
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -183,15 +183,7 @@ function DashBoard() {
                     </div>
                 </div>
             </div>
-            <div>
-                <div className="single_left_coloum_wrapper">
-                    <h2 className="title">Latest Articles</h2>
-                    <a className="more" href="dashboard">
-                        more
-                    </a>
-                    <LastestArticles></LastestArticles>
-                </div>
-            </div>
+            <LastestArticles></LastestArticles>
         </>
     );
 }

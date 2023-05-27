@@ -17,5 +17,7 @@ namespace BackEnd.ViewModels.NewsDetailViewModels
         public int Like { get; set; }
         public int Dislike { get; set; }
         public User Author { get; set; }
+        public Guid next { get; set; }
+        public Guid prev { get; set; }
     }
 }

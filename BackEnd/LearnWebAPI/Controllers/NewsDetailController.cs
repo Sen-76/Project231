@@ -41,6 +41,20 @@ namespace BackEnd.Controllers
             return Ok(result);
         }
 
+        [HttpPost("UnLike")]
+        public IActionResult UnLike(string newId)
+        {
+            var result = _newsDetailService.UnLike(newId).Result;
+            return Ok(result);
+        }
+
+        [HttpPost("UnDisLike")]
+        public IActionResult UnDisLike(string newId)
+        {
+            var result = _newsDetailService.UnDisLike(newId).Result;
+            return Ok(result);
+        }
+
         [HttpPost("Rate")]
         public IActionResult Rate(string newId, int rate)
         {

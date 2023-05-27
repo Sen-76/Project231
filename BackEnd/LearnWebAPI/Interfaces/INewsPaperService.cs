@@ -13,5 +13,6 @@ namespace BackEnd.Interfaces
         Task<ApiResponse> DeleteNewsPaper(Guid id);
         Task<ApiResponse> PublishNewsPaper(Guid id);
         Task<ApiResponse> GetNewsPaperByCate(string cate);
+        Task<PaginatedList<NewsPaper>> FetchNewsPaper(int? pageIndex);
     }
 }

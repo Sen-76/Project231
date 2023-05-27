@@ -22,6 +22,18 @@ namespace BackEnd.Services
         {
             try
             {
+                NewsPaperDetailVM detail = new NewsPaperDetailVM();
+                List<NewsPaper> newss = await _context.NewsPapers.ToListAsync();
+                for (int i = 0; i < newss.Count; i++)
+                {
+                    if (newss[i].Id == Guid.Parse(newsId))
+                    {
+                        if (newss.Count > 1)
+                            detail.prev = newss[i - 1].Id;
+                        if (i < newss.Count - 1)
+                            detail.next = newss[i + 1].Id;
+                    }
+                }
                 List<NewsPaperDetail> newsdetal = await _context.NewsPaperDetails.Where(x => x.NewsPaperId == Guid.Parse(newsId)).ToListAsync();
                 NewsPaper news = await _context.NewsPapers.Where(x => x.Id == Guid.Parse(newsId)).FirstOrDefaultAsync();
                 User author = await _context.Users.Where(x => x.Id == news.UserId).FirstOrDefaultAsync();
@@ -50,7 +62,6 @@ namespace BackEnd.Services
                 {
                     averageRate = totalRate/count;
                 }
-                NewsPaperDetailVM detail = new NewsPaperDetailVM();
                 detail.Id = news.Id;
                 detail.Title = news.Title;
                 detail.Content= news.Content;
@@ -102,6 +113,29 @@ namespace BackEnd.Services
                 };
             }
         }
+        public async Task<ApiResponse> UnLike(string newsId)
+        {
+            try
+            {
+                NewsPaperDetail newsdetal = await _context.NewsPaperDetails.Where(x => x.NewsPaperId == Guid.Parse(newsId) && x.UserId == Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7")).FirstOrDefaultAsync();
+                newsdetal.Like = false;
+                _context.Update(newsdetal);
+                await _context.SaveChangesAsync();
+                return new ApiResponse
+                {
+                    Success= true,
+                    Data= newsdetal
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= false,
+                };
+            }
+        }
         public async Task<ApiResponse> DisLike(string newsId)
         {
             try
@@ -109,6 +143,29 @@ namespace BackEnd.Services
                 NewsPaperDetail newsdetal = _context.NewsPaperDetails.Where(x => x.NewsPaperId == Guid.Parse(newsId) && x.UserId == Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7")).FirstOrDefault();
                 newsdetal.Like = false;
                 newsdetal.Dislike = true;
+                _context.Update(newsdetal);
+                await _context.SaveChangesAsync();
+                return new ApiResponse
+                {
+                    Success= true,
+                    Data= newsdetal
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= false,
+                };
+            }
+        }
+        public async Task<ApiResponse> UnDisLike(string newsId)
+        {
+            try
+            {
+                NewsPaperDetail newsdetal = _context.NewsPaperDetails.Where(x => x.NewsPaperId == Guid.Parse(newsId) && x.UserId == Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7")).FirstOrDefault();
+                newsdetal.Dislike = false;
                 _context.Update(newsdetal);
                 await _context.SaveChangesAsync();
                 return new ApiResponse

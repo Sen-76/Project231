@@ -119,5 +119,25 @@ namespace BackEnd.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        //Admin
+        [HttpGet("FetchNewsPaper")]
+        public IActionResult FetchNewsPaper(int? pageIndex)
+        {
+            try
+            {
+                var listNewsPapers = _newsPaperService.FetchNewsPaper(pageIndex).Result;
+                return Ok(new ApiResponse
+                {
+                    Success= true,
+                    Data = listNewsPapers
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

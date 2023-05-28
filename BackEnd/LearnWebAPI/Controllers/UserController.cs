@@ -29,23 +29,6 @@ namespace LearnWebAPI.Controllers
             _logger = logger;
         }
 
-        private User GetCurrentUser()
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-            if (identity != null)
-            {
-                var userClaims = identity.Claims;
-
-                return new User
-                {
-                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
-                    Role = RoleType.User
-                };
-            }
-            return null;
-        }
-
         [HttpPost("RenewToken")]
         public IActionResult RenewToken(TokenModel model)
         {
@@ -58,7 +41,7 @@ namespace LearnWebAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public IActionResult Login(UserLogin user)
+        public IActionResult Login([FromBody] UserLogin user)
         {
             try
             {

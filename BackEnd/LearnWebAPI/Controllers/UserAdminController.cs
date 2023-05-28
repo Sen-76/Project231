@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using LearnWebAPI.Interfaces;
 using LearnWebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
-
+using System.Security.Claims;
 namespace BackEnd.Controllers
 {
     [Route("api/[controller]")]
@@ -20,12 +21,35 @@ namespace BackEnd.Controllers
             _userService = userService;
             _logger = logger;
         }
+        private User GetCurrentUser()
+        {
+            var identity = HttpContext.User.Identity;
+
+            if (identity != null && identity.IsAuthenticated && identity is ClaimsIdentity claimsIdentity)
+            {
+                var userClaims = claimsIdentity.Claims;
+
+                return new User
+                {
+                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
+                    Role = Enum.Parse<RoleType>(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value)
+                };
+            }
+            return null;
+        }
+
         [HttpGet("FetchUser")]
         [EnableQuery]
         public IActionResult FetchUser(int pageIndex)
         {
-            var result = _userService.FetchAllUser(pageIndex).Result;
-            return Ok(result);
+            //var result = _userService.FetchAllUser(pageIndex).Result;
+            var currentUser = GetCurrentUser();
+
+            if (currentUser != null)
+            {
+                return Ok(currentUser);
+            }
+            return Unauthorized();
         }
         [HttpPost("BanUser")]
         public IActionResult BanUser(string id)

@@ -33,12 +33,12 @@ namespace LearnWebAPI.Services
         }
         public async Task<TokenModel> GenerateToken(User user)
         {
-            var jwtTokenHandler = new JwtSecurityTokenHandler();
-            var secretKeyBytes = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
-            var tokenDescription = new SecurityTokenDescriptor
+            var refreshToken = GenerateRefreshToken();
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.SecretKey));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
             {
-                Subject = new ClaimsIdentity(new[]
-                {
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Role, user.Role.ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
@@ -46,19 +46,15 @@ namespace LearnWebAPI.Services
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim("Username", user.Username),
                     new Claim("Id", user.Id.ToString()),
-
-                    //roles
-
-                    new Claim("TokenId", Guid.NewGuid().ToString())
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(120),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey
-                (secretKeyBytes), SecurityAlgorithms.HmacSha512Signature)
             };
-            var token = jwtTokenHandler.CreateToken(tokenDescription);
-            var accessToken = jwtTokenHandler.WriteToken(token);
-            var refreshToken = GenerateRefreshToken();
 
+            var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
+              _configuration["Jwt:Audience"],
+              claims,
+              expires: DateTime.Now.AddMinutes(60),
+              signingCredentials: credentials);
+
+            var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
             //Lưu db
             var refreshTokenEntity = new RefreshToken
             {

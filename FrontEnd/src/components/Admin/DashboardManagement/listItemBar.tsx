@@ -11,7 +11,6 @@ import * as CategoryService from '../../../services/categoryService';
 import { Link } from 'react-router-dom';
 import { ICategory } from '../../ExamplaeForm/CategoryForm/model';
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
-import Title from './title';
 
 export default function MainListItems() {
     const [open, setOpen] = useState<boolean>(false);

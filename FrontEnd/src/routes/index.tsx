@@ -15,6 +15,7 @@ import SignIn from '../pages/SignIn/SignIn';
 import SignUp from '../pages/SignUp/SignUp';
 import DashboardAdmin from '../components/Admin/DashboardManagement/DashBoardManagement';
 import ListNewspaper from '../pages/Managerment/NewspaperManagement/listNewspaper';
+import editNewspaper from '../pages/Managerment/NewspaperManagement/editNewspaper';
 
 
 //Public Route
@@ -33,6 +34,7 @@ export const publicRoutes = [
     { path: routeConfig.newspaperManagement, component:  ListNewspaper, layout: DashboardAdmin},
     { path: routeConfig.userManagement, component:  ListNewspaper, layout: DashboardAdmin},
     { path: routeConfig.commentManagement, component:  ListNewspaper, layout: DashboardAdmin},
+    { path: routeConfig.editNewspaper, component:  editNewspaper, layout: DashboardAdmin},
     { path: '/', component: Home },
 
 ];

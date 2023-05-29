@@ -11,6 +11,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import { Link } from 'react-router-dom';
 
 const columns: GridColDef[] = [
     { field: 'img', headerName: 'IMG', width: 70, filterable: true },
@@ -27,7 +28,9 @@ const columns: GridColDef[] = [
         sortable: false,
         renderCell: (params) => (
             <div>
-                <Button variant="outlined" startIcon={<EditIcon />}></Button>
+                <Link className="edit" to={`/editNewspaper/${params.row.id}`}>
+                    <Button variant="outlined" startIcon={<EditIcon />}></Button>{' '}
+                </Link>
                 <Button variant="outlined" startIcon={<DeleteOutlineIcon />}></Button>
                 <Button variant="outlined" startIcon={<VisibilityIcon />}></Button>
             </div>
@@ -61,7 +64,7 @@ export default function ListNewspaper() {
                         Delete
                     </Button>
                 </div>
-                <div className='formSearchM'>
+                <div className="formSearchM">
                     <input className="inputSearchM" placeholder="Search" />
                     <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
                         <SearchOutlinedIcon />

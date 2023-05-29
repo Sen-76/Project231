@@ -13,7 +13,8 @@ const routeConfig = {
     signup: '/signup',
     newspaperManagement: '/newspaperManagement',
     userManagement: '/userManagement',
-    commentManagement: '/commentManagement'
+    commentManagement: '/commentManagement',
+    editNewspaper: '/editNewspaper/:id',
 };
 
 export default routeConfig;

@@ -1,5 +1,6 @@
-import CategoryForm from "../../components/ExamplaeForm/CategoryForm";
-import NewsPaperForm from "../../components/ExamplaeForm/NewsPaperForm";
+import CategoryForm from "../../components/CategoryForm";
+import NewsPaperForm from "../../components/NewsPaperForm";
+import UserForm from "../../components/UserForm";
 
 function TongHop() {
     return (
@@ -7,6 +8,8 @@ function TongHop() {
             <CategoryForm />
             <hr style={{ margin: 10 }} />
             <NewsPaperForm />
+            <hr style={{ margin: 10 }} />
+            <UserForm />
         </div>
     );
 }

@@ -14,7 +14,8 @@ const routeConfig = {
     adminDashboard: '/management',
     newspaperManagement: '/newspaperManagement',
     userManagement: '/userManagement',
-    commentManagement: '/commentManagement'
+    commentManagement: '/commentManagement',
+    editNewspaper: '/editNewspaper/:id',
 };
 
 export default routeConfig;

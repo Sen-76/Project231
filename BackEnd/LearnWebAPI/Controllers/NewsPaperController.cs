@@ -104,7 +104,7 @@ namespace BackEnd.Controllers
                 return BadRequest(ex.Message);
             }
         }
-   
+
         [HttpPost("PublishNewsPaper")]
         public IActionResult PublishNewsPaper(Guid id)
         {
@@ -132,6 +132,20 @@ namespace BackEnd.Controllers
                     Success= true,
                     Data = listNewsPapers
                 });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("RestoreNewsPaper")]
+        public IActionResult RestoreNewsPaper(Guid id)
+        {
+            try
+            {
+                var listNewsPapers = _newsPaperService.RestoreNewsPaper(id).Result;
+                return Ok(listNewsPapers);
             }
             catch (Exception ex)
             {

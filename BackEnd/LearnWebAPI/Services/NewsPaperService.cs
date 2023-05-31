@@ -189,6 +189,38 @@ namespace BackEnd.Services
             }
         }
 
+        public async Task<ApiResponse>RestoreNewsPaper(Guid id)
+        {
+            try
+            {
+                var newsPaper = await _context.NewsPapers.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+                if (newsPaper != null)
+                {
+                    newsPaper.Status = Models.StatusType.Posted;
+                    _context.Update(newsPaper);
+                    await _context.SaveChangesAsync();
+                    return new ApiResponse
+                    {
+                        Success= true,
+                        Data = newsPaper
+                    };
+                }
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = "Newspaper doesn't exist"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= false,
+                };
+            }
+        }
+
         public async Task<ApiResponse> PublishNewsPaper(Guid id)
         {
             try

@@ -18,6 +18,21 @@ namespace BackEnd.Services
             _context = context;
             _logger = logger;
         }
+        public async Task<NewsPaperDetail> AddNewsDetail(Guid newsId, Guid userId)
+        {
+            var newsdetail = new NewsPaperDetail()
+            {
+                Id = Guid.NewGuid(),
+                Dislike = false,
+                Like= false,
+                Rate= 0,
+                NewsPaperId = newsId,
+                UserId= userId,
+            };
+            _context.Add(newsdetail);
+            await _context.SaveChangesAsync();
+            return newsdetail;
+        }
         public async Task<ApiResponse> GetNewsDetail(string newsId)
         {
             try
@@ -94,6 +109,7 @@ namespace BackEnd.Services
             try
             {
                 NewsPaperDetail newsdetal = await _context.NewsPaperDetails.Where(x => x.NewsPaperId == Guid.Parse(newsId) && x.UserId == Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7")).FirstOrDefaultAsync();
+                if (newsdetal == null) newsdetal= await AddNewsDetail(Guid.Parse(newsId), Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7"));
                 newsdetal.Like = true;
                 newsdetal.Dislike = false;
                 _context.Update(newsdetal);
@@ -118,6 +134,7 @@ namespace BackEnd.Services
             try
             {
                 NewsPaperDetail newsdetal = await _context.NewsPaperDetails.Where(x => x.NewsPaperId == Guid.Parse(newsId) && x.UserId == Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7")).FirstOrDefaultAsync();
+                if (newsdetal == null) newsdetal= await AddNewsDetail(Guid.Parse(newsId), Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7"));
                 newsdetal.Like = false;
                 _context.Update(newsdetal);
                 await _context.SaveChangesAsync();
@@ -141,6 +158,7 @@ namespace BackEnd.Services
             try
             {
                 NewsPaperDetail newsdetal = _context.NewsPaperDetails.Where(x => x.NewsPaperId == Guid.Parse(newsId) && x.UserId == Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7")).FirstOrDefault();
+                if (newsdetal == null) newsdetal= await AddNewsDetail(Guid.Parse(newsId), Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7"));
                 newsdetal.Like = false;
                 newsdetal.Dislike = true;
                 _context.Update(newsdetal);
@@ -165,6 +183,7 @@ namespace BackEnd.Services
             try
             {
                 NewsPaperDetail newsdetal = _context.NewsPaperDetails.Where(x => x.NewsPaperId == Guid.Parse(newsId) && x.UserId == Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7")).FirstOrDefault();
+                if (newsdetal == null) newsdetal= await AddNewsDetail(Guid.Parse(newsId), Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7"));
                 newsdetal.Dislike = false;
                 _context.Update(newsdetal);
                 await _context.SaveChangesAsync();
@@ -188,6 +207,7 @@ namespace BackEnd.Services
             try
             {
                 NewsPaperDetail newsdetal = _context.NewsPaperDetails.Where(x => x.NewsPaperId == Guid.Parse(newsId) && x.UserId == Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7")).FirstOrDefault();
+                if (newsdetal == null) newsdetal= await AddNewsDetail(Guid.Parse(newsId), Guid.Parse("117D2DE8-7B3C-45CA-9DA1-958C38D57BE7"));
                 newsdetal.Rate = rate;
                 _context.Update(newsdetal);
                 await _context.SaveChangesAsync();

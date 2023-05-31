@@ -1,4 +1,5 @@
-﻿using BackEnd.ViewModels.UserViewModels;
+﻿using BackEnd.Paging;
+using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Models;
 
 namespace LearnWebAPI.Interfaces

@@ -36,6 +36,7 @@ export const publicRoutes = [
     { path: routeConfig.newspaperManagement, component:  ListNewspaper, layout: DashboardAdmin},
     { path: routeConfig.userManagement, component:  ListUser, layout: DashboardAdmin},
     { path: routeConfig.commentManagement, component:  ListNewspaper, layout: DashboardAdmin},
+    { path: routeConfig.editNewspaper, component:  editNewspaper, layout: DashboardAdmin},
     { path: '/', component: Home },
 
 ];

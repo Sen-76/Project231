@@ -8,6 +8,7 @@ import { login } from '../../store/userSlice';
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../store/hook";
 
+
 function Login() {
     const dispatch = useDispatch();
     const [userLogin, setUserLogin] = useState<IUserLogin>(DefaultUserLogin)
@@ -28,7 +29,7 @@ function Login() {
     }
     return (
         <div className="login-container">
-            <div>
+            <form>
                 <h1 className="loginH1">Login Form</h1>
                 <div className="registerLink">
                     <Link to="/Register">Does not have an account?</Link>
@@ -41,7 +42,7 @@ function Login() {
                     type="text"
                     id="username-input"
                     placeholder="Enter your username"
-                    value={userLogin.username}
+                    value={userLogin?.username}
                     onChange={(event) => setUserLogin({ ...userLogin, username: event.target.value })}
                 />
                 <br />
@@ -54,23 +55,23 @@ function Login() {
                     type="password"
                     id="password-input"
                     placeholder="Enter your password"
-                    value={userLogin.password}
+                    value={userLogin?.password}
                     onChange={(event) => setUserLogin({ ...userLogin, password: event.target.value })}
                 />
                 <span style={{ color: 'red' }}>{alert}</span>
                 <br />
                 <br />
-                <button type="submit" id="button-input" onClick={Login}>
+                <button type="button" id="button-input" onClick={Login} >
                     Login
                 </button>
-                <div className="container">
-                    <button type="button" className="cancelbtn">
-                        <Link to="/home">Cancel</Link>
-                    </button>
-                    <span className="psw">
-                        Forgot <a href="#">password?</a>
-                    </span>
-                </div>
+            </form>
+            <div className="container">
+                <button type="button" className="cancelbtn">
+                    <Link to="/home">Cancel</Link>
+                </button>
+                <span className="psw">
+                    Forgot <a href="#">password?</a>
+                </span>
             </div>
         </div>
     );

@@ -62,3 +62,12 @@ export const listnewsPaperByCate = async (id: string) => {
         console.log(error);
     }
 };
+};
+export const restorenewsPaper = async (id: string) => {
+    try {
+        const res = await request.post('NewsPaper/RestoreNewsPaper?id=' + id);
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};

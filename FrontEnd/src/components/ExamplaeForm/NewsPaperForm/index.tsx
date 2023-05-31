@@ -21,6 +21,10 @@ function NewsPaperForm() {
         await newspaperService.deletenewsPaper(id)
         setReloadList(!reLoadList);
     }
+    async function Restore(id: string) {
+        await newspaperService.restorenewsPaper(id)
+        setReloadList(!reLoadList);
+    }
     useEffect(() => {
         categoryService.listCate().then((result) => {
             if (result) {
@@ -92,7 +96,7 @@ function NewsPaperForm() {
                 </thead>
                 <tbody>
                     {
-                        listNews?.map((news) => (
+                        listNews?.map((news: INewsPaper) => (
                             <tr key={news.id}>
                                 <td>{news.id}</td>
                                 <td>{news.title}</td>
@@ -102,7 +106,7 @@ function NewsPaperForm() {
                                 <td>{news.modifiedDate}</td>
                                 <td>{news.publishedDate}</td>
                                 <td>{news.status}</td>
-                                <td>{news.categories?.map(cate => <span>{cate.name},</span>)}</td>
+                                <td>{news.categories?.map(cate => <span key={cate.id}>{cate.name},</span>)}</td>
                                 <td>
                                     <button type="button" onClick={() => Publish(news.id)} >Publish</button>
                                     <button type="button" onClick={() => Delete(news.id)} >Delete</button>

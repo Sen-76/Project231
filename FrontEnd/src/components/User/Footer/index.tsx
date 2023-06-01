@@ -18,20 +18,17 @@ function Footer() {
     return (
         <div>
             <div className="footer_top_area">
-                <div className="inner_footer_top">
-                    {' '}
-                    <img src="https://img5.thuthuatphanmem.vn/uploads/2021/09/22/background-hoat-hinh-de-thuong_094719435.jpg" alt="" />{' '}
-                </div>
+                <div className="inner_footer_top"></div>
             </div>
             <div className="footer_bottom_area">
                 <div className="footer_menu">
-                <ul id="f_menu">
-                    {CategoryList.map((category) => (
-                        <li key={category.id}>
-                            <a href="#">{category.name}</a>
-                        </li>
-                    ))}
-                </ul>
+                    <ul id="f_menu">
+                        {CategoryList.map((category) => (
+                            <li key={category.id}>
+                                <a href="#">{category.name}</a>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
                 <div className="copyright_text">
                     <p>

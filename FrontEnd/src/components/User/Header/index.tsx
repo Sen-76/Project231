@@ -3,6 +3,9 @@ import * as CategoryService from '../../../services/categoryService';
 import { ICategory } from '../../ExamplaeForm/CategoryForm/model';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import React from 'react';
+import SearchIcon from '@mui/icons-material/Search';
+import { Button, IconButton, Toolbar, Typography } from '@mui/material';
 function Header() {
     const [CategoryList, SetCategoryList] = useState<ICategory[]>([]);
     useEffect(() => {
@@ -17,41 +20,29 @@ function Header() {
             });
     }, []);
     return (
-        <div>
-            <div className="header_area">
-                <div className="logo floatleft">
-                    <Link to="/home">
-                        <h2 className="title">
-                            <b>M</b>isaelMagazine
-                        </h2>
+        <React.Fragment>
+            <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Button size="small">Subscribe</Button>
+                <Typography component="h2" variant="h5" color="inherit" align="center" noWrap sx={{ flex: 1 }}>
+                    {'Misa&Elwyn Magazine'}
+                </Typography>
+                <IconButton>
+                    <SearchIcon />
+                </IconButton>
+                <Link to={`/signup`}>
+                    <Button variant="outlined" size="small">
+                        Sign Up
+                    </Button>
+                </Link>
+            </Toolbar>
+            <Toolbar component="nav" variant="dense" sx={{ justifyContent: 'space-between', overflowX: 'auto' }}>
+                {CategoryList.map((category, key) => (
+                    <Link key={key} to={`/listNews/${category.id}`}>
+                        {category.name}
                     </Link>
-                </div>
-                <div className="top_menu floatleft">
-                    <ul>
-                        <li>
-                            <a href="login">Login</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div className="main_menu_area">
-                <ul id="nav">
-                    {CategoryList.map((category, key) => (
-                        <li key={key}>
-                            <Link to={`/listNews/${category.id}`}>{category.name}</Link>
-                        </li>
-                    ))}
-                </ul>
-                {/* <div className="search">
-                    <form action="#" method="post" id="search_form">
-                        <input type="text" placeholder="Search news" id="s" />
-                        <button className="" type="submit" id="searchform" value="search">
-                            Search
-                        </button>
-                    </form>
-                </div> */}
-            </div>
-        </div>
+                ))}
+            </Toolbar>
+        </React.Fragment>
     );
 }
 

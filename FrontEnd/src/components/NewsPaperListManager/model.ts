@@ -5,6 +5,7 @@ export interface INewsPaper {
     description: string;
     createdDate: string;
     modifiedDate: string;
+    image: string
 }
 export interface IAuthor {
     id: string;

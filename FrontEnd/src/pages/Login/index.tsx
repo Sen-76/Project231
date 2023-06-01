@@ -5,27 +5,29 @@ import { IUserLogin, DefaultUserLogin } from './model';
 import * as userService from '../../services/userService';
 import jwt_decode from 'jwt-decode';
 import { login } from '../../store/userSlice';
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../store/hook";
-
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../store/hook';
 
 function Login() {
     const dispatch = useDispatch();
-    const [userLogin, setUserLogin] = useState<IUserLogin>(DefaultUserLogin)
-    const [alert, setAlert] = useState<string>('')
-    const userLoginTest = useAppSelector((state) => state.user.UserLogin)
-    console.log(userLoginTest)
+    const [userLogin, setUserLogin] = useState<IUserLogin>(DefaultUserLogin);
+    const [alert, setAlert] = useState<string>('');
+    const userLoginTest = useAppSelector((state) => state.user.UserLogin);
+    console.log(userLoginTest);
 
     async function Login() {
-        await userService.login(userLogin).then((result) => {
-            if (result.success == false) {
-                setAlert(result.message);
-            } else {
-                dispatch(login(jwt_decode(result.data.accessToken)))
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
+        await userService
+            .login(userLogin)
+            .then((result) => {
+                if (result.success === false) {
+                    setAlert(result.message);
+                } else {
+                    dispatch(login(jwt_decode(result.data.accessToken)));
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
     return (
         <div className="login-container">
@@ -61,7 +63,7 @@ function Login() {
                 <span style={{ color: 'red' }}>{alert}</span>
                 <br />
                 <br />
-                <button type="button" id="button-input" onClick={Login} >
+                <button type="button" id="button-input" onClick={Login}>
                     Login
                 </button>
             </form>

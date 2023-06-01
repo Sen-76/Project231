@@ -2,7 +2,6 @@ const routeConfig = {
     dashboard: '/newsdetail/:id',
     home: '/home',
     reduxexamples: '/reduxexamples',
-    learnfluentui: '/learnfluentui',
     tonghop: '/tonghop',
     login: '/login',
     register: '/register',

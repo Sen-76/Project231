@@ -4,7 +4,7 @@ import * as newspaperService from '../../../services/newsPaperService';
 import './index.scss';
 import { useEffect, useState } from 'react';
 import { INewsPaper } from '../../../components/NewsPaperListManager/model';
-import { Button, Divider, IconButton, Typography } from '@mui/material';
+import { Button, Divider, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import VisibilityIcon from '@mui/icons-material/Visibility';

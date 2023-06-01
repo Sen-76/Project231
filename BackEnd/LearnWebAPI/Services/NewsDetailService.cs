@@ -81,6 +81,7 @@ namespace BackEnd.Services
                 detail.Title = news.Title;
                 detail.Content= news.Content;
                 detail.Description = news.Description;
+                detail.Image = news.Image;
                 detail.CreatedDate = news.CreatedDate;
                 detail.PublishedDate = news.PublishedDate;
                 detail.ModifiedDate = news.ModifiedDate;

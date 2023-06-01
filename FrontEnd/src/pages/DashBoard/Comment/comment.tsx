@@ -1,20 +1,31 @@
 import styles from './comment.module.scss';
-import { Avatar, Stack } from '@mui/material';
-import classNames from 'classnames/bind';
+import { Avatar } from '@mui/material';
+import { useEffect, useState } from 'react';
+interface IComment {
+    commentId: string;
+    newsPaperId: string;
+    newsPaper: null;
+    userId: string;
+    user: null;
+    content: string;
+    postTime: string;
+    isDeleted: false;
+}
+interface ICommentProp {
+    comment: IComment;
+}
 
-const cx = classNames.bind(styles);
-function Comment() {
+function Comment({ comment }: ICommentProp) {
     return (
         <>
-            <h1>Comment component</h1>
             <div className={styles.comment}>
-                <Avatar>MĐ</Avatar>
-                <div className="comment-item">
-                    <div className="header">
-                        <span>Minh Duc</span>
-                        <span>Date Time</span>
+                <Avatar className={styles.avatar}>Đ</Avatar>
+                <div className={styles.commentItem}>
+                    <div className={styles.commentHeader}>
+                        <span className={styles.username}>Minh Duc</span>
+                        <span className={styles.date}>Date Time</span>
                     </div>
-                    <span>This is comment's content</span>
+                    <span className={styles.content}>This is comment's content</span>
                 </div>
             </div>
         </>

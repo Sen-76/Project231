@@ -3,3 +3,30 @@
     flex-direction: row;
     align-items: flex-start;
 }
+.commentItem {
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.commentHeader {
+    padding: 2px;
+}
+.username {
+    font-weight: bold;
+    font-size: 15px;
+}
+.date {
+    margin-left: 20px;
+    font-size: 12px;
+    opacity: 0.5;
+}
+.avatar {
+    margin: 0 20px;
+    width: 45px;
+    height: 45px;
+}
+.content {
+    margin: 10px 0;
+    display: block;
+}

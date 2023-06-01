@@ -7,6 +7,7 @@ import LastestArticles from '../../components/News/LastestArticles';
 import { useParams } from 'react-router-dom';
 import FeaturePostDetail from './featurePostDetail';
 import { ThemeProvider, createTheme } from '@mui/material';
+import Comment from './Comment/comment';
 
 interface IComment {
     commentId: string;
@@ -34,8 +35,6 @@ function DashBoard() {
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
-    useEffect(() => {
         commentService
             .getCommentofNew(1, id || '')
             .then((result: IComment[]) => {
@@ -63,14 +62,15 @@ function DashBoard() {
 
                             <div className="single_post_content">{newDetail?.content}</div>
                             {/* phân trang */}
-
                         </div>
                     </div>
                 </div>
             </div>
             {/* Comment */}
-            
-            <LastestArticles></LastestArticles>
+            {commentList?.map((item: IComment) => (
+                <Comment comment={item} />
+            ))}
+            {/* <LastestArticles></LastestArticles> */}
         </ThemeProvider>
     );
 }

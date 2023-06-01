@@ -6,7 +6,6 @@ import HeaderOnly from '../layout/headerOnly';
 import DashBoard from '../pages/DashBoard';
 import Home from '../pages/Home';
 import ReduxExample from '../pages/ReduxExample';
-import LearnFluentUI from '../pages/LearnFluentUi';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Category from '../pages/Category/category';
@@ -22,7 +21,6 @@ export const publicRoutes = [
     { path: routeConfig.dashboard, component: DashBoard },
     { path: routeConfig.home, component: Home },
     { path: routeConfig.reduxexamples, component: ReduxExample, layout: HeaderOnly },
-    { path: routeConfig.learnfluentui, component: LearnFluentUI, layout: HeaderOnly },
     { path: routeConfig.login, component: Login, layout: HeaderOnly },
     { path: routeConfig.register, component: Register, layout: HeaderOnly },
     { path: routeConfig.listNewByCategory, component: Category },

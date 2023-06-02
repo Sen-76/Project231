@@ -60,18 +60,19 @@ function DashBoard() {
                     p: 2,
                     bgcolor: 'background.default',
                     display: 'grid',
-                    gridTemplateColumns: { md: '1fr 1fr' },
+                    gridTemplateColumns: { md: '1fr' },
                     gap: 2,
                 }}
             >
-                <div className="single_post_content">{newDetail?.content}</div>
+                {newDetail?.content}
             </Box>
             {/* Comment */}
             <Paper elevation={0} sx={{ p: 2, bgcolor: 'grey.200' }}>
                 <Typography variant="h6" gutterBottom>
                     {'Summarize'}
                 </Typography>
-                <Typography>{newDetail?.description}</Typography>
+                <Typography>{newDetail?.description}
+                    </Typography>
             </Paper>
             <div>
                 {commentList?.map((item: IComment) => (

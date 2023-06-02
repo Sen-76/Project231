@@ -1,5 +1,5 @@
 import styles from './comment.module.scss';
-import { Avatar } from '@mui/material';
+import { Avatar, Box, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 interface IComment {
     commentId: string;
@@ -17,7 +17,15 @@ interface ICommentProp {
 
 function Comment({ comment }: ICommentProp) {
     return (
-        <>
+        <Box
+            sx={{
+                p: 2,
+                bgcolor: 'background.default',
+                display: 'grid',
+                gridTemplateColumns: { md: '1fr 1fr' },
+                gap: 2,
+            }}
+        >
             <div className={styles.comment}>
                 <Avatar className={styles.avatar}>Đ</Avatar>
                 <div className={styles.commentItem}>
@@ -28,7 +36,7 @@ function Comment({ comment }: ICommentProp) {
                     <span className={styles.content}>This is comment's content</span>
                 </div>
             </div>
-        </>
+        </Box>
     );
 }
 

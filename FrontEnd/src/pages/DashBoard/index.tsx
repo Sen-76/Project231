@@ -6,7 +6,7 @@ import { INewsPaper } from '../../components/News/PopularNews/model';
 import LastestArticles from '../../components/News/LastestArticles';
 import { useParams } from 'react-router-dom';
 import FeaturePostDetail from './featurePostDetail';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { Box, Paper, ThemeProvider, Typography, createTheme } from '@mui/material';
 import Comment from './Comment/comment';
 
 interface IComment {
@@ -49,27 +49,36 @@ function DashBoard() {
     return (
         <ThemeProvider theme={defaultTheme}>
             <FeaturePostDetail newDetail={newDetail!}></FeaturePostDetail>
-            <div className="col-lg-7 col-md-7 col-sm-8 col-xs-12">
-                <div className="row">
-                    <div className="middle_bar">
-                        <div className="single_post_area">
-                            <div>
-                                <b>Author:</b> {newDetail?.author.name}
-                            </div>
-                            <div>
-                                <b>Date:</b> {newDetail?.createdDate}
-                            </div>
-
-                            <div className="single_post_content">{newDetail?.content}</div>
-                            {/* phân trang */}
-                        </div>
-                    </div>
-                </div>
+            <div>
+                <b>Author:</b> {newDetail?.author.name}
             </div>
+            <div>
+                <b>Date:</b> {newDetail?.createdDate}
+            </div>
+            <Box
+                sx={{
+                    p: 2,
+                    bgcolor: 'background.default',
+                    display: 'grid',
+                    gridTemplateColumns: { md: '1fr 1fr' },
+                    gap: 2,
+                }}
+            >
+                <div className="single_post_content">{newDetail?.content}</div>
+            </Box>
             {/* Comment */}
-            {commentList?.map((item: IComment) => (
-                <Comment comment={item} />
-            ))}
+            <Paper elevation={0} sx={{ p: 2, bgcolor: 'grey.200' }}>
+                <Typography variant="h6" gutterBottom>
+                    {'Summarize'}
+                </Typography>
+                <Typography>{newDetail?.description}</Typography>
+            </Paper>
+            <div>
+                {commentList?.map((item: IComment) => (
+                    <Comment comment={item} />
+                ))}
+            </div>
+
             {/* <LastestArticles></LastestArticles> */}
         </ThemeProvider>
     );

@@ -42,14 +42,15 @@ namespace BackEnd.Controllers
         [EnableQuery]
         public IActionResult FetchUser(int pageIndex)
         {
-            //var result = _userService.FetchAllUser(pageIndex).Result;
-            var currentUser = GetCurrentUser();
+            var result = _userService.FetchAllUser(pageIndex).Result;
+            return Ok(result);
+            //var currentUser = GetCurrentUser();
 
-            if (currentUser != null)
-            {
-                return Ok(currentUser);
-            }
-            return Unauthorized();
+            //if (currentUser != null)
+            //{
+            //    return Ok(currentUser);
+            //}
+            //return Unauthorized();
         }
         [HttpPost("BanUser")]
         public IActionResult BanUser(string id)

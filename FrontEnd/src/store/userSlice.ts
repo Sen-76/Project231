@@ -16,6 +16,7 @@ export interface UserLogin {
 }
 export interface IUserSlice {
     UserLogin: UserLogin;
+    Token: string;
 }
 
 const initialState: IUserSlice = {
@@ -31,7 +32,8 @@ const initialState: IUserSlice = {
         name: '',
         nbf: 0,
         sub: ''
-    }
+    },
+    Token: ''
 }
 
 export const userSlice = createSlice({
@@ -40,11 +42,14 @@ export const userSlice = createSlice({
     reducers: {
         login: (state, action: PayloadAction<UserLogin>) => {
             state.UserLogin = action.payload
+        },
+        setToken: (state, action: PayloadAction<string>) => {
+            state.Token = action.payload
         }
     }
 })
 
-export const { login } = userSlice.actions
+export const { login, setToken } = userSlice.actions
 
 export const selectHobbies = (state: RootState) => state.hobby.list
 

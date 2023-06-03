@@ -1,29 +1,46 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { IUserLogin, DefaultUserLogin } from './model';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../store/hook';
+import jwt_decode from 'jwt-decode';
+import { login, setToken } from '../../store/userSlice';
+import * as userService from '../../services/userService';
+import { Box, Grid, Link, Checkbox, FormControlLabel, TextField, CssBaseline, Button, Avatar, Container, Typography } from '@mui/material';
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [userLogin, setUserLogin] = useState<IUserLogin>(DefaultUserLogin);
+  const [alert, setAlert] = useState<string>('');
+  const dispatch = useDispatch();
+  const userLoginTest = useAppSelector((state) => state.user.UserLogin);
+  console.log(userLoginTest);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    setUserLogin(
+      {
+        username: data.get('email')?.toString().trim() || "",
+        password: data.get('password')?.toString().trim() || ""
+      }
+    )
+    await userService
+      .login(userLogin)
+      .then((result) => {
+        if (result.success === false) {
+          setAlert(result.message);
+        } else {
+          dispatch(login(jwt_decode(result.data.accessToken)));
+          dispatch(setToken(result.data.accessToken));
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (

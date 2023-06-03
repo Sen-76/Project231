@@ -205,7 +205,10 @@ namespace LearnWebAPI.Services
         }
         public async Task<User> Login(UserLogin user)
         {
-            return await _context.Users.Where(x => x.Username == user.Username && x.Password == user.Password).FirstOrDefaultAsync();
+            var users = new User();
+            users = await _context.Users.Where(x => x.Username == user.Username && x.Password == user.Password).FirstOrDefaultAsync();
+            if (users == null) users = await _context.Users.Where(x => x.Email == user.Username && x.Password == user.Password).FirstOrDefaultAsync();
+            return users;
         }
         public async Task<bool> Regis(UserAddVM user)
         {

@@ -7,6 +7,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add';
 
 import Title from '../../../components/Admin/DashboardManagement/title';
+import { Link } from 'react-router-dom';
 import * as userService from '../../../services/userService';
 import { useEffect, useState } from 'react';
 
@@ -65,7 +66,7 @@ export default function ListUser() {
             });
     }, [reload]);
     const columns: GridColDef[] = [
-        { field: 'name', headerName: 'Name', width: 70, filterable: true },
+        { field: 'name', headerName: 'Name', width: 230, filterable: true },
         { field: 'username', headerName: 'Username', width: 230, filterable: true },
         { field: 'password', headerName: 'Password', width: 230, filterable: true },
         { field: 'email', headerName: 'Email', width: 130, filterable: true },
@@ -77,11 +78,13 @@ export default function ListUser() {
         {
             field: '',
             headerName: 'Action',
-            width: 230,
+            width: 400,
             sortable: false,
             renderCell: (params) => (
                 <div>
-                    <Button variant="outlined" startIcon={<EditIcon />}>Edit</Button>
+                    <Link className="edit" to={`/editUser/${params.row.id}`}>
+                        <Button variant="outlined" startIcon={<EditIcon />}>Edit</Button>
+                    </Link>
                     <Button variant="outlined" startIcon={<DeleteOutlineIcon />} onClick={() => BanUser(params.row.id)}>Ban</Button>
                     <Button variant="outlined" startIcon={<DeleteOutlineIcon />} onClick={() => UnBanUser(params.row.id)}>UnBan</Button>
                     <Button variant="outlined" startIcon={<VisibilityIcon />}>View</Button>
@@ -111,12 +114,12 @@ export default function ListUser() {
     }
     return (
         <React.Fragment>
-            <Title>Newspaper Management</Title>
+            <Title>User Management</Title>
             <Button variant="outlined" startIcon={<AddIcon />}>
                 Add
             </Button>
 
-            <div style={{ height: 400, width: '100%' }}>
+            <div style={{ height: 500, width: '100%' }}>
                 <DataGrid
                     rows={userList}
                     columns={columns}

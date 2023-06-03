@@ -3,7 +3,6 @@ const routeConfig = {
     home: '/home',
     reduxexamples: '/reduxexamples',
     tonghop: '/tonghop',
-    login: '/login',
     register: '/register',
     listNewByCategory: '/listNews/:category',
     signin: '/signin',
@@ -12,9 +11,10 @@ const routeConfig = {
     //admin routes
     adminDashboard: '/management',
     newspaperManagement: '/newspaperManagement',
-    userManagement: '/userManagement',
-    commentManagement: '/commentManagement',
     editNewspaper: '/editNewspaper/:id',
+    userManagement: '/userManagement',
+    editUser: '/editUser/:id',
+    commentManagement: '/commentManagement',
 };
 
 export default routeConfig;

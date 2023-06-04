@@ -37,7 +37,13 @@ namespace BackEnd.Controllers
             }
             return null;
         }
-
+        
+        [HttpGet("UserById")]
+        public IActionResult UserById(string id)
+        {
+            var result = _userService.GetUserById(id).Result;
+            return Ok(result);
+        }
         [HttpGet("FetchUser")]
         [EnableQuery]
         public IActionResult FetchUser(int pageIndex)
@@ -70,5 +76,12 @@ namespace BackEnd.Controllers
             var result = _userService.AdminUpdateUser(user).Result;
             return Ok(result);
         }
+        [HttpPost("AddUser")]
+        public IActionResult AddUser(User user)
+        {
+            var result = _userService.AdminAddUser(user).Result;
+            return Ok(result);
+        }
+   
     }
 }

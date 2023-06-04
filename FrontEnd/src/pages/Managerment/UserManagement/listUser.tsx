@@ -115,9 +115,11 @@ export default function ListUser() {
     return (
         <React.Fragment>
             <Title>User Management</Title>
-            <Button variant="outlined" startIcon={<AddIcon />}>
-                Add
-            </Button>
+            <Link className="edit" to={`/addUser`}>
+                <Button variant="outlined" startIcon={<AddIcon />}>
+                    Add
+                </Button>
+            </Link>
 
             <div style={{ height: 500, width: '100%' }}>
                 <DataGrid

@@ -366,7 +366,34 @@ namespace LearnWebAPI.Services
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-
+        public async Task<ApiResponse> GetUserById(string id)
+        {
+            try
+            {
+                var users = await _context.Users.Where(x => x.Id == Guid.Parse(id)).FirstOrDefaultAsync();
+                if (users != null)
+                {
+                    return new ApiResponse
+                    {
+                        Success= true,
+                        Data = users
+                    };
+                }
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = "Account doesn't exist"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= true,
+                };
+            }
+        }
         //Admin
         public async Task<ApiResponse> FetchAllUser(int? pageIndex)
         {
@@ -453,6 +480,41 @@ namespace LearnWebAPI.Services
                 {
                     Success= false,
                     Message = ex.Message.ToString()
+                };
+            }
+        }
+        public async Task<ApiResponse> AdminAddUser(User user)
+        {
+            try
+            {
+                //var newUser = _mapper.Map<User>(user);
+                var newUsers = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = user.Name,
+                    Username = user.Username,
+                    Password = user.Password,
+                    Avatar = user.Avatar,
+                    DateOfBirth = user.DateOfBirth,
+                    Email= user.Email,
+                    Phone= user.Phone,
+                    Role = user.Role,
+                    Status = user.Status,
+                };
+                _context.Add(newUsers);
+                await _context.SaveChangesAsync();
+                return new ApiResponse
+                {
+                    Success= true,
+                    Data = newUsers
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success= true,
                 };
             }
         }

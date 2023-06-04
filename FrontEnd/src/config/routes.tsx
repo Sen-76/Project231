@@ -14,6 +14,7 @@ const routeConfig = {
     editNewspaper: '/editNewspaper/:id',
     userManagement: '/userManagement',
     editUser: '/editUser/:id',
+    addUser: '/addUser',
     commentManagement: '/commentManagement',
 };
 

@@ -16,21 +16,16 @@ export default function SignIn() {
   const [userLogin, setUserLogin] = useState<IUserLogin>(DefaultUserLogin);
   const [alert, setAlert] = useState<string>('');
   const dispatch = useDispatch();
-  const userLoginTest = useAppSelector((state) => state.user.UserLogin);
-  console.log(userLoginTest);
+  // const userLoginTest = useAppSelector((state) => state.user.UserLogin);
+  // console.log(userLoginTest);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    setUserLogin(
-      {
-        username: data.get('email')?.toString().trim() || "",
-        password: data.get('password')?.toString().trim() || ""
-      }
-    )
+    console.log(userLogin)
     await userService
       .login(userLogin)
       .then((result) => {
+        console.log(result);
         if (result.success === false) {
           setAlert(result.message);
         } else {
@@ -71,6 +66,7 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(e) => setUserLogin({ ...userLogin, username: e.target.value })}
             />
             <TextField
               margin="normal"
@@ -81,6 +77,7 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setUserLogin({ ...userLogin, password: e.target.value })}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

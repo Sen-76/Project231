@@ -4,7 +4,17 @@ const httpRequest = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 });
 
-export const get = async (path, options = {}, token) => {
+export const get = async (path, option = {}) => {
+  const response = await httpRequest.get(path, option);
+  return response.data;
+};
+
+export const post = async (path, option = {}) => {
+  const response = await httpRequest.post(path, option);
+  return response.data;
+};
+
+export const getLoged = async (path, options = {}, token) => {
   const config = {
     ...options,
     headers: {
@@ -17,7 +27,7 @@ export const get = async (path, options = {}, token) => {
   return response.data;
 };
 
-export const post = async (path, data, options = {}, token) => {
+export const postLoged = async (path, data, options = {}, token) => {
   const config = {
     ...options,
     headers: {

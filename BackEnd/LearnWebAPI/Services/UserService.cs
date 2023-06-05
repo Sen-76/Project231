@@ -46,6 +46,7 @@ namespace LearnWebAPI.Services
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim("Username", user.Username),
                     new Claim("Id", user.Id.ToString()),
+                    new Claim("Role", user.Role.ToString()),
             };
 
             var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
@@ -210,7 +211,7 @@ namespace LearnWebAPI.Services
             if (users == null) users = await _context.Users.Where(x => x.Email == user.Username && x.Password == user.Password).FirstOrDefaultAsync();
             return users;
         }
-        public async Task<bool> Regis(UserAddVM user)
+        public async Task<ApiResponse> Regis(UserAddVM user)
         {
             try
             {
@@ -230,12 +231,19 @@ namespace LearnWebAPI.Services
                 };
                 _context.Add(newUsers);
                 await _context.SaveChangesAsync();
-                return true;
+                return new ApiResponse{
+                    Success= true,
+                    Data= newUsers
+                };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return false;
+                return new ApiResponse
+                {
+                    Success= false,
+                    Message = ex.Message
+                };
             }
         }
         public async Task<ApiResponse> UpdateUser(UserUpdateVM user)
@@ -269,7 +277,8 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success= false,
+                    Message = ex.Message
                 };
             }
         }

@@ -9,6 +9,8 @@ import jwt_decode from 'jwt-decode';
 import { login, setToken } from '../../store/userSlice';
 import * as userService from '../../services/userService';
 import { Box, Grid, Link, Checkbox, FormControlLabel, TextField, CssBaseline, Button, Avatar, Container, Typography } from '@mui/material';
+import { UserLogin } from '../../store/userSlice';
+import routeConfig from '../../config/routes';
 
 const defaultTheme = createTheme();
 
@@ -16,21 +18,21 @@ export default function SignIn() {
   const [userLogin, setUserLogin] = useState<IUserLogin>(DefaultUserLogin);
   const [alert, setAlert] = useState<string>('');
   const dispatch = useDispatch();
-  // const userLoginTest = useAppSelector((state) => state.user.UserLogin);
-  // console.log(userLoginTest);
+  const userLoginTest = useAppSelector((state) => state.user.UserLogin);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log(userLogin)
     await userService
       .login(userLogin)
       .then((result) => {
-        console.log(result);
         if (result.success === false) {
           setAlert(result.message);
         } else {
-          dispatch(login(jwt_decode(result.data.accessToken)));
+          const user: UserLogin = jwt_decode(result.data.accessToken)
+          dispatch(login(user));
           dispatch(setToken(result.data.accessToken));
+          user.Role === "Admin" && (window.location.href = routeConfig.adminDashboard)
+          window.location.href = routeConfig.home
         }
       })
       .catch((error) => {

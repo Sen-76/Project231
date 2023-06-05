@@ -21,6 +21,14 @@ export const login = async (user: IUserLogin) => {
         console.log(error);
     }
 };
+export const regis = async (user: IUser) => {
+    try {
+        const res = await request.post('User/Regis', user);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
 export const userById = async (id: String) => {
     try {
         const res = await request.get('UserAdmin/UserById?id=' + id);

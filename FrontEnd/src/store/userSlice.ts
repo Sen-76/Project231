@@ -3,15 +3,12 @@ import type { RootState } from '../store'
 
 export interface UserLogin {
     Id: string;
-    role: string;
-    TokenId: string;
+    Role: string;
     Username: string;
     email: string;
     exp: number;
-    iat: number;
     jti: string;
     name: string;
-    nbf: number;
     sub: string;
 }
 export interface IUserSlice {
@@ -22,15 +19,12 @@ export interface IUserSlice {
 const initialState: IUserSlice = {
     UserLogin: {
         Id: '',
-        role: '',
-        TokenId: '',
+        Role: '',
         Username: '',
         email: '',
         exp: 0,
-        iat: 0,
         jti: '',
         name: '',
-        nbf: 0,
         sub: ''
     },
     Token: ''

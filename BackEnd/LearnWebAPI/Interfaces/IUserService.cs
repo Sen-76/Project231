@@ -7,7 +7,7 @@ namespace LearnWebAPI.Interfaces
     public interface IUserService
     {
         Task<User> Login(UserLogin user);
-        Task<bool> Regis(UserAddVM user);
+        Task<ApiResponse> Regis(UserAddVM user);
         Task<TokenModel> GenerateToken(User user);
         Task<ApiResponse> RenewToken(TokenModel model);
         Task<ApiResponse> UpdateUser(UserUpdateVM user);

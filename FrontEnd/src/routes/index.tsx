@@ -6,7 +6,6 @@ import HeaderOnly from '../layout/headerOnly';
 import DashBoard from '../pages/DashBoard';
 import Home from '../pages/Home';
 import ReduxExample from '../pages/ReduxExample';
-import Register from '../pages/Register';
 import Category from '../pages/Category/category';
 import SignIn from '../pages/SignIn/SignIn';
 import SignUp from '../pages/SignUp/SignUp';
@@ -23,7 +22,6 @@ export const publicRoutes = [
     { path: routeConfig.dashboard, component: DashBoard },
     { path: routeConfig.home, component: Home },
     { path: routeConfig.reduxexamples, component: ReduxExample, layout: HeaderOnly },
-    { path: routeConfig.register, component: Register, layout: HeaderOnly },
     { path: routeConfig.listNewByCategory, component: Category },
     { path: routeConfig.signin, component: SignIn, layout: HeaderOnly  },
     { path: routeConfig.signup, component: SignUp, layout: HeaderOnly  },

@@ -10,36 +10,14 @@ import Title from '../../../components/Admin/DashboardManagement/title';
 import { Link } from 'react-router-dom';
 import * as userService from '../../../services/userService';
 import { useEffect, useState } from 'react';
+import { ERole, EStatus, IUser } from '../../../interface/user';
 
-enum ERole {
-    User = 0,
-    Writer = 1,
-    Leader = 2,
-    Editor = 3,
-    Admin = 4,
-}
-enum EStatus {
-    NotActive = 0,
-    Active = 1,
-    Banned = 2
-}
-interface IUser {
-    avatar: string;
-    dateOfBirth: string;
-    email: string;
-    id: string;
-    name: string;
-    password: string;
-    phone: string;
-    role: ERole;
-    status: EStatus;
-    username: string;
-}
 export default function ListUser() {
     const [userList, setUserList] = useState<IUser[]>([]);
     const [reload, setReloadt] = useState<boolean>(false);
     useEffect(() => {
-        userService.fetchUser(1)
+        userService
+            .fetchUser(1)
             .then((result) => {
                 if (result) {
                     result.forEach((item: IUser) => {
@@ -83,34 +61,52 @@ export default function ListUser() {
             renderCell: (params) => (
                 <div>
                     <Link className="edit" to={`/editUser/${params.row.id}`}>
-                        <Button variant="outlined" startIcon={<EditIcon />}>Edit</Button>
+                        <Button variant="outlined" startIcon={<EditIcon />}>
+                            Edit
+                        </Button>
                     </Link>
-                    <Button variant="outlined" startIcon={<DeleteOutlineIcon />} onClick={() => BanUser(params.row.id)}>Ban</Button>
-                    <Button variant="outlined" startIcon={<DeleteOutlineIcon />} onClick={() => UnBanUser(params.row.id)}>UnBan</Button>
-                    <Button variant="outlined" startIcon={<VisibilityIcon />}>View</Button>
+                    <Button variant="outlined" startIcon={<DeleteOutlineIcon />} onClick={() => BanUser(params.row.id)}>
+                        Ban
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        startIcon={<DeleteOutlineIcon />}
+                        onClick={() => UnBanUser(params.row.id)}
+                    >
+                        UnBan
+                    </Button>
+                    <Button variant="outlined" startIcon={<VisibilityIcon />}>
+                        View
+                    </Button>
                 </div>
             ),
         },
     ];
     async function BanUser(id: string) {
-        userService.banUser(id).then((result) => {
-            if (result === true) {
-                setUserList([])
-                setReloadt(!reload)
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
+        userService
+            .banUser(id)
+            .then((result) => {
+                if (result === true) {
+                    setUserList([]);
+                    setReloadt(!reload);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
     async function UnBanUser(id: string) {
-        userService.unbanUser(id).then((result) => {
-            if (result === true) {
-                setUserList([])
-                setReloadt(!reload)
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
+        userService
+            .unbanUser(id)
+            .then((result) => {
+                if (result === true) {
+                    setUserList([]);
+                    setReloadt(!reload);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
     return (
         <React.Fragment>

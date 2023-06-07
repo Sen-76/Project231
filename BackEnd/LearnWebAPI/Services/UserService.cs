@@ -59,14 +59,14 @@ namespace LearnWebAPI.Services
             //Lưu db
             var refreshTokenEntity = new RefreshToken
             {
-                Id =Guid.NewGuid(),
-                UserId= user.Id,
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
                 JwtId = token.Id,
                 Token = refreshToken,
-                IsUsed= false,
-                IsRevoked= false,
-                IssuedAt= DateTime.UtcNow,
-                ExpiredAt= DateTime.UtcNow.AddHours(1)
+                IsUsed = false,
+                IsRevoked = false,
+                IssuedAt = DateTime.UtcNow,
+                ExpiredAt = DateTime.UtcNow.AddHours(1)
             };
             await _context.AddAsync(refreshTokenEntity);
             await _context.SaveChangesAsync();
@@ -104,7 +104,7 @@ namespace LearnWebAPI.Services
                     {
                         return new ApiResponse
                         {
-                            Success= false,
+                            Success = false,
                             Message = "Invalid Token",
                         };
                     }
@@ -117,7 +117,7 @@ namespace LearnWebAPI.Services
                 {
                     return new ApiResponse
                     {
-                        Success= false,
+                        Success = false,
                         Message = "Access token has not yet expired",
                     };
                 }
@@ -128,8 +128,8 @@ namespace LearnWebAPI.Services
                 {
                     return new ApiResponse
                     {
-                        Success= false,
-                        Message= "Refresh token does not exist"
+                        Success = false,
+                        Message = "Refresh token does not exist"
                     };
                 }
 
@@ -138,16 +138,16 @@ namespace LearnWebAPI.Services
                 {
                     return new ApiResponse
                     {
-                        Success= false,
-                        Message= "Refresh token has been used"
+                        Success = false,
+                        Message = "Refresh token has been used"
                     };
                 }
                 if (storedToken.IsRevoked)
                 {
                     return new ApiResponse
                     {
-                        Success= false,
-                        Message= "Refresh token has been revoked"
+                        Success = false,
+                        Message = "Refresh token has been revoked"
                     };
                 }
 
@@ -157,8 +157,8 @@ namespace LearnWebAPI.Services
                 {
                     return new ApiResponse
                     {
-                        Success= false,
-                        Message= "Token doesn't match"
+                        Success = false,
+                        Message = "Token doesn't match"
                     };
                 }
 
@@ -174,8 +174,8 @@ namespace LearnWebAPI.Services
 
                 return new ApiResponse
                 {
-                    Success= true,
-                    Message= "Renew token Success",
+                    Success = true,
+                    Message = "Renew token Success",
                     Data = token
                 };
             }
@@ -184,7 +184,7 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = ex.Message,
                 };
             }
@@ -215,6 +215,15 @@ namespace LearnWebAPI.Services
         {
             try
             {
+                var userz = _context.Users.Where(x => x.Username == user.Username || x.Email == user.Email).FirstOrDefault();
+                if(userz != null)
+                {
+                    return new ApiResponse
+                    {
+                        Success = false,
+                        Message = "Username or Email already exist"
+                    };
+                }
                 //var newUser = _mapper.Map<User>(user);
                 var newUsers = new User()
                 {
@@ -224,16 +233,17 @@ namespace LearnWebAPI.Services
                     Password = user.Password,
                     Avatar = user.Avatar,
                     DateOfBirth = user.DateOfBirth,
-                    Email= user.Email,
-                    Phone= user.Phone,
+                    Email = user.Email,
+                    Phone = user.Phone,
                     Role = Models.RoleType.User,
                     Status = Models.StatusType.Active
                 };
                 _context.Add(newUsers);
                 await _context.SaveChangesAsync();
-                return new ApiResponse{
-                    Success= true,
-                    Data= newUsers
+                return new ApiResponse
+                {
+                    Success = true,
+                    Data = newUsers
                 };
             }
             catch (Exception ex)
@@ -241,7 +251,7 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = ex.Message
                 };
             }
@@ -250,7 +260,7 @@ namespace LearnWebAPI.Services
         {
             try
             {
-                var users = await _context.Users.Where(x => x.Id== user.Id).FirstOrDefaultAsync();
+                var users = await _context.Users.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
                 if (users != null)
                 {
                     users.Name = user.Name;
@@ -262,13 +272,13 @@ namespace LearnWebAPI.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = users
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Account doesn't exist"
                 };
             }
@@ -277,7 +287,7 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = ex.Message
                 };
             }
@@ -310,7 +320,7 @@ namespace LearnWebAPI.Services
                     smtpClient.Send(mailMessage);
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Message = "Mail Sended",
                         Data = verifyString
                     };
@@ -319,7 +329,7 @@ namespace LearnWebAPI.Services
                 {
                     return new ApiResponse
                     {
-                        Success= false,
+                        Success = false,
                         Message = "Mail doesn't exist."
                     };
                 }
@@ -330,7 +340,7 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = ex.Message
                 };
             }
@@ -348,13 +358,13 @@ namespace LearnWebAPI.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = users
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Account doesn't exist"
                 };
             }
@@ -363,7 +373,7 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                 };
             }
         }
@@ -384,13 +394,13 @@ namespace LearnWebAPI.Services
                 {
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = users
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Account doesn't exist"
                 };
             }
@@ -399,7 +409,7 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                 };
             }
         }
@@ -413,16 +423,16 @@ namespace LearnWebAPI.Services
                 var PaginatedUser = await PaginatedList<User>.CreateAsync(AllUser, pageIndex ?? 1, pageSize);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Fetch Success",
-                    Data= PaginatedUser
+                    Data = PaginatedUser
                 };
             }
             catch (Exception ex)
             {
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = ex.ToString()
                 };
             }
@@ -440,13 +450,13 @@ namespace LearnWebAPI.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = user
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "User is no longer exist"
                 };
             }
@@ -455,7 +465,7 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = ex.Message.ToString()
                 };
             }
@@ -472,13 +482,13 @@ namespace LearnWebAPI.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = user
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "User is no longer exist"
                 };
             }
@@ -487,7 +497,7 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = ex.Message.ToString()
                 };
             }
@@ -505,8 +515,8 @@ namespace LearnWebAPI.Services
                     Password = user.Password,
                     Avatar = user.Avatar,
                     DateOfBirth = user.DateOfBirth,
-                    Email= user.Email,
-                    Phone= user.Phone,
+                    Email = user.Email,
+                    Phone = user.Phone,
                     Role = user.Role,
                     Status = user.Status,
                 };
@@ -514,7 +524,7 @@ namespace LearnWebAPI.Services
                 await _context.SaveChangesAsync();
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                     Data = newUsers
                 };
             }
@@ -523,7 +533,7 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                 };
             }
         }
@@ -531,7 +541,7 @@ namespace LearnWebAPI.Services
         {
             try
             {
-                var users = await _context.Users.Where(x => x.Id== user.Id).FirstOrDefaultAsync();
+                var users = await _context.Users.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
                 if (users != null)
                 {
                     users.Name = user.Name;
@@ -547,13 +557,13 @@ namespace LearnWebAPI.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = users
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Account doesn't exist"
                 };
             }
@@ -562,7 +572,7 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                 };
             }
         }

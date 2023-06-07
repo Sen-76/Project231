@@ -1,10 +1,11 @@
+import { IUser } from './user';
 export interface IComment {
     commentId: string;
     newsPaperId: string;
     newsPaper: null;
     userId: string;
-    user: null;
+    user: IUser;
     content: string;
-    postTime: string;
+    postTime: Date;
     isDeleted: false;
 }

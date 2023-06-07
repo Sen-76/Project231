@@ -1,18 +1,6 @@
 import * as request from '../utils/httpRequest';
-interface IUser {
-    avatar?: string | undefined;
-    dateOfBirth?: string | undefined;
-    // dateOfBirth: Dayjs | null;
-    email?: string | undefined;
-    name: string;
-    password: string;
-    phone?: string | undefined;
-    username: string;
-}
-interface IUserLogin {
-    username: string;
-    password: string;
-}
+import { IUser, IUserLogin } from '../interface/user';
+
 export const login = async (user: IUserLogin) => {
     try {
         const res = await request.post('User/Login', user);

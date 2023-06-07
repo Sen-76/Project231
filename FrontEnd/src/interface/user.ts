@@ -23,6 +23,12 @@ export enum ERole {
     Admin = 4,
 }
 
+export enum EStatus {
+    NotActive = 0,
+    Active = 1,
+    Banned = 2,
+}
+
 export const defaultUserState = {
     id: '4cea2479-63ef-4069-bef9-65649bae0905',
     avatar: '',
@@ -36,8 +42,7 @@ export const defaultUserState = {
     status: 0,
 };
 
-export enum EStatus {
-    NotActive = 0,
-    Active = 1,
-    Banned = 2,
-}
+export const defaultUserLogin = {
+    username: '',
+    password: '',
+};

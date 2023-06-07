@@ -76,11 +76,11 @@ namespace LearnWebAPI.Controllers
         {
             try
             {
-                var userLogin = _userService.Regis(user).Result;
-                if (userLogin.Success == false)
+                if (!ModelState.IsValid)
                 {
                     return NotFound();
                 }
+                var userLogin = _userService.Regis(user).Result;
                 return Ok(userLogin);
             }
             catch (Exception ex)

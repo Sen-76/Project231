@@ -3,7 +3,6 @@ const routeConfig = {
     home: '/home',
     reduxexamples: '/reduxexamples',
     tonghop: '/tonghop',
-    register: '/register',
     listNewByCategory: '/listNews/:category',
     signin: '/signin',
     signup: '/signup',

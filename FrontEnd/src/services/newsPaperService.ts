@@ -1,21 +1,10 @@
 import * as request from '../utils/httpRequest';
-export interface INewsPaperAdd {
-    title: string;
-    content: string;
-    description: string;
-    categoryId: string[];
-}
-export interface INewsPaperUpdate {
-    id: string;
-    title: string;
-    content: string;
-    description: string;
-    categoryId: string[];
-}
+import { INewsPaperAdd, INewsPaperUpdate } from '../interface/new';
+
 export const getnewsPaperList = async (page: Number) => {
     try {
         const res = await request.get('newspaper/getlistnewspaper', {
-            params: { page }
+            params: { page },
         });
         return res.data;
     } catch (error) {

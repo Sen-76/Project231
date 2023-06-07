@@ -1,4 +1,4 @@
-import styles from './home.module.scss';
+import './home.module.scss';
 import './index.scss';
 import PopularNews from '../../components/News/PopularNews';
 import FromAroundTheWorld from '../../components/News/FromAroundTheWorld';
@@ -16,7 +16,7 @@ function Home() {
             <Featurepost />
             <CssBaseline />
             <Container maxWidth="lg">
-                <div className={styles.content_area}>
+                <div className="content_area">
                     <div className="main_content floatleft">
                         <FromAroundTheWorld></FromAroundTheWorld>
                         <LastestArticles></LastestArticles>

@@ -24,7 +24,7 @@ namespace BackEnd.Services
 
         public async Task<PaginatedList<Comment>> GetListComments(int? pageIndex, string NewsPaperId)
         {
-            var AllComments = _context.Comments.Where(x => x.IsDeleted == false && x.NewsPaperId.Equals(Guid.Parse(NewsPaperId))).AsNoTracking();
+            var AllComments = _context.Comments.Include(x => x.User).Where(x => x.IsDeleted == false && x.NewsPaperId.Equals(Guid.Parse(NewsPaperId))).AsNoTracking();
             var pageSize = _configuration.GetValue("PageSize", 10);
             var PaginatedComments = await PaginatedList<Comment>.CreateAsync(AllComments, pageIndex ?? 1, pageSize);
             return PaginatedComments;

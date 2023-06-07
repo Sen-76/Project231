@@ -3,22 +3,12 @@ import './detail.scss';
 import * as newDetailService from '../../services/newDetailService';
 import * as commentService from '../../services/commentService';
 import { INewsPaper } from '../../components/News/PopularNews/model';
-import LastestArticles from '../../components/News/LastestArticles';
 import { useParams } from 'react-router-dom';
 import FeaturePostDetail from './featurePostDetail';
 import { Box, Paper, ThemeProvider, Typography, createTheme } from '@mui/material';
 import Comment from './Comment/comment';
+import { IComment } from '../../interface/comment';
 
-interface IComment {
-    commentId: string;
-    newsPaperId: string;
-    newsPaper: null;
-    userId: string;
-    user: null;
-    content: string;
-    postTime: string;
-    isDeleted: false;
-}
 const defaultTheme = createTheme();
 function DashBoard() {
     const { id } = useParams();
@@ -40,6 +30,7 @@ function DashBoard() {
             .then((result: IComment[]) => {
                 if (result) {
                     setCommentList(result);
+                    console.log(result);
                 }
             })
             .catch((error) => {
@@ -71,16 +62,13 @@ function DashBoard() {
                 <Typography variant="h6" gutterBottom>
                     {'Summarize'}
                 </Typography>
-                <Typography>{newDetail?.description}
-                    </Typography>
+                <Typography>{newDetail?.description}</Typography>
             </Paper>
             <div>
                 {commentList?.map((item: IComment) => (
-                    <Comment comment={item} />
+                    <Comment comment={item} key={item.commentId} />
                 ))}
             </div>
-
-            {/* <LastestArticles></LastestArticles> */}
         </ThemeProvider>
     );
 }

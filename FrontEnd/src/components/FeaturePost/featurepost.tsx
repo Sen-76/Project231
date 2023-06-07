@@ -4,14 +4,9 @@ import { INewsPaper } from '../NewsPaperListManager/model';
 import * as newspaperService from '../../services/newsPaperService';
 import { Link } from 'react-router-dom';
 
-interface IProp{
-    idpost: string;
-}
-
-function  Featurepost () {
+function Featurepost() {
     const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
-    useEffect(() => 
-    {
+    useEffect(() => {
         newspaperService
             .getnewsPaperList(1)
             .then((result: INewsPaper[]) => {
@@ -24,10 +19,10 @@ function  Featurepost () {
             });
     }, []);
 
-    const firstItemImg = newsPaperList[0] && newsPaperList[0].image ? newsPaperList[0].image : 'no data';
-    const firstItemId = newsPaperList[0] && newsPaperList[0].id ? newsPaperList[0].id : 'no data';
-    const firstItemTitle = newsPaperList[0] && newsPaperList[0].title ? newsPaperList[0].title : 'no data';
-    const firstItemContent = newsPaperList[0] && newsPaperList[0].content ? newsPaperList[0].content : 'no data';
+    const firstItemImg = newsPaperList[0]?.image ? newsPaperList[0].image : 'no data';
+    const firstItemId = newsPaperList[0]?.id ? newsPaperList[0].id : 'no data';
+    const firstItemTitle = newsPaperList[0]?.title ? newsPaperList[0].title : 'no data';
+    const firstItemContent = newsPaperList[0]?.content ? newsPaperList[0].content : 'no data';
     return (
         <Paper
             sx={{

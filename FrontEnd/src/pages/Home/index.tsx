@@ -1,4 +1,4 @@
-import './home.module.scss';
+import styles from './home.module.scss';
 import './index.scss';
 import PopularNews from '../../components/News/PopularNews';
 import FromAroundTheWorld from '../../components/News/FromAroundTheWorld';
@@ -12,11 +12,12 @@ import Featurepost from '../../components/FeaturePost/featurepost';
 const defaultTheme = createTheme();
 function Home() {
     return (
-        <ThemeProvider theme={defaultTheme}>
+        <div className={styles.content_area}> 
+            <ThemeProvider theme={defaultTheme}>
             <Featurepost />
             <CssBaseline />
             <Container maxWidth="lg">
-                <div className="content_area">
+                <div>
                     <div className="main_content floatleft">
                         <FromAroundTheWorld></FromAroundTheWorld>
                         <LastestArticles></LastestArticles>
@@ -29,6 +30,8 @@ function Home() {
                 </div>
             </Container>
         </ThemeProvider>
+        </div>
+        
     );
 }
 

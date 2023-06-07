@@ -30,22 +30,6 @@ function Footer() {
                         ))}
                     </ul>
                 </div>
-                <div className="copyright_text">
-                    <p>
-                        Copyright &copy; 2045 The News Reporter Inc. All rights reserved | Design by{' '}
-                        <a
-                            target="_blank"
-                            rel="nofollow"
-                            href="http://www.graphicsfuel.com/2045/10/wp-magazine-theme-template-psd/"
-                        >
-                            Rafi MD
-                        </a>
-                    </p>
-                    <p>
-                        Trade marks and images used in the design are the copyright of their respective owners and are
-                        used for demo purposes only.
-                    </p>
-                </div>
             </div>
         </div>
     );

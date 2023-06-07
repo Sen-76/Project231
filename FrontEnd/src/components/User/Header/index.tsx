@@ -24,7 +24,7 @@ function Header() {
             <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Button size="small">Subscribe</Button>
                 <Typography component="h2" variant="h5" color="inherit" align="center" noWrap sx={{ flex: 1 }}>
-                    {'Misa&Elwyn Magazine'}
+                    {'M&E Magazine'}
                 </Typography>
                 <IconButton>
                     <SearchIcon />
@@ -36,8 +36,8 @@ function Header() {
                 </Link>
             </Toolbar>
             <Toolbar component="nav" variant="dense" sx={{ justifyContent: 'space-between', overflowX: 'auto' }}>
-                {CategoryList.map((category, key) => (
-                    <Link key={key} to={`/listNews/${category.id}`}>
+                {CategoryList.map((category) => (
+                    <Link key={category.id} to={`/listNews/${category.id}`}>
                         {category.name}
                     </Link>
                 ))}

@@ -1,5 +1,5 @@
-import { Button, FormControl, InputLabel, TextField, Box, Select, MenuItem } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Button, FormControl, TextField, Box, Select, MenuItem } from '@mui/material';
+import { useState } from 'react';
 import * as userService from '../../../services/userService';
 import { IUser, ERole, defaultUserState } from '../../../interface/user';
 
@@ -99,7 +99,7 @@ function AddUser() {
                 </FormControl>
 
                 <div className="actionButton">
-                    <Button onClick={Save}>Save</Button>
+                    <Button onClick={() => Save}>Save</Button>
                     <Button>Close</Button>
                 </div>
             </Box>

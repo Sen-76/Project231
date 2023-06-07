@@ -9,7 +9,7 @@ function EditUser() {
     const [user, setUser] = useState<IUser>(defaultUserState);
     useEffect(() => {
         userService
-            .userById(id || '')
+            .userById(id ?? '')
             .then((result: IUser) => {
                 if (result) {
                     setUser(result);
@@ -144,7 +144,7 @@ function EditUser() {
                 </FormControl>
 
                 <div className="actionButton">
-                    <Button onClick={Save}>Save</Button>
+                    <Button onClick={() => Save}>Save</Button>
                     <Button>Close</Button>
                 </div>
             </Box>

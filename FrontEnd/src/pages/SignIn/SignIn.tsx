@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../store/hook';
 import jwt_decode from 'jwt-decode';
-import { login, setToken } from '../../store/userSlice';
+import { login, setToken, UserLogin } from '../../store/userSlice';
 import * as userService from '../../services/userService';
 import {
     Box,
@@ -21,8 +21,9 @@ import {
     Container,
     Typography,
 } from '@mui/material';
-import { UserLogin } from '../../store/userSlice';
 import routeConfig from '../../config/routes';
+import Alert from '@mui/material/Alert';
+
 
 const defaultTheme = createTheme();
 
@@ -31,6 +32,7 @@ export default function SignIn() {
     const [alert, setAlert] = useState<string>('');
     const dispatch = useDispatch();
     const userLoginTest = useAppSelector((state) => state.user.UserLogin);
+    console.log(userLoginTest);
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -70,7 +72,8 @@ export default function SignIn() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    {alert ?? <Alert severity="error">This is an error alert — check it out!</Alert>}
+                    <Box component="form" onSubmit={() => handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required

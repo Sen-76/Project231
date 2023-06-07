@@ -1,8 +1,6 @@
 import styles from './comment.module.scss';
-import { Avatar, Box, Paper } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Avatar, Box } from '@mui/material';
 import { IComment } from '../../../interface/comment';
-import { format } from 'date-fns';
 
 interface ICommentProp {
     comment: IComment;

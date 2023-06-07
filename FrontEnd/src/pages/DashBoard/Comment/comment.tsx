@@ -1,6 +1,7 @@
 import styles from './comment.module.scss';
 import { Avatar, Box } from '@mui/material';
 import { IComment } from '../../../interface/comment';
+import { format, parseISO } from 'date-fns';
 
 interface ICommentProp {
     comment: IComment;
@@ -22,7 +23,7 @@ function Comment({ comment }: ICommentProp) {
                 <div className={styles.commentItem}>
                     <div className={styles.commentHeader}>
                         <span className={styles.username}>{comment.user.name}</span>
-                        <span className={styles.date}>{comment.postTime.toString()}</span>
+                        <span className={styles.date}>{format(parseISO(comment.postTime), 'dd-MMM-yyyy')}</span>
                     </div>
                     <span className={styles.content}>{comment.content}</span>
                 </div>

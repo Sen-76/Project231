@@ -6,6 +6,6 @@ export interface IComment {
     userId: string;
     user: IUser;
     content: string;
-    postTime: Date;
+    postTime: string;
     isDeleted: false;
 }

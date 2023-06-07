@@ -4,17 +4,30 @@ import * as newspaperService from '../../../services/newDetailService';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useParams } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, FormControl } from '@mui/material';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic/build/ckeditor';
 
 export default function ListNewspaper() {
     const { id } = useParams();
     const [newsPaper, setNewsPaper] = useState<INewsPaperDetail>();
+
+    const [editorContent, setEditorContent] = useState('');
+
+    const handleEditorChange = (event: any, editor: any) => {
+        const data = editor.getData();
+        setEditorContent(data);
+        // setNewsPaper({ ...newsPaper, content: data.toString() });
+        console.log(newsPaper);
+    };
+
     useEffect(() => {
         newspaperService
-            .getNewDetail(id || '')
+            .getNewDetail(id ?? '')
             .then((result: INewsPaperDetail) => {
                 if (result) {
                     setNewsPaper(result);
+                    console.log(result);
                 }
             })
             .catch((error) => {
@@ -24,77 +37,32 @@ export default function ListNewspaper() {
 
     return (
         <React.Fragment>
-            <div className="titleCategoryM">Edit:</div>
-            <Box
-                component="form"
-                sx={{
-                    '& .MuiTextField-root': { m: 1, width: '25ch' },
-                }}
-                noValidate
-                autoComplete="off"
-            >
-                <div className='first'>
-                    <div>Author:</div>
-                    <TextField
-                        disabled
-                        id="outlined-disabled"
-                        defaultValue={newsPaper?.author.name}
-                        InputProps={{
-                            style: {
-                                width: '900px',
-                                height: '100%',
-                            },
-                        }}
-                    />
-                </div>
+            <div className="titleCategoryM">Edit Newspaper:</div>
+            <Box sx={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
+                <FormControl fullWidth>
+                    <label htmlFor="input-author">Author</label>
+                    <TextField id="input-author" />
+                </FormControl>
                 <div>
-                    <div>Content:</div>
-                    <TextField
-                        id="outlined-multiline-static"
-                        multiline
-                        rows={6}
-                        defaultValue={newsPaper?.content}
-                        InputProps={{
-                            style: {
-                                width: '900px',
-                                height: '100%',
-                            },
-                        }}
-                    />
+                    <h2>CKEditor 5 Example</h2>
+                    <CKEditor editor={ClassicEditor} data={editorContent} onChange={handleEditorChange} />
                 </div>
-                <div>
-                    <div>Description:</div>
-                    <TextField
-                        id="outlined-multiline-static"
-                        multiline
-                        rows={4}
-                        defaultValue={newsPaper?.description}
-                        InputProps={{
-                            style: {
-                                width: '900px',
-                                height: '100%',
-                            },
-                        }}
-                    />
-                </div>
+                <FormControl fullWidth>
+                    <label htmlFor="input-content">Content</label>
+                    <TextField id="input-content" />
+                </FormControl>
 
-                <div>
-                    <div>Title:</div>
-                    <TextField
-                        id="outlined-multiline-static"
-                        multiline
-                        rows={4}
-                        defaultValue={newsPaper?.title}
-                        InputProps={{
-                            style: {
-                                width: '900px',
-                                height: '100%',
-                            },
-                        }}
-                    />
-                </div>
+                <FormControl fullWidth>
+                    <label htmlFor="input-description">Description</label>
+                    <TextField id="input-description" multiline rows={4} />
+                </FormControl>
 
-                <div className='actionButton'>
+                <FormControl fullWidth>
+                    <label htmlFor="input-title">Title</label>
+                    <TextField id="input-title" multiline rows={4} />
+                </FormControl>
+
+                <div className="actionButton">
                     <Button>Save</Button>
                     <Button>Close</Button>
                 </div>

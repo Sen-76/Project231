@@ -1,4 +1,5 @@
 ﻿using BackEnd.Models;
+using BackEnd.Ultity;
 
 namespace LearnWebAPI.Models
 {
@@ -18,17 +19,25 @@ namespace LearnWebAPI.Models
 
     public enum RoleType : byte
     {
+        [EnumAttribute(0)]
         User = 0,
+        [EnumAttribute(1)]
         Writer = 1,
+        [EnumAttribute(2)]
         Leader = 2,
+        [EnumAttribute(3)]
         Editor = 3,
+        [EnumAttribute(4)]
         Admin = 4
     }
 
     public enum StatusType : byte
     {
+        [EnumAttribute(0)]
         NotActive = 0,
+        [EnumAttribute(1)]
         Active = 1,
+        [EnumAttribute(2)]
         Banned = 2
     }
 }

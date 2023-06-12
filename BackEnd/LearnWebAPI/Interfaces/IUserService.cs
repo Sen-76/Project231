@@ -17,7 +17,7 @@ namespace LearnWebAPI.Interfaces
         Task<ApiResponse> BanUser(string id);
         Task<ApiResponse> UnBanUser(string id);
         Task<ApiResponse> AdminUpdateUser(User user);
-        Task<ApiResponse> AdminAddUser(User user);
+        Task<ApiResponse> AdminAddUser(UserAdminAddVM user);
         Task<ApiResponse> GetUserById(string id);
     }
 }

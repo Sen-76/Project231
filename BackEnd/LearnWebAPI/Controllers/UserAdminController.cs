@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Interfaces;
 using LearnWebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -37,7 +38,7 @@ namespace BackEnd.Controllers
             }
             return null;
         }
-        
+
         [HttpGet("UserById")]
         public IActionResult UserById(string id)
         {
@@ -77,11 +78,15 @@ namespace BackEnd.Controllers
             return Ok(result);
         }
         [HttpPost("AddUser")]
-        public IActionResult AddUser(User user)
+        public IActionResult AddUser([FromForm] UserAdminAddVM user)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var result = _userService.AdminAddUser(user).Result;
             return Ok(result);
         }
-   
+
     }
 }

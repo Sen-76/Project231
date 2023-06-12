@@ -1,5 +1,5 @@
 import { Avatar, Button, CssBaseline, TextField, Link, Grid, Box, Typography, Container } from '@mui/material';
-import './SignUp.scss'
+import './SignUp.scss';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
@@ -50,7 +50,11 @@ export default function SignUp() {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    {alert === "false" ? <Alert severity="error">This is an error alert — check it out!</Alert> : <div>No</div>}
+                    {alert === 'false' ? (
+                        <Alert severity="error">This is an error alert — check it out!</Alert>
+                    ) : (
+                        <div>No</div>
+                    )}
 
                     <Box component="form" noValidate onSubmit={() => handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={1}>
@@ -118,7 +122,7 @@ export default function SignUp() {
                                     type="avatar"
                                     id="avatar"
                                     autoComplete="avatar"
-                                    onChange={(e) => setUserRegis({ ...userRegis, avatar: e.target.value })}
+                                    // onChange={(e) => setUserRegis({ ...userRegis, avatar: e.target.value })}
                                 />
                             </Grid>
                             <Grid item xs={12}>

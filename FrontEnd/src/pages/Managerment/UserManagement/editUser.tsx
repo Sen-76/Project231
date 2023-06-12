@@ -91,7 +91,7 @@ function EditUser() {
                     <TextField
                         value={user.avatar}
                         id="input-avatar"
-                        onChange={(e) => setUser({ ...user, avatar: e.target.value })}
+                        // onChange={(e) => setUser({ ...user, avatar: e.target.value })}
                         variant="outlined"
                     />
                 </FormControl>

@@ -13,6 +13,8 @@ using System.Security.Cryptography;
 using System.Text;
 using BackEnd.Models;
 using BackEnd.Paging;
+using BackEnd.Ultity;
+//using BackEnd.Ultity.ImageSaver;
 
 namespace LearnWebAPI.Services
 {
@@ -502,23 +504,25 @@ namespace LearnWebAPI.Services
                 };
             }
         }
-        public async Task<ApiResponse> AdminAddUser(User user)
+        public async Task<ApiResponse> AdminAddUser(UserAdminAddVM user)
         {
             try
             {
-                //var newUser = _mapper.Map<User>(user);
+                var id = Guid.NewGuid();
+                var uploadedFile = user.Avatar;
+                ImageSaver.SaveImage(uploadedFile, id);
                 var newUsers = new User()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = id,
                     Name = user.Name,
                     Username = user.Username,
                     Password = user.Password,
-                    Avatar = user.Avatar,
+                    Avatar = id + uploadedFile?.FileName,
                     DateOfBirth = user.DateOfBirth,
                     Email = user.Email,
                     Phone = user.Phone,
-                    Role = user.Role,
-                    Status = user.Status,
+                    Role = Ultity.ConvertToEnum<RoleType>(user.Role),
+                    Status = Ultity.ConvertToEnum<LearnWebAPI.Models.StatusType>(user.Status),
                 };
                 _context.Add(newUsers);
                 await _context.SaveChangesAsync();

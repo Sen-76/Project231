@@ -1,6 +1,8 @@
+import { UploadFile, UploadStatus } from './file';
+
 export interface IUser {
     id: string;
-    avatar?: string;
+    avatar?: UploadFile;
     dateOfBirth?: string;
     email?: string;
     name: string;
@@ -31,7 +33,13 @@ export enum EStatus {
 
 export const defaultUserState = {
     id: '4cea2479-63ef-4069-bef9-65649bae0905',
-    avatar: '',
+    avatar: {
+        name: '',
+        status: 'ready' as UploadStatus,
+        size: 0,
+        uid: 0,
+        url: '',
+    },
     dateOfBirth: '',
     email: '',
     name: '',

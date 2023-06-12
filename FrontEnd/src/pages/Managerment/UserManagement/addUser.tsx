@@ -1,11 +1,16 @@
 import { Button, FormControl, TextField, Box, Select, MenuItem } from '@mui/material';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import * as userService from '../../../services/userService';
 import { IUser, ERole, defaultUserState } from '../../../interface/user';
 
 function AddUser() {
     const [user, setUser] = useState<IUser>(defaultUserState);
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = (event.target.files as FileList)[0];
+        setUser({ ...user, avatar: file || null });
+    };
     async function Save() {
+        console.log(user);
         await userService
             .addUser(user)
             .then((result) => {
@@ -64,14 +69,20 @@ function AddUser() {
                     />
                 </FormControl>
 
-                <FormControl fullWidth variant="filled">
+                 <FormControl fullWidth variant="filled">
                     <label htmlFor="input-avatar">Avatar</label>
                     <TextField
-                        id="input-avatar"
-                        onChange={(e) => setUser({ ...user, avatar: e.target.value })}
+                        type="file"
                         variant="outlined"
+                        onChange={handleFileChange}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        inputProps={{
+                            accept: '.jpg,.png,.jpeg,.webp',
+                        }}
                     />
-                </FormControl>
+                </FormControl> 
 
                 <FormControl fullWidth variant="filled">
                     <label htmlFor="input-avatar">Date of Birth</label>
@@ -99,7 +110,7 @@ function AddUser() {
                 </FormControl>
 
                 <div className="actionButton">
-                    <Button onClick={() => Save}>Save</Button>
+                    <Button onClick={Save}>Save</Button>
                     <Button>Close</Button>
                 </div>
             </Box>

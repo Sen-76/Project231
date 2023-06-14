@@ -1,6 +1,6 @@
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { INewsPaper } from '../NewsPaperListManager/model';
+import { INewsPaper } from '../../interface/new';
 import * as newspaperService from '../../services/newsPaperService';
 import { Link } from 'react-router-dom';
 

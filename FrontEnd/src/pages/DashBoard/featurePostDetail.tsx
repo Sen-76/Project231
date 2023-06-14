@@ -1,6 +1,6 @@
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import React from 'react';
-import { INewsPaper } from '../../components/NewsPaperListManager/model';
+import { INewsPaper } from '../../interface/new';
 
 interface IProp {
     newDetail: INewsPaper;

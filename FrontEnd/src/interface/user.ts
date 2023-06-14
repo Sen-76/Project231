@@ -2,7 +2,8 @@ import { UploadFile, UploadStatus } from './file';
 
 export interface IUser {
     id: string;
-    avatar?: UploadFile;
+    // avatar?: UploadFile;
+    avatar?: File | null;
     dateOfBirth?: string;
     email?: string;
     name: string;
@@ -16,7 +17,6 @@ export interface IUserLogin {
     username: string;
     password: string;
 }
-
 export enum ERole {
     User = 0,
     Writer = 1,
@@ -24,22 +24,21 @@ export enum ERole {
     Editor = 3,
     Admin = 4,
 }
-
 export enum EStatus {
     NotActive = 0,
     Active = 1,
     Banned = 2,
 }
-
 export const defaultUserState = {
     id: '4cea2479-63ef-4069-bef9-65649bae0905',
-    avatar: {
-        name: '',
-        status: 'ready' as UploadStatus,
-        size: 0,
-        uid: 0,
-        url: '',
-    },
+    // avatar: {
+    //     name: '',
+    //     status: 'ready' as UploadStatus,
+    //     size: 0,
+    //     uid: 0,
+    //     url: '',
+    // },
+    avatar: null,
     dateOfBirth: '',
     email: '',
     name: '',
@@ -49,7 +48,6 @@ export const defaultUserState = {
     role: ERole.User,
     status: 0,
 };
-
 export const defaultUserLogin = {
     username: '',
     password: '',

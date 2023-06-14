@@ -19,8 +19,6 @@ export default function SignUp() {
         await userService
             .regis(userRegis)
             .then((result) => {
-                console.log(result);
-                console.log(userRegis);
                 if (result.success === false) {
                     setAlert(result.message);
                 } else {

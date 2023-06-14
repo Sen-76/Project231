@@ -1,33 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { INewsPaperDetail } from '../../../components/NewsPaperListManager/model';
+import { INewsPaperAdd, defaultNewsPaperAdd } from '../../../interface/new';
 import * as newspaperService from '../../../services/newDetailService';
-import Box from '@mui/material/Box';
+import * as categoryService from '../../../services/categoryService';
+import { Box, Chip, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { useParams } from 'react-router-dom';
 import { Button, FormControl } from '@mui/material';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic/build/ckeditor';
+import { ICategory } from '../../../interface/category';
 
 export default function ListNewspaper() {
-    const { id } = useParams();
-    const [newsPaper, setNewsPaper] = useState<INewsPaperDetail>();
-
-    const [editorContent, setEditorContent] = useState('');
-
-    const handleEditorChange = (event: any, editor: any) => {
-        const data = editor.getData();
-        setEditorContent(data);
-        // setNewsPaper({ ...newsPaper, content: data.toString() });
-        console.log(newsPaper);
-    };
-
+    const [newsPaper, setNewsPaper] = useState<INewsPaperAdd>(defaultNewsPaperAdd);
+    const [cate, setCate] = useState<ICategory[]>([]);
+    const [selectedCate, setSelectedCate] = useState<string[]>([]);
     useEffect(() => {
-        newspaperService
-            .getNewDetail(id ?? '')
-            .then((result: INewsPaperDetail) => {
+        categoryService
+            .listCate()
+            .then((result: ICategory[]) => {
                 if (result) {
-                    setNewsPaper(result);
-                    console.log(result);
+                    setCate(result);
                 }
             })
             .catch((error) => {
@@ -35,35 +26,71 @@ export default function ListNewspaper() {
             });
     }, []);
 
+    async function SaveNews() {
+        console.log(newsPaper);
+    }
+
+    const handleChange = (event: SelectChangeEvent<string[]>) => {
+        const {
+            target: { value },
+        } = event;
+        setNewsPaper({ ...newsPaper, categoryId: typeof value === 'string' ? value.split(',') : value });
+    };
     return (
         <React.Fragment>
             <div className="titleCategoryM">Edit Newspaper:</div>
             <Box sx={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
                 <FormControl fullWidth>
-                    <label htmlFor="input-author">Author</label>
-                    <TextField id="input-author" />
+                    <label htmlFor="input-title">Title</label>
+                    <TextField
+                        id="input-title"
+                        onChange={(event: any) => setNewsPaper({ ...newsPaper, title: event.target.value })}
+                    />
                 </FormControl>
-                <div>
-                    <h2>CKEditor 5 Example</h2>
-                    <CKEditor editor={ClassicEditor} data={editorContent} onChange={handleEditorChange} />
-                </div>
-                <FormControl fullWidth>
-                    <label htmlFor="input-content">Content</label>
-                    <TextField id="input-content" />
-                </FormControl>
-
                 <FormControl fullWidth>
                     <label htmlFor="input-description">Description</label>
-                    <TextField id="input-description" multiline rows={4} />
+                    <TextField
+                        id="input-description"
+                        multiline
+                        rows={4}
+                        onChange={(event: any) => setNewsPaper({ ...newsPaper, description: event.target.value })}
+                    />
                 </FormControl>
-
                 <FormControl fullWidth>
-                    <label htmlFor="input-title">Title</label>
-                    <TextField id="input-title" multiline rows={4} />
+                    <label htmlFor="input-content">Content</label>
+                    <CKEditor
+                        editor={ClassicEditor}
+                        data={newsPaper.content}
+                        onChange={(event: any, editor: any) =>
+                            setNewsPaper({ ...newsPaper, content: editor.getData() })
+                        }
+                        id="input-content"
+                    />
                 </FormControl>
-
+                <FormControl fullWidth>
+                    <label htmlFor="input-cate">Category</label>
+                    <Select
+                        id="input-cate"
+                        multiple
+                        value={newsPaper.categoryId}
+                        onChange={handleChange}
+                        renderValue={(selected) => (
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                {selected.map((value) => (
+                                    <Chip key={value} label={value} />
+                                ))}
+                            </Box>
+                        )}
+                    >
+                        {cate.map((cate) => (
+                            <MenuItem key={cate.id} value={cate.id}>
+                                {cate.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <div className="actionButton">
-                    <Button>Save</Button>
+                    <Button onClick={SaveNews}>Save</Button>
                     <Button>Close</Button>
                 </div>
             </Box>

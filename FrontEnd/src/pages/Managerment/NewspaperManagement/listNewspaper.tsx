@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import * as newspaperService from '../../../services/newsPaperService';
 import './index.scss';
 import { useEffect, useState } from 'react';
-import { INewsPaper } from '../../../components/NewsPaperListManager/model';
+import { INewsPaper } from '../../../interface/new';
 import { Button, Divider, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';

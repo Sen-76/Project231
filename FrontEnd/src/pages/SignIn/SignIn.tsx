@@ -24,7 +24,6 @@ import {
 import routeConfig from '../../config/routes';
 import Alert from '@mui/material/Alert';
 
-
 const defaultTheme = createTheme();
 
 export default function SignIn() {

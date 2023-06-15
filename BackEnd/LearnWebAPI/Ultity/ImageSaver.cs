@@ -10,7 +10,7 @@ namespace BackEnd.Ultity
             try
             {
                 string directFolder = Directory.GetCurrentDirectory();
-                string directoryPath = Path.Combine(directFolder, "wwwroot\\ImageSave\\");
+                string directoryPath = Path.Combine(directFolder, "FrontEnd\\src\\ImageSave\\");
                 if (!Directory.Exists(directoryPath))
                 {
                     Directory.CreateDirectory(directoryPath);

@@ -40,7 +40,7 @@ namespace BackEnd.Services
                     Image = newsPaper.Image,
                     CreatedDate = DateTime.UtcNow,
                     Status = Models.StatusType.Posted,
-                    UserId = Guid.Parse("1a6e8503-ee14-4ee9-95c1-9e5d2205e653"),
+                    UserId = Guid.Parse("3153797E-855A-4695-B694-69BC50E042E3"),
                 };
                 await _context.AddAsync(newsPapers);
                 await _context.SaveChangesAsync();
@@ -48,7 +48,7 @@ namespace BackEnd.Services
                 {
                     Id = Guid.NewGuid(),
                     NewsPaperId = newsPapers.Id,
-                    UserId = Guid.Parse("1a6e8503-ee14-4ee9-95c1-9e5d2205e653")
+                    UserId = Guid.Parse("3153797E-855A-4695-B694-69BC50E042E3")
                 };
                 await _context.AddAsync(newsPaperDetail);
                 await _context.SaveChangesAsync();
@@ -71,7 +71,7 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success= false,
                 };
             }
         }

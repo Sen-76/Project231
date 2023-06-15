@@ -72,7 +72,7 @@ namespace BackEnd.Controllers
             return Ok(result);
         }
         [HttpPost("UpdateUser")]
-        public IActionResult UpdateUser(User user)
+        public IActionResult UpdateUser([FromForm] UserAdminUpdateVM user)
         {
             var result = _userService.AdminUpdateUser(user).Result;
             return Ok(result);

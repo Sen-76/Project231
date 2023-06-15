@@ -218,7 +218,7 @@ namespace LearnWebAPI.Services
             try
             {
                 var userz = _context.Users.Where(x => x.Username == user.Username || x.Email == user.Email).FirstOrDefault();
-                if(userz != null)
+                if (userz != null)
                 {
                     return new ApiResponse
                     {
@@ -510,7 +510,10 @@ namespace LearnWebAPI.Services
             {
                 var id = Guid.NewGuid();
                 var uploadedFile = user.Avatar;
-                ImageSaver.SaveImage(uploadedFile, id);
+                if (user.Avatar != null)
+                {
+                    ImageSaver.SaveImage(uploadedFile, id);
+                }
                 var newUsers = new User()
                 {
                     Id = id,
@@ -537,26 +540,32 @@ namespace LearnWebAPI.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success = true,
+                    Success = false,
+                    Message = ex.Message.ToString()
                 };
             }
         }
-        public async Task<ApiResponse> AdminUpdateUser(User user)
+        public async Task<ApiResponse> AdminUpdateUser(UserAdminUpdateVM user)
         {
             try
             {
+                var uploadedFile = user.Avatar;
                 var users = await _context.Users.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
                 if (users != null)
                 {
                     users.Name = user.Name;
-                    users.Avatar = user.Avatar;
                     users.DateOfBirth = user.DateOfBirth;
                     users.Email = user.Email;
                     users.Phone = user.Phone;
                     users.Username = user.Username;
                     users.Password = user.Password;
-                    users.Role = user.Role;
-                    users.Status = user.Status;
+                    users.Role = Ultity.ConvertToEnum<RoleType>(user.Role);
+                    users.Status = Ultity.ConvertToEnum<LearnWebAPI.Models.StatusType>(user.Status);
+                    if (user.Avatar != null)
+                    {
+                        ImageSaver.SaveImage(uploadedFile, user.Id);
+                        users.Avatar = user.Id + uploadedFile?.FileName;
+                    }
                     _context.Update(users);
                     await _context.SaveChangesAsync();
                     return new ApiResponse

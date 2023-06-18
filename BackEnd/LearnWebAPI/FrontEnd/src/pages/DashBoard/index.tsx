@@ -8,6 +8,7 @@ import FeaturePostDetail from './featurePostDetail';
 import { Box, Paper, ThemeProvider, Typography, createTheme } from '@mui/material';
 import Comment from './Comment/comment';
 import { IComment } from '../../interface/comment';
+import React from 'react';
 
 const defaultTheme = createTheme();
 function DashBoard() {

@@ -34,9 +34,24 @@ namespace BackEnd.Controllers
                 var listNewsPapers = _newsPaperService.GetListNewsPaper(pageIndex).Result;
                 return Ok(new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                     Data = listNewsPapers
                 });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetNewsPaperById")]
+        public IActionResult GetNewsPaperById(string? id)
+        {
+            try
+            {
+                var listNewsPapers = _newsPaperService.GetNewsPaperById(id).Result;
+                return Ok(listNewsPapers);
             }
             catch (Exception ex)
             {
@@ -61,7 +76,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpPost("AddNewsPaper")]
-        public IActionResult AddNewsPaper(NewsPaperAddVM newsPaper)
+        public IActionResult AddNewsPaper([FromForm] NewsPaperAddVM newsPaper)
         {
             try
             {
@@ -76,7 +91,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpPost("UpdateNewsPaper")]
-        public IActionResult UpdateNewsPaper(NewsPaperUpdateVM newsPaper)
+        public IActionResult UpdateNewsPaper([FromForm] NewsPaperUpdateVM newsPaper)
         {
             try
             {

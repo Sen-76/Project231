@@ -510,7 +510,7 @@ namespace LearnWebAPI.Services
             {
                 var id = Guid.NewGuid();
                 var uploadedFile = user.Avatar;
-                if (user.Avatar != null)
+                if (uploadedFile != null)
                 {
                     ImageSaver.SaveImage(uploadedFile, id);
                 }
@@ -563,6 +563,10 @@ namespace LearnWebAPI.Services
                     users.Status = Ultity.ConvertToEnum<LearnWebAPI.Models.StatusType>(user.Status);
                     if (user.Avatar != null)
                     {
+                        if (users.Avatar != null)
+                        {
+                            ImageSaver.RemoveImage(users.Avatar);
+                        }
                         ImageSaver.SaveImage(uploadedFile, user.Id);
                         users.Avatar = user.Id + uploadedFile?.FileName;
                     }

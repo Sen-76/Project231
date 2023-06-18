@@ -25,5 +25,18 @@ namespace BackEnd.Ultity
                 Console.WriteLine("Error saving image: " + ex.Message);
             }
         }
+        public static void RemoveImage(String filePath)
+        {
+            try
+            {
+                string directFolder = Directory.GetCurrentDirectory();
+                string directoryPath = Path.Combine(directFolder, "FrontEnd\\src\\ImageSave\\" + filePath);
+                File.Delete(directoryPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error saving image: " + ex.Message);
+            }
+        }
     }
 }

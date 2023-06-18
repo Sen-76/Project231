@@ -1,5 +1,4 @@
 import * as request from '../utils/httpRequest';
-import { INewsPaperAdd, INewsPaperUpdate } from '../interface/new';
 
 export const getnewsPaperList = async (page: Number) => {
     try {
@@ -11,7 +10,27 @@ export const getnewsPaperList = async (page: Number) => {
         console.log(error);
     }
 };
-export const addnewsPaper = async (newspaper: INewsPaperAdd) => {
+export const getnewsPaperById = async (id: String) => {
+    try {
+        const res = await request.get('newspaper/GetNewsPaperById', {
+            params: { id },
+        });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const fetchnewsPaperList = async (page: Number) => {
+    try {
+        const res = await request.get('NewsPaper/FetchNewsPaper', {
+            params: { page },
+        });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const addnewsPaper = async (newspaper: any) => {
     try {
         const res = await request.post('NewsPaper/AddNewsPaper', newspaper);
         return res.success;
@@ -19,7 +38,7 @@ export const addnewsPaper = async (newspaper: INewsPaperAdd) => {
         console.log(error);
     }
 };
-export const updatenewsPaper = async (newspaper: INewsPaperUpdate) => {
+export const updatenewsPaper = async (newspaper: any) => {
     try {
         const res = await request.post('NewsPaper/UpdateNewsPaper', newspaper);
         return res.data;
@@ -30,7 +49,7 @@ export const updatenewsPaper = async (newspaper: INewsPaperUpdate) => {
 export const deletenewsPaper = async (id: string) => {
     try {
         const res = await request.post('NewsPaper/DeleteNewsPaper?id=' + id);
-        return res.data;
+        return res.success;
     } catch (error) {
         console.log(error);
     }

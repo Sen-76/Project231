@@ -13,36 +13,12 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { Link } from 'react-router-dom';
 
-const columns: GridColDef[] = [
-    { field: 'img', headerName: 'IMG', width: 70, filterable: true },
-    { field: 'title', headerName: 'Title', width: 230, filterable: true },
-    { field: 'content', headerName: 'Content', width: 230, filterable: true },
-    { field: 'createdDate', headerName: 'Created Date', width: 130, filterable: true },
-    { field: 'modifiedDate', headerName: 'Modified Date', width: 130, filterable: true },
-    { field: 'publishedDate', headerName: 'Published Date', width: 130, filterable: true },
-    { field: 'description', headerName: 'Description', width: 230, filterable: true },
-    {
-        field: '',
-        headerName: 'Action',
-        width: 230,
-        sortable: false,
-        renderCell: (params) => (
-            <div>
-                <Link className="edit" to={`/editNewspaper/${params.row.id}`}>
-                    <Button variant="outlined" startIcon={<EditIcon />}></Button>{' '}
-                </Link>
-                <Button variant="outlined" startIcon={<DeleteOutlineIcon />}></Button>
-                <Button variant="outlined" startIcon={<VisibilityIcon />}></Button>
-            </div>
-        ),
-    },
-];
-
 export default function ListNewspaper() {
     const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
+    const [isRefresh, setIsRefresh] = useState<boolean>(true);
     useEffect(() => {
         newspaperService
-            .getnewsPaperList(1)
+            .fetchnewsPaperList(1)
             .then((result: INewsPaper[]) => {
                 if (result) {
                     setNewsPaperList(result);
@@ -51,8 +27,70 @@ export default function ListNewspaper() {
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
-
+    }, [isRefresh]);
+    async function DeleteNews(id: string) {
+        newspaperService
+            .deletenewsPaper(id)
+            .then((result: INewsPaper[]) => {
+                console.log(result);
+                if (result) {
+                    setIsRefresh(!isRefresh);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+    const columns: GridColDef[] = [
+        {
+            field: 'image',
+            headerName: 'IMG',
+            width: 70,
+            filterable: true,
+            renderCell: (params) => {
+                try {
+                    const avatarImage = require(`../../../ImageSave/${params.row.image}`);
+                    return (
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                            <img
+                                style={{ width: '40px', height: '40px', objectFit: 'cover' }}
+                                alt={params.row.title}
+                                src={avatarImage}
+                            />
+                        </div>
+                    );
+                } catch (error) {
+                    return (
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}></div>
+                    );
+                }
+            },
+        },
+        { field: 'title', headerName: 'Title', width: 230, filterable: true },
+        { field: 'description', headerName: 'Description', width: 230, filterable: true },
+        { field: 'createdDate', headerName: 'Created Date', width: 130, filterable: true },
+        { field: 'modifiedDate', headerName: 'Modified Date', width: 130, filterable: true },
+        { field: 'publishedDate', headerName: 'Published Date', width: 130, filterable: true },
+        {
+            field: '',
+            headerName: 'Action',
+            width: 230,
+            sortable: false,
+            renderCell: (params) => (
+                <div>
+                    <Link className="edit" to={`/editNewspaper/${params.row.id}`}>
+                        <Button variant="outlined" startIcon={<EditIcon />}></Button>{' '}
+                    </Link>
+                    <Button
+                        variant="outlined"
+                        startIcon={<DeleteOutlineIcon />}
+                        onClick={() => DeleteNews(params.row.id)}
+                    ></Button>
+                    <Button variant="outlined" startIcon={<VisibilityIcon />}></Button>
+                </div>
+            ),
+        },
+    ];
     return (
         <React.Fragment>
             <div className="titleCategoryM">Category:</div>

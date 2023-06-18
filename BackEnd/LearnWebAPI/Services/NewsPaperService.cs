@@ -2,6 +2,7 @@
 using BackEnd.Interfaces;
 using BackEnd.Models;
 using BackEnd.Paging;
+using BackEnd.Ultity;
 using BackEnd.ViewModels.NewFolder;
 using BackEnd.ViewModels.NewsPaperViewModels;
 using BackEnd.ViewModels.UserViewModels;
@@ -31,13 +32,19 @@ namespace BackEnd.Services
         {
             try
             {
+                var id = Guid.NewGuid();
+                var uploadedFile = newsPaper.Image;
+                if (uploadedFile != null)
+                {
+                    ImageSaver.SaveImage(uploadedFile, id);
+                }
                 var newsPapers = new NewsPaper()
                 {
                     Id = Guid.NewGuid(),
                     Title = newsPaper.Title,
                     Content = newsPaper.Content,
                     Description = newsPaper.Description,
-                    Image = newsPaper.Image,
+                    Image = id + uploadedFile?.FileName,
                     CreatedDate = DateTime.UtcNow,
                     Status = Models.StatusType.Posted,
                     UserId = Guid.Parse("3153797E-855A-4695-B694-69BC50E042E3"),
@@ -52,7 +59,7 @@ namespace BackEnd.Services
                 };
                 await _context.AddAsync(newsPaperDetail);
                 await _context.SaveChangesAsync();
-                foreach (var item in newsPaper.CategoryId)
+                foreach (var item in newsPaper.CategoryId?.Split(','))
                 {
                     var sqlQuery = "INSERT INTO [CategoryNewsPaper] ([CategoriesId], [NewsPapersId]) VALUES (@CategoryId, @NewsPaperId)";
                     await _context.Database.ExecuteSqlRawAsync(sqlQuery,
@@ -103,6 +110,16 @@ namespace BackEnd.Services
             {
                 Success= true,
                 Data = testt
+            };
+        }
+
+        public async Task<ApiResponse> GetNewsPaperById(string id)
+        {
+            var test = await _context.NewsPapers.Include(x => x.Categories).Where(x => x.Id == Guid.Parse(id)).FirstOrDefaultAsync();
+            return new ApiResponse
+            {
+                Success = true,
+                Data = test
             };
         }
 
@@ -256,7 +273,7 @@ namespace BackEnd.Services
         //Admin
         public async Task<PaginatedList<NewsPaper>> FetchNewsPaper(int? pageIndex)
         {
-            var AllNews = _context.NewsPapers.AsNoTracking();
+            var AllNews = _context.NewsPapers.Where(x => x.Status != Models.StatusType.Deleted).AsNoTracking();
             var pageSize = _configuration.GetValue("PageSize", 10);
             var PaginatedNewsPaper = await PaginatedList<NewsPaper>.CreateAsync(AllNews, pageIndex ?? 1, pageSize);
             return PaginatedNewsPaper;
@@ -341,13 +358,19 @@ namespace BackEnd.Services
         {
             try
             {
+                var id = Guid.NewGuid();
+                var uploadedFile = newsPaper.Image;
+                if (uploadedFile != null)
+                {
+                    ImageSaver.SaveImage(uploadedFile, id);
+                }
                 var newsPapers = new NewsPaper()
                 {
                     Id = Guid.NewGuid(),
                     Title = newsPaper.Title,
                     Content = newsPaper.Content,
                     Description = newsPaper.Description,
-                    Image = newsPaper.Image,
+                    Image = id + uploadedFile?.FileName,
                     CreatedDate = DateTime.UtcNow,
                     Status = Models.StatusType.Posted,
                     UserId = Guid.Parse("1a6e8503-ee14-4ee9-95c1-9e5d2205e653"),

@@ -1,15 +1,13 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { INewsPaper, INewsPaperAdd, defaultNewsPaperAdd } from '../../../interface/new';
+import { INewsPaperAdd, defaultNewsPaperAdd } from '../../../interface/new';
 import * as newspaperService from '../../../services/newsPaperService';
 import * as categoryService from '../../../services/categoryService';
 import { Box, Chip, MenuItem, Select, TextField, Button, FormControl, SelectChangeEvent } from '@mui/material';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic/build/ckeditor';
 import { ICategory } from '../../../interface/category';
-import { useParams } from 'react-router-dom';
 
 export default function ListNewspaper() {
-    const { id } = useParams();
     const [newsPaper, setNewsPaper] = useState<INewsPaperAdd>(defaultNewsPaperAdd);
     const [cate, setCate] = useState<ICategory[]>([]);
     useEffect(() => {
@@ -23,43 +21,25 @@ export default function ListNewspaper() {
             .catch((error) => {
                 console.error(error);
             });
-        newspaperService
-            .getnewsPaperById(id ?? '')
-            .then((result: any) => {
-                const cate = result.categories?.map((cat: ICategory) => cat.id) || [];
-                setNewsPaper({
-                    id: result.id,
-                    title: result.title,
-                    image: null,
-                    description: result.description,
-                    content: result.content,
-                    categoryId: cate || [],
-                });
-            })
-            .catch((error) => {
-                console.error(error);
-            });
     }, []);
 
     async function SaveNews() {
         const news = new FormData();
-        news.append('id', newsPaper.id);
         news.append('title', newsPaper.title);
         news.append('content', newsPaper.content);
         news.append('description', newsPaper.description);
         news.append('image', newsPaper.image || '');
         news.append('categoryId', newsPaper.categoryId.join(','));
         await newspaperService
-            .updatenewsPaper(news)
+            .addnewsPaper(news)
             .then((result: any) => {
-                if (result) {
-                    window.location.href = '/newspapermanagement';
-                }
+                console.log(result);
             })
             .catch((error) => {
                 console.error(error);
             });
     }
+
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = (event.target.files as FileList)[0];
         setNewsPaper({ ...newsPaper, image: file || null });
@@ -70,7 +50,6 @@ export default function ListNewspaper() {
         } = event;
         setNewsPaper({ ...newsPaper, categoryId: typeof value === 'string' ? value.split(',') : value });
     };
-
     return (
         <React.Fragment>
             <div className="titleCategoryM">Add Newspaper:</div>
@@ -79,6 +58,7 @@ export default function ListNewspaper() {
                     <label htmlFor="input-avatar">Image</label>
                     <TextField
                         type="file"
+                        variant="outlined"
                         onChange={handleFileChange}
                         InputLabelProps={{
                             shrink: true,
@@ -92,8 +72,7 @@ export default function ListNewspaper() {
                     <label htmlFor="input-title">Title</label>
                     <TextField
                         id="input-title"
-                        value={newsPaper.title}
-                        onBlur={(event: any) => setNewsPaper({ ...newsPaper, title: event.target.value })}
+                        onChange={(event: any) => setNewsPaper({ ...newsPaper, title: event.target.value })}
                     />
                 </FormControl>
                 <FormControl fullWidth>
@@ -101,7 +80,7 @@ export default function ListNewspaper() {
                     <CKEditor
                         editor={ClassicEditor}
                         data={newsPaper.content}
-                        onBlur={(event: any, editor: any) => {
+                        onChange={(event: any, editor: any) => {
                             const data = editor.getData();
                             setNewsPaper({ ...newsPaper, content: data });
                         }}
@@ -114,8 +93,7 @@ export default function ListNewspaper() {
                         id="input-description"
                         multiline
                         rows={4}
-                        onBlur={(event: any) => setNewsPaper({ ...newsPaper, description: event.target.value })}
-                        value={newsPaper.description}
+                        onChange={(event: any) => setNewsPaper({ ...newsPaper, description: event.target.value })}
                     />
                 </FormControl>
                 <FormControl fullWidth>
@@ -129,8 +107,6 @@ export default function ListNewspaper() {
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                 {selected.map((value) => {
                                     const category = cate.find((cat) => cat.id === value);
-                                    console.log(value);
-                                    console.log(cate);
                                     return <Chip key={value} label={category ? category.name : ''} />;
                                 })}
                             </Box>

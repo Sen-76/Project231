@@ -1,7 +1,3 @@
-.formSearchM {
-    text-align: right;
-    width: 822px;
-}
 .inputSearchM {
     height: 40px;
     padding: 5px;
@@ -10,16 +6,17 @@
 .formHeadM {
     margin-top: 20px;
     display: flex;
+    justify-content: space-between;
 }
 .titleCategoryM {
     color: #19776e;
     font-size: x-large;
     font-family: monospace;
 }
-.first{
+.first {
     margin-top: 20px;
 }
-.actionButton{
+.actionButton {
     float: right;
     margin-bottom: 20px;
 }

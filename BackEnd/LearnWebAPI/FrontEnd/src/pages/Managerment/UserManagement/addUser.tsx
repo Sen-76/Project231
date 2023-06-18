@@ -2,6 +2,7 @@ import { Button, FormControl, TextField, Box, Select, MenuItem } from '@mui/mate
 import { ChangeEvent, useState } from 'react';
 import * as userService from '../../../services/userService';
 import { IUser, ERole, defaultUserState } from '../../../interface/user';
+import React from 'react';
 
 function AddUser() {
     const [user, setUser] = useState<IUser>(defaultUserState);
@@ -40,8 +41,11 @@ function AddUser() {
             <div className="titleCategoryM">Add new user:</div>
             <Box sx={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
                 <FormControl fullWidth>
-                    <label htmlFor="input-name">Name</label>
+                    <label htmlFor="input-name">
+                        Name<span>*</span>
+                    </label>
                     <TextField
+                        required
                         id="input-name"
                         onChange={(e) => setUser({ ...user, name: e.target.value })}
                         variant="outlined"
@@ -49,8 +53,11 @@ function AddUser() {
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <label htmlFor="input-username">Username</label>
+                    <label htmlFor="input-username">
+                        Username<span>*</span>
+                    </label>
                     <TextField
+                        required
                         id="input-username"
                         onChange={(e) => setUser({ ...user, username: e.target.value })}
                         variant="outlined"
@@ -58,8 +65,11 @@ function AddUser() {
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <label htmlFor="input-password">Password</label>
+                    <label htmlFor="input-password">
+                        Password<span>*</span>
+                    </label>
                     <TextField
+                        required
                         id="input-password"
                         onChange={(e) => setUser({ ...user, password: e.target.value })}
                         variant="outlined"
@@ -109,8 +119,11 @@ function AddUser() {
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <label htmlFor="input-avatar">Role</label>
+                    <label htmlFor="input-avatar">
+                        Role<span>*</span>
+                    </label>
                     <Select
+                        required
                         labelId="age"
                         value={user.role}
                         label="Age"

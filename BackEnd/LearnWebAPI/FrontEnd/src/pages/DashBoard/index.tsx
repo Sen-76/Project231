@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import FeaturePostDetail from './featurePostDetail';
 import { Box, Paper, ThemeProvider, Typography, createTheme } from '@mui/material';
 import Comment from './Comment/comment';
+import Cmt from './Comment/cmt';
 import { IComment } from '../../interface/comment';
 import React from 'react';
 
@@ -15,6 +16,10 @@ function DashBoard() {
     const { id } = useParams();
     const [newDetail, setNewDetail] = useState<INewsPaper>();
     const [commentList, setCommentList] = useState<IComment[]>();
+    const [resetComment, setResetComment] = useState<boolean>(true);
+    const reset = (): void => {
+        setResetComment(!resetComment)
+    }
     useEffect(() => {
         newDetailService
             .getNewDetail(id || '')
@@ -31,13 +36,12 @@ function DashBoard() {
             .then((result: IComment[]) => {
                 if (result) {
                     setCommentList(result);
-                    console.log(result);
                 }
             })
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
+    }, [resetComment]);
     return (
         <ThemeProvider theme={defaultTheme}>
             <FeaturePostDetail newDetail={newDetail!}></FeaturePostDetail>
@@ -66,8 +70,9 @@ function DashBoard() {
                 <Typography>{newDetail?.description}</Typography>
             </Paper>
             <div>
-                {commentList?.map((item: IComment) => (
-                    <Comment comment={item} key={item.commentId} />
+                <Cmt setResetComment={reset} />
+                {commentList?.map((item: IComment, index) => (
+                    <Comment comment={item} setResetComment={reset} key={index} />
                 ))}
             </div>
         </ThemeProvider>

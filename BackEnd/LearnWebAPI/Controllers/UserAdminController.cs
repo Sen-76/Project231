@@ -2,11 +2,11 @@
 using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Interfaces;
 using LearnWebAPI.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+
 namespace BackEnd.Controllers
 {
     [Route("api/[controller]")]
@@ -47,17 +47,19 @@ namespace BackEnd.Controllers
         }
         [HttpGet("FetchUser")]
         [EnableQuery]
+        //[Authorize]
+        //[Authorize(Roles = "Admin")]
         public IActionResult FetchUser(int pageIndex)
         {
-            var result = _userService.FetchAllUser(pageIndex).Result;
-            return Ok(result);
-            //var currentUser = GetCurrentUser();
+            //var result = _userService.FetchAllUser(pageIndex).Result;
+            //return Ok(result);
+            var currentUser = GetCurrentUser();
 
-            //if (currentUser != null)
-            //{
-            //    return Ok(currentUser);
-            //}
-            //return Unauthorized();
+            if (currentUser != null)
+            {
+                return Ok(currentUser);
+            }
+            return Unauthorized();
         }
         [HttpPost("BanUser")]
         public IActionResult BanUser(string id)

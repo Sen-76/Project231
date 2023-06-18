@@ -4,16 +4,18 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import {store} from './store';
-
+import { store } from './store';
+import { CookiesProvider } from 'react-cookie';
+import { CustomInterceptor } from './utils/httpRequest';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <Provider store={store}>
-    {/* <React.StrictMode> */}
+    <CookiesProvider>
+      <CustomInterceptor />
       <App />
-    {/* </React.StrictMode> */}
+    </CookiesProvider>
   </Provider>
 );
 

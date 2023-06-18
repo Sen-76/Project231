@@ -54,7 +54,7 @@ export default function SignUp() {
                         <div>No</div>
                     )}
 
-                    <Box component="form" noValidate onSubmit={() => handleSubmit} sx={{ mt: 3 }}>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <TextField

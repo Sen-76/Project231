@@ -1,6 +1,6 @@
 import { IUser } from './user';
 export interface IComment {
-    commentId: string;
+    id: string;
     newsPaperId: string;
     newsPaper: null;
     userId: string;

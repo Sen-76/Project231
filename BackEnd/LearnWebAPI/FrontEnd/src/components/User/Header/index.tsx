@@ -5,9 +5,13 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, IconButton, Toolbar, Typography } from '@mui/material';
+import { Avatar, Button, IconButton, Toolbar, Typography } from '@mui/material';
+import routeConfig from '../../../config/routes';
+import { useCookies } from 'react-cookie';
+
 function Header() {
     const [CategoryList, SetCategoryList] = useState<ICategory[]>([]);
+    const [cookies] = useCookies(['userLogin']);
     useEffect(() => {
         CategoryService.listCate()
             .then((category) => {
@@ -24,16 +28,26 @@ function Header() {
             <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Button size="small">Subscribe</Button>
                 <Typography component="h2" variant="h5" color="inherit" align="center" noWrap sx={{ flex: 1 }}>
-                    {'M&E Magazine'}
+                    <Link to={routeConfig.home} >
+                        {'M&E Magazine'}
+                    </Link>
                 </Typography>
                 <IconButton>
                     <SearchIcon />
                 </IconButton>
-                <Link to={`/signup`}>
-                    <Button variant="outlined" size="small">
-                        Sign Up
-                    </Button>
-                </Link>
+                {
+                    cookies.userLogin === null ? (
+                        <Link to={`/signin`}>
+                            <Button variant="outlined" size="small">
+                                Sign In
+                            </Button>
+                        </Link>
+                    ) : cookies.userLogin.Avatar !== '' ? (
+                        <Avatar alt={cookies.userLogin.Username} src={require(`../../../ImageSave/` + cookies.userLogin.Avatar)}></Avatar>
+                    ) : (
+                        <Avatar alt={cookies.userLogin.Username}>{cookies.userLogin.Username.charAt(0)}</Avatar>
+                    )
+                }
             </Toolbar>
             <Toolbar component="nav" variant="dense" sx={{ justifyContent: 'space-between', overflowX: 'auto' }}>
                 {CategoryList.map((category) => (

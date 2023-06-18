@@ -5,6 +5,7 @@ export interface UserLogin {
     Id: string;
     Role: string;
     Username: string;
+    Avatar: string;
     email: string;
     exp: number;
     jti: string;
@@ -21,6 +22,7 @@ const initialState: IUserSlice = {
         Id: '',
         Role: '',
         Username: '',
+        Avatar: '',
         email: '',
         exp: 0,
         jti: '',

@@ -49,6 +49,7 @@ namespace LearnWebAPI.Services
                     new Claim("Username", user.Username),
                     new Claim("Id", user.Id.ToString()),
                     new Claim("Role", user.Role.ToString()),
+                    new Claim("Avatar", user.Avatar.ToString()),
             };
 
             var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
@@ -520,10 +521,10 @@ namespace LearnWebAPI.Services
                     Name = user.Name,
                     Username = user.Username,
                     Password = user.Password,
-                    Avatar = id + uploadedFile?.FileName,
+                    Avatar = uploadedFile?.FileName != null ? id + uploadedFile?.FileName : "",
                     DateOfBirth = user.DateOfBirth,
-                    Email = user.Email,
-                    Phone = user.Phone,
+                    Email = user.Email != null ? user.Email : "",
+                    Phone = user.Phone != null ? user.Phone : "",
                     Role = Ultity.ConvertToEnum<RoleType>(user.Role),
                     Status = Ultity.ConvertToEnum<LearnWebAPI.Models.StatusType>(user.Status),
                 };
@@ -559,8 +560,8 @@ namespace LearnWebAPI.Services
                     users.Phone = user.Phone;
                     users.Username = user.Username;
                     users.Password = user.Password;
-                    users.Role = Ultity.ConvertToEnum<RoleType>(user.Role);
-                    users.Status = Ultity.ConvertToEnum<LearnWebAPI.Models.StatusType>(user.Status);
+                    users.Role = Ultity.ConvertToEnum<RoleType>(user.Role); 
+                    users.Status = Ultity.ConvertToEnum<LearnWebAPI.Models.StatusType> (user.Status);
                     if (user.Avatar != null)
                     {
                         if (users.Avatar != null)

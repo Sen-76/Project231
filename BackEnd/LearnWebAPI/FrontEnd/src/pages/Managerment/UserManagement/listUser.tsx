@@ -43,7 +43,6 @@ export default function ListUser() {
                 console.error(error);
             });
     }, [reload]);
-    console.log(process.env.PUBLIC_URL);
     const columns: GridColDef[] = [
         {
             field: 'name',

@@ -132,7 +132,7 @@ function EditUser() {
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <label htmlFor="input-avatar">Role</label>
+                    <label htmlFor="input-avatar">Status</label>
                     <Select
                         labelId="age"
                         value={user.status}
@@ -146,7 +146,7 @@ function EditUser() {
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <label htmlFor="input-avatar">Status</label>
+                    <label htmlFor="input-avatar">Role</label>
                     <Select
                         labelId="age"
                         value={user.role}

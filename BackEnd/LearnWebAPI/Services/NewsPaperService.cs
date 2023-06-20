@@ -24,7 +24,7 @@ namespace BackEnd.Services
         {
             _mapper = mapper;
             _context = context;
-            _logger=logger;
+            _logger = logger;
             _configuration = configuration;
         }
 
@@ -69,7 +69,7 @@ namespace BackEnd.Services
                 await _context.SaveChangesAsync();
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                     Data = newsPapers
                 };
             }
@@ -78,7 +78,7 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                 };
             }
         }
@@ -93,7 +93,7 @@ namespace BackEnd.Services
             var PaginatedNewsPaper = await PaginatedList<NewsPaper>.CreateAsync(AllNewsPaper, pageIndex ?? 1, pageSize);
             return PaginatedNewsPaper;
         }
-      
+
         public async Task<ApiResponse> GetNewsPaperByCate(string cateId)
         {
             var categoryId = Guid.Parse(cateId);
@@ -108,7 +108,7 @@ namespace BackEnd.Services
             };
             return new ApiResponse
             {
-                Success= true,
+                Success = true,
                 Data = testt
             };
         }
@@ -125,26 +125,35 @@ namespace BackEnd.Services
 
         public NewsPaper isExist(Guid id)
         {
-            return _context.NewsPapers.Where(x => x.Id== id).SingleOrDefault();
+            return _context.NewsPapers.Where(x => x.Id == id).SingleOrDefault();
         }
 
         public async Task<ApiResponse> UpdateNewsPaper(NewsPaperUpdateVM newsPaper)
         {
             try
             {
+                var uploadedFile = newsPaper.Image;
                 var newsPapers = await _context.NewsPapers.Where(x => x.Id.Equals(newsPaper.Id) && x.Status != Models.StatusType.Deleted).FirstOrDefaultAsync();
                 if (newsPapers != null)
                 {
                     newsPapers.Title = newsPaper.Title;
                     newsPapers.Content = newsPaper.Content;
                     newsPapers.Description = newsPaper.Description;
-                    newsPapers.Image = newsPaper.Image;
+                    if (newsPaper.Image != null)
+                    {
+                        if (newsPapers.Image != null)
+                        {
+                            ImageSaver.RemoveImage(newsPapers.Image);
+                        }
+                        ImageSaver.SaveImage(uploadedFile, newsPaper.Id);
+                        newsPapers.Image = newsPaper.Id + uploadedFile?.FileName;
+                    }
                     newsPapers.ModifiedDate = DateTime.UtcNow;
                     _context.Update(newsPapers);
                     var sqlDeleteQuery = "DELETE FROM [CategoryNewsPaper] WHERE [NewsPapersId] = @NewsPaperId";
                     await _context.Database.ExecuteSqlRawAsync(sqlDeleteQuery,
                         new SqlParameter("@NewsPaperId", newsPapers.Id));
-                    foreach (var item in newsPaper.CategoryId)
+                    foreach (var item in newsPaper.CategoryId?.Split(','))
                     {
                         var sqlAddQuery = "INSERT INTO [CategoryNewsPaper] ([CategoriesId], [NewsPapersId]) VALUES (@CategoryId, @NewsPaperId)";
                         await _context.Database.ExecuteSqlRawAsync(sqlAddQuery,
@@ -154,13 +163,13 @@ namespace BackEnd.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = newsPapers
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Account doesn't exist"
                 };
             }
@@ -169,7 +178,7 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                 };
             }
         }
@@ -186,13 +195,13 @@ namespace BackEnd.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = newsPaper
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Newspaper doesn't exist"
                 };
             }
@@ -201,12 +210,12 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                 };
             }
         }
 
-        public async Task<ApiResponse>RestoreNewsPaper(Guid id)
+        public async Task<ApiResponse> RestoreNewsPaper(Guid id)
         {
             try
             {
@@ -218,13 +227,13 @@ namespace BackEnd.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = newsPaper
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Newspaper doesn't exist"
                 };
             }
@@ -233,7 +242,7 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                 };
             }
         }
@@ -250,13 +259,13 @@ namespace BackEnd.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = newsPaper
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Newspaper doesn't exist"
                 };
             }
@@ -265,7 +274,7 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                 };
             }
         }
@@ -290,13 +299,13 @@ namespace BackEnd.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = newsPaper
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Newspaper doesn't exist"
                 };
             }
@@ -305,7 +314,7 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                 };
             }
         }
@@ -313,19 +322,28 @@ namespace BackEnd.Services
         {
             try
             {
+                var uploadedFile = newsPaper.Image;
                 var newsPapers = await _context.NewsPapers.Where(x => x.Id.Equals(newsPaper.Id) && x.Status != Models.StatusType.Deleted).FirstOrDefaultAsync();
                 if (newsPapers != null)
                 {
                     newsPapers.Title = newsPaper.Title;
                     newsPapers.Content = newsPaper.Content;
                     newsPapers.Description = newsPaper.Description;
-                    newsPapers.Image = newsPaper.Image;
+                    if (newsPaper.Image != null)
+                    {
+                        if (newsPapers.Image != null)
+                        {
+                            ImageSaver.RemoveImage(newsPapers.Image);
+                        }
+                        ImageSaver.SaveImage(uploadedFile, newsPaper.Id);
+                        newsPapers.Image = newsPaper.Id + uploadedFile?.FileName;
+                    }
                     newsPapers.ModifiedDate = DateTime.UtcNow;
                     _context.Update(newsPapers);
                     var sqlDeleteQuery = "DELETE FROM [CategoryNewsPaper] WHERE [NewsPapersId] = @NewsPaperId";
                     await _context.Database.ExecuteSqlRawAsync(sqlDeleteQuery,
                         new SqlParameter("@NewsPaperId", newsPapers.Id));
-                    foreach (var item in newsPaper.CategoryId)
+                    foreach (var item in newsPaper.CategoryId?.Split(','))
                     {
                         var sqlAddQuery = "INSERT INTO [CategoryNewsPaper] ([CategoriesId], [NewsPapersId]) VALUES (@CategoryId, @NewsPaperId)";
                         await _context.Database.ExecuteSqlRawAsync(sqlAddQuery,
@@ -335,13 +353,13 @@ namespace BackEnd.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = newsPapers
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Account doesn't exist"
                 };
             }
@@ -350,7 +368,7 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                 };
             }
         }
@@ -370,7 +388,7 @@ namespace BackEnd.Services
                     Title = newsPaper.Title,
                     Content = newsPaper.Content,
                     Description = newsPaper.Description,
-                    Image = id + uploadedFile?.FileName,
+                    Image = uploadedFile != null ? id + uploadedFile?.FileName : "",
                     CreatedDate = DateTime.UtcNow,
                     Status = Models.StatusType.Posted,
                     UserId = Guid.Parse("1a6e8503-ee14-4ee9-95c1-9e5d2205e653"),
@@ -385,7 +403,7 @@ namespace BackEnd.Services
                 };
                 await _context.AddAsync(newsPaperDetail);
                 await _context.SaveChangesAsync();
-                foreach (var item in newsPaper.CategoryId)
+                foreach (var item in newsPaper.CategoryId?.Split(','))
                 {
                     var sqlQuery = "INSERT INTO [CategoryNewsPaper] ([CategoriesId], [NewsPapersId]) VALUES (@CategoryId, @NewsPaperId)";
                     await _context.Database.ExecuteSqlRawAsync(sqlQuery,
@@ -395,7 +413,7 @@ namespace BackEnd.Services
                 await _context.SaveChangesAsync();
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                     Data = newsPapers
                 };
             }
@@ -404,7 +422,7 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                 };
             }
         }
@@ -420,13 +438,13 @@ namespace BackEnd.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = newsPaper
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Newspaper doesn't exist"
                 };
             }
@@ -435,7 +453,7 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                 };
             }
         }
@@ -451,13 +469,13 @@ namespace BackEnd.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success= true,
+                        Success = true,
                         Data = newsPaper
                     };
                 }
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                     Message = "Newspaper doesn't exist"
                 };
             }
@@ -466,7 +484,7 @@ namespace BackEnd.Services
                 _logger.LogError(ex.Message);
                 return new ApiResponse
                 {
-                    Success= false,
+                    Success = false,
                 };
             }
         }

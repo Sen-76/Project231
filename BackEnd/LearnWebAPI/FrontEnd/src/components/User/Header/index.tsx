@@ -28,26 +28,25 @@ function Header() {
             <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Button size="small">Subscribe</Button>
                 <Typography component="h2" variant="h5" color="inherit" align="center" noWrap sx={{ flex: 1 }}>
-                    <Link to={routeConfig.home} >
-                        {'M&E Magazine'}
-                    </Link>
+                    <Link to={routeConfig.home}>{'M&E Magazine'}</Link>
                 </Typography>
                 <IconButton>
                     <SearchIcon />
                 </IconButton>
-                {
-                    cookies.userLogin === null ? (
-                        <Link to={`/signin`}>
-                            <Button variant="outlined" size="small">
-                                Sign In
-                            </Button>
-                        </Link>
-                    ) : cookies.userLogin.Avatar !== '' ? (
-                        <Avatar alt={cookies.userLogin.Username} src={require(`../../../ImageSave/` + cookies.userLogin.Avatar)}></Avatar>
-                    ) : (
-                        <Avatar alt={cookies.userLogin.Username}>{cookies.userLogin.Username.charAt(0)}</Avatar>
-                    )
-                }
+                {cookies.userLogin === undefined ? (
+                    <Link to={`/signin`}>
+                        <Button variant="outlined" size="small">
+                            Sign In
+                        </Button>
+                    </Link>
+                ) : cookies.userLogin.Avatar !== '' ? (
+                    <Avatar
+                        alt={cookies.userLogin.Username}
+                        src={require(`../../../ImageSave/` + cookies.userLogin.Avatar)}
+                    ></Avatar>
+                ) : (
+                    <Avatar alt={cookies.userLogin.Username}>{cookies.userLogin.Username.charAt(0)}</Avatar>
+                )}
             </Toolbar>
             <Toolbar component="nav" variant="dense" sx={{ justifyContent: 'space-between', overflowX: 'auto' }}>
                 {CategoryList.map((category) => (

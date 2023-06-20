@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { INewsPaper } from '../../interface/new';
 import * as newspaperService from '../../services/newsPaperService';
 import { Link } from 'react-router-dom';
+import image from '../../ImageSave/021f1d43-6141-4042-b556-0be7b81443f8@$^()_+fgusagfusaigfiuasgfusagufafsaf-sihfiahfisafha.jpg';
 
 function Featurepost() {
     const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
@@ -19,7 +20,9 @@ function Featurepost() {
             });
     }, []);
 
-    const firstItemImg = newsPaperList[0]?.image ? newsPaperList[0].image : 'no data';
+    const test = '/static/media/' + newsPaperList[0]?.image;
+    console.log('test: ' + test);
+    console.log('image: ' + image);
     const firstItemId = newsPaperList[0]?.id ? newsPaperList[0].id : 'no data';
     const firstItemTitle = newsPaperList[0]?.title ? newsPaperList[0].title : 'no data';
     const firstItemContent = newsPaperList[0]?.content ? newsPaperList[0].content : 'no data';
@@ -33,11 +36,15 @@ function Featurepost() {
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${firstItemImg})`,
+                // backgroundImage: `url('${image}')`,
+                backgroundImage: `url('${image}')`,
             }}
         >
-            {/* Increase the priority of the hero background image */}
-            {<img style={{ display: 'none' }} src={firstItemImg} alt={''} />}
+            {newsPaperList[0]?.image ? (
+                <img style={{ display: 'none' }} src={require('../../ImageSave/' + newsPaperList[0]?.image)} alt={''} />
+            ) : (
+                <div></div>
+            )}
             <Box
                 sx={{
                     position: 'absolute',

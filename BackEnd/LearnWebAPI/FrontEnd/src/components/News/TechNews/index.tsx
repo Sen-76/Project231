@@ -25,6 +25,7 @@ function TechNews() {
             </a>
             {newsPaperList.map((item, key) => (
                 <div key={key} className="single_cat_left_content floatleft">
+                    <img src={require(`../../../ImageSave/` + item.image)} alt={item.title} />
                     <h3>{item.title}</h3>
                     <p>{item.description}</p>
                     <Link className="readmore" to={`/newsdetail/${item.id}`}>

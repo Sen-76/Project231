@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BackEnd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+    //[Authorize(Roles = "Admin")]
     public class UserAdminController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -45,21 +48,20 @@ namespace BackEnd.Controllers
             var result = _userService.GetUserById(id).Result;
             return Ok(result);
         }
+
         [HttpGet("FetchUser")]
         [EnableQuery]
-        //[Authorize]
-        //[Authorize(Roles = "Admin")]
         public IActionResult FetchUser(int pageIndex)
         {
-            //var result = _userService.FetchAllUser(pageIndex).Result;
-            //return Ok(result);
-            var currentUser = GetCurrentUser();
+            var result = _userService.FetchAllUser(pageIndex).Result;
+            return Ok(result);
+            //var currentUser = GetCurrentUser();
 
-            if (currentUser != null)
-            {
-                return Ok(currentUser);
-            }
-            return Unauthorized();
+            //if (currentUser != null)
+            //{
+            //    return Ok(currentUser);
+            //}
+            //return Unauthorized();
         }
         [HttpPost("BanUser")]
         public IActionResult BanUser(string id)

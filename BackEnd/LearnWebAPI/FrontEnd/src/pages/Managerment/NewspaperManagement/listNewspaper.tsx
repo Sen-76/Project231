@@ -12,6 +12,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { Link } from 'react-router-dom';
+import routeConfig from '../../../config/routes';
 
 export default function ListNewspaper() {
     const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
@@ -93,7 +94,7 @@ export default function ListNewspaper() {
     ];
     return (
         <React.Fragment>
-            <div className="titleCategoryM">Category:</div>
+            <div className="titleCategoryM">Newspaper:</div>
 
             <div className="formHeadM">
                 <div>
@@ -110,9 +111,11 @@ export default function ListNewspaper() {
                     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                 </div>
             </div>
-            <Button variant="outlined" startIcon={<AddIcon />}>
-                Write
-            </Button>
+            <Link className="edit" to={routeConfig.addNewspaper}>
+                <Button variant="outlined" startIcon={<AddIcon />}>
+                    Write
+                </Button>
+            </Link>
 
             <div style={{ height: 650, width: '100%' }}>
                 <DataGrid

@@ -39,27 +39,29 @@ namespace LearnWebAPI.Services
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.SecretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
-            {
-                    new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Role, user.Role.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim("Username", user.Username),
-                    new Claim("Id", user.Id.ToString()),
-                    new Claim("Role", user.Role.ToString()),
-                    new Claim("Avatar", user.Avatar.ToString()),
-            };
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, user.Name),
+        new Claim(ClaimTypes.Role, user.Role.ToString()),
+        new Claim(JwtRegisteredClaimNames.Email, user.Email),
+        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim("Username", user.Username),
+        new Claim("Id", user.Id.ToString()),
+        new Claim("Role", user.Role.ToString()),
+        new Claim("Avatar", user.Avatar.ToString()),
+    };
 
-            var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
-              _configuration["Jwt:Audience"],
-              claims,
-              expires: DateTime.Now.AddMinutes(60),
-              signingCredentials: credentials);
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(60),
+                signingCredentials: credentials
+            );
 
             var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
-            //Lưu db
+
             var refreshTokenEntity = new RefreshToken
             {
                 Id = Guid.NewGuid(),
@@ -71,7 +73,8 @@ namespace LearnWebAPI.Services
                 IssuedAt = DateTime.UtcNow,
                 ExpiredAt = DateTime.UtcNow.AddHours(1)
             };
-            await _context.AddAsync(refreshTokenEntity);
+
+            await _context.RefreshTokens.AddAsync(refreshTokenEntity);
             await _context.SaveChangesAsync();
 
             return new TokenModel
@@ -80,6 +83,7 @@ namespace LearnWebAPI.Services
                 RefreshToken = refreshToken
             };
         }
+
         public async Task<ApiResponse> RenewToken(TokenModel model)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
@@ -521,7 +525,7 @@ namespace LearnWebAPI.Services
                     Name = user.Name,
                     Username = user.Username,
                     Password = user.Password,
-                    Avatar = uploadedFile?.FileName != null ? id + uploadedFile?.FileName : "",
+                    Avatar = uploadedFile != null ? id + uploadedFile?.FileName : "",
                     DateOfBirth = user.DateOfBirth,
                     Email = user.Email != null ? user.Email : "",
                     Phone = user.Phone != null ? user.Phone : "",
@@ -560,8 +564,8 @@ namespace LearnWebAPI.Services
                     users.Phone = user.Phone;
                     users.Username = user.Username;
                     users.Password = user.Password;
-                    users.Role = Ultity.ConvertToEnum<RoleType>(user.Role); 
-                    users.Status = Ultity.ConvertToEnum<LearnWebAPI.Models.StatusType> (user.Status);
+                    users.Role = Ultity.ConvertToEnum<RoleType>(user.Role);
+                    users.Status = Ultity.ConvertToEnum<LearnWebAPI.Models.StatusType>(user.Status);
                     if (user.Avatar != null)
                     {
                         if (users.Avatar != null)

@@ -24,10 +24,9 @@ function FromAroundTheWorld() {
             </a>
             {newsPaperList.map((item, key) => (
                 <div key={key} className="single_left_coloum floatleft">
-                    <img src={item.image} alt="" />
+                    <img src={require(`../../../ImageSave/` + item.image)} alt={item.title} />
                     <h3>{item.title}</h3>
                     <p>{item.description}</p>
-                    {/* <DashBoard newId={"021F1D43-6141-4042-B556-0BE7B81443F8"}></DashBoard> */}
                     <Link className="readmore" to={`/newsdetail/${item.id}`}>
                         read more
                     </Link>

@@ -11,18 +11,17 @@ const httpRequest = axios.create({
 const CustomInterceptor = () => {
     const [cookies] = useCookies(['token']);
     const token = cookies.token;
-    console.log('token: ' + token);
 
     httpRequest.interceptors.request.use(
-        config => {
+        (config) => {
             if (token) {
                 config.headers!['Authorization'] = `Bearer ${token}`;
             }
             return config;
         },
-        error => {
+        (error) => {
             return Promise.reject(error);
-        }
+        },
     );
 
     return null;

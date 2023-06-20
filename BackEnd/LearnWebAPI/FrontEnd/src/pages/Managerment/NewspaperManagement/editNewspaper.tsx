@@ -129,8 +129,6 @@ export default function ListNewspaper() {
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                 {selected.map((value) => {
                                     const category = cate.find((cat) => cat.id === value);
-                                    console.log(value);
-                                    console.log(cate);
                                     return <Chip key={value} label={category ? category.name : ''} />;
                                 })}
                             </Box>

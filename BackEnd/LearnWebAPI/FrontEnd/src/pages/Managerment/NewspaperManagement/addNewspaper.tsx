@@ -7,7 +7,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic/build/ckeditor';
 import { ICategory } from '../../../interface/category';
 
-export default function ListNewspaper() {
+export default function AddNewspaper() {
     const [newsPaper, setNewsPaper] = useState<INewsPaperAdd>(defaultNewsPaperAdd);
     const [cate, setCate] = useState<ICategory[]>([]);
     useEffect(() => {
@@ -33,13 +33,12 @@ export default function ListNewspaper() {
         await newspaperService
             .addnewsPaper(news)
             .then((result: any) => {
-                console.log(result);
+                if (result) window.location.href = '/newspapermanagement';
             })
             .catch((error) => {
                 console.error(error);
             });
     }
-
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = (event.target.files as FileList)[0];
         setNewsPaper({ ...newsPaper, image: file || null });

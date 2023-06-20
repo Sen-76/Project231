@@ -35,7 +35,7 @@ namespace BackEnd.Ultity
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error saving image: " + ex.Message);
+                Console.WriteLine("Error removing image: " + ex.Message);
             }
         }
     }

@@ -10,6 +10,7 @@ const routeConfig = {
     //admin routes
     adminDashboard: '/management',
     newspaperManagement: '/newspaperManagement',
+    addNewspaper: '/addNewspaper',
     editNewspaper: '/editNewspaper/:id',
     userManagement: '/userManagement',
     editUser: '/editUser/:id',

@@ -23,6 +23,7 @@ import {
 import routeConfig from '../../config/routes';
 import Alert from '@mui/material/Alert';
 import { useCookies } from 'react-cookie';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
@@ -31,13 +32,14 @@ export default function SignIn() {
     const [alert, setAlert] = useState<string>('');
     const dispatch = useDispatch();
     const [cookies, setCookie] = useCookies(['userLogin', 'token']);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         await userService
             .login(userLogin)
             .then((result) => {
-                console.log(result)
                 if (result.success === false) {
                     setAlert(result.message);
                 } else {
@@ -46,7 +48,7 @@ export default function SignIn() {
                     setCookie('token', result.data.accessToken, { path: '/' });
                     dispatch(login(user));
                     user.Role === 'Admin' && (window.location.href = routeConfig.adminDashboard);
-                    window.location.href = routeConfig.home;
+                    navigate(location.pathname.split('/signin')[0] + routeConfig.home);
                 }
             })
             .catch((error) => {

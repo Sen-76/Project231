@@ -1,9 +1,9 @@
-import { Box, TextField, FormControl } from "@mui/material";
+import { Box, TextField, FormControl } from '@mui/material';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import * as commentService from '../../../services/commentService';
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 interface CmtProps {
     setResetComment: () => void;
 }
@@ -11,6 +11,7 @@ interface CmtProps {
 function Cmt({ setResetComment }: CmtProps) {
     const { id } = useParams();
     const [content, setContent] = useState<string>('');
+    console.log('dm');
     async function AddComment() {
         commentService
             .addComment(content, id || '')

@@ -7,7 +7,7 @@ interface IProp {
 }
 
 const FeaturePostDetail: React.FC<IProp> = ({ newDetail }) => {
-    const firstItemImg = newDetail && newDetail.image ? newDetail.image : 'no data';
+    const test = newDetail?.image ? require('../../ImageSave/' + newDetail?.image) : '';
     const firstItemTitle = newDetail && newDetail.title ? newDetail.title : 'no data';
     return (
         <Paper
@@ -19,11 +19,15 @@ const FeaturePostDetail: React.FC<IProp> = ({ newDetail }) => {
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${firstItemImg})`,
+                backgroundImage: `url(${test})`,
             }}
         >
             {/* Increase the priority of the hero background image */}
-            {<img style={{ display: 'none' }} src={firstItemImg} alt={''} />}
+            {newDetail?.image ? (
+                <img style={{ display: 'none' }} src={require('../../ImageSave/' + newDetail.image)} alt={''} />
+            ) : (
+                <div></div>
+            )}
             <Box
                 sx={{
                     position: 'absolute',

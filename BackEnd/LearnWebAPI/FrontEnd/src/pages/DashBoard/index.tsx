@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import './detail.scss';
 import * as newDetailService from '../../services/newDetailService';
 import * as commentService from '../../services/commentService';
@@ -18,8 +18,8 @@ function DashBoard() {
     const [commentList, setCommentList] = useState<IComment[]>();
     const [resetComment, setResetComment] = useState<boolean>(true);
     const reset = (): void => {
-        setResetComment(!resetComment)
-    }
+        setResetComment(!resetComment);
+    };
     useEffect(() => {
         newDetailService
             .getNewDetail(id || '')
@@ -42,6 +42,22 @@ function DashBoard() {
                 console.error(error);
             });
     }, [resetComment]);
+
+    interface Props {
+        htmlString: string;
+    }
+    const HTMLRenderer: FunctionComponent<Props> = ({ htmlString }) => {
+        const createMarkup = (htmlString: string) => {
+            return { __html: htmlString };
+        };
+
+        return (
+            <div
+                style={{ overflow: 'hidden', overflowWrap: 'break-word' }}
+                dangerouslySetInnerHTML={createMarkup(htmlString)}
+            />
+        );
+    };
     return (
         <ThemeProvider theme={defaultTheme}>
             <FeaturePostDetail newDetail={newDetail!}></FeaturePostDetail>
@@ -60,7 +76,7 @@ function DashBoard() {
                     gap: 2,
                 }}
             >
-                {newDetail?.content}
+                <HTMLRenderer htmlString={newDetail?.content || ''} />
             </Box>
             {/* Comment */}
             <Paper elevation={0} sx={{ p: 2, bgcolor: 'grey.200' }}>

@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using BackEnd.Interfaces;
+using BackEnd.Ultity;
 using BackEnd.ViewModels.NewFolder;
+using LearnWebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BackEnd.Controllers
 {
@@ -27,24 +31,30 @@ namespace BackEnd.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost("AddComment")]
         public IActionResult AddComment(string content, string newspaperId)
         {
-            var result = _commentService.AddComment(content, newspaperId).Result;
+            var user = GetCurrentUser.CurrentUser(HttpContext.User.Identity);
+            var result = _commentService.AddComment(content, newspaperId, user.Id).Result;
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost("UpdateComment")]
         public IActionResult UpdateComment(string content, string commentId)
         {
-            var result = _commentService.UpdateComment(content, commentId).Result;
+            var user = GetCurrentUser.CurrentUser(HttpContext.User.Identity);
+            var result = _commentService.UpdateComment(content, commentId, user.Id).Result;
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost("DeleteComment")]
         public IActionResult DeleteComment(string commentId)
         {
-            var result = _commentService.DeleteComment(commentId).Result;
+            var user = GetCurrentUser.CurrentUser(HttpContext.User.Identity);
+            var result = _commentService.DeleteComment(commentId, user.Id).Result;
             return Ok(result);
         }
 

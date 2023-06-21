@@ -6,6 +6,8 @@ const routeConfig = {
     listNewByCategory: '/listNews/:category',
     signin: '/signin',
     signup: '/signup',
+    forgot: '/forgot',
+    confirmforgot: '/confirmforgot',
 
     //admin routes
     adminDashboard: '/management',

@@ -12,16 +12,18 @@ function Category() {
     const { category } = useParams();
 
     useEffect(() => {
-        category && newspaperService.listnewsPaperByCate(category)
-            .then((result) => {
-                if (result) {
-                    setCateName(result.cate.name)
-                    setNewsPaperList(result.news);
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        category &&
+            newspaperService
+                .listnewsPaperByCate(category)
+                .then((result) => {
+                    if (result) {
+                        setCateName(result.cate.name);
+                        setNewsPaperList(result.news);
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
     }, [category]);
     return (
         <>
@@ -33,13 +35,18 @@ function Category() {
                     {newsPaperList.map((neww, key) => (
                         <div key={key} className="containerNewList">
                             <div className="imgContainerNewList">
-                                <img src={neww.image}></img>
+                                {(() => {
+                                    try {
+                                        return <img src={require('../../ImageSave/' + neww.image)} alt={neww.title} />;
+                                    } catch (error) {
+                                        console.log('Image not found');
+                                        return null; 
+                                    }
+                                })()}
                             </div>
                             <article className="browser">
                                 <div className="titleNewList">{neww.title}</div>
-                                <p>
-                                    {neww.description}
-                                </p>
+                                <p>{neww.description}</p>
                                 <Link className="readmore" to={`/newsdetail/${neww.id}`}>
                                     read more
                                 </Link>

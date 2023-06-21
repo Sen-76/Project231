@@ -43,6 +43,7 @@ namespace LearnWebAPI.Services
     {
         new Claim(ClaimTypes.Name, user.Name),
         new Claim(ClaimTypes.Role, user.Role.ToString()),
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         new Claim(JwtRegisteredClaimNames.Email, user.Email),
         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -51,10 +52,9 @@ namespace LearnWebAPI.Services
         new Claim("Role", user.Role.ToString()),
         new Claim("Avatar", user.Avatar.ToString()),
     };
-
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: _configuration["AppSettings:Issuer"],
+                audience: _configuration["AppSettings:Audience"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(60),
                 signingCredentials: credentials
@@ -222,13 +222,30 @@ namespace LearnWebAPI.Services
         {
             try
             {
-                var userz = _context.Users.Where(x => x.Username == user.Username || x.Email == user.Email).FirstOrDefault();
-                if (userz != null)
+                var username = _context.Users.Where(x => x.Username == user.Username).FirstOrDefault();
+                var email = _context.Users.Where(x => x.Email == user.Email && x.Email != "").FirstOrDefault();
+                if (username != null && email != null)
                 {
                     return new ApiResponse
                     {
                         Success = false,
-                        Message = "Username or Email already exist"
+                        Message = "Email and Username already exist"
+                    };
+                }
+                if (username != null)
+                {
+                    return new ApiResponse
+                    {
+                        Success = false,
+                        Message = "Username already exist"
+                    };
+                }
+                if (email != null)
+                {
+                    return new ApiResponse
+                    {
+                        Success = false,
+                        Message = "Email already exist"
                     };
                 }
                 //var newUser = _mapper.Map<User>(user);
@@ -238,8 +255,8 @@ namespace LearnWebAPI.Services
                     Name = user.Name,
                     Username = user.Username,
                     Password = user.Password,
-                    Avatar = user.Avatar,
-                    DateOfBirth = user.DateOfBirth,
+                    Avatar = "",
+                    DateOfBirth = DateTime.MinValue,
                     Email = user.Email,
                     Phone = user.Phone,
                     Role = Models.RoleType.User,
@@ -307,8 +324,8 @@ namespace LearnWebAPI.Services
                 if (user != null)
                 {
                     string fromEmail = "ducnmhe150901@fpt.edu.vn";
-                    string password = "sechan76";
-                    string subject = "Sen NewsPaper - Forgot Password";
+                    string password = "gsxmnlhojrlvjeqy";
+                    string subject = "M&E NewsPaper - Forgot Password";
                     string verifyString = RandomString(5);
                     string body = "Your code is: " + verifyString;
                     var smtpClient = new SmtpClient("smtp.gmail.com", 587)
@@ -357,10 +374,11 @@ namespace LearnWebAPI.Services
         {
             try
             {
-                var users = await _context.Users.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
-                if (users != null && user.VerifyString == ".....")
+                var users = await _context.Users.Where(x => x.Email == user.Email).FirstOrDefaultAsync();
+                //if (users != null && user.VerifyString == user.VerifyString)
+                if (users != null)
                 {
-                    users.Password = user.Password;
+                    users.Password = user.NewPass;
                     _context.Update(users);
                     await _context.SaveChangesAsync();
                     return new ApiResponse

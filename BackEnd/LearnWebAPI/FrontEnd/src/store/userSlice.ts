@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from '../store'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../store';
 
 export interface UserLogin {
     Id: string;
@@ -12,9 +12,15 @@ export interface UserLogin {
     name: string;
     sub: string;
 }
+export interface IUserForgot {
+    Email: string;
+    VerifyCode: string;
+    NewPass: string;
+}
 export interface IUserSlice {
     UserLogin: UserLogin;
     Token: string;
+    UserForgot: IUserForgot;
 }
 
 const initialState: IUserSlice = {
@@ -27,26 +33,34 @@ const initialState: IUserSlice = {
         exp: 0,
         jti: '',
         name: '',
-        sub: ''
+        sub: '',
     },
-    Token: ''
-}
+    Token: '',
+    UserForgot: {
+        Email: '',
+        VerifyCode: '',
+        NewPass: '',
+    },
+};
 
 export const userSlice = createSlice({
     name: 'hobby',
     initialState,
     reducers: {
         login: (state, action: PayloadAction<UserLogin>) => {
-            state.UserLogin = action.payload
+            state.UserLogin = action.payload;
         },
         setToken: (state, action: PayloadAction<string>) => {
-            state.Token = action.payload
-        }
-    }
-})
+            state.Token = action.payload;
+        },
+        setVerifyCode: (state, action: PayloadAction<IUserForgot>) => {
+            state.UserForgot = action.payload;
+        },
+    },
+});
 
-export const { login, setToken } = userSlice.actions
+export const { login, setToken, setVerifyCode } = userSlice.actions;
 
-export const selectHobbies = (state: RootState) => state.hobby.list
+export const selectHobbies = (state: RootState) => state.hobby.list;
 
-export default userSlice.reducer
+export default userSlice.reducer;

@@ -83,7 +83,9 @@ function DashBoard() {
                 <Typography variant="h6" gutterBottom>
                     {'Summarize'}
                 </Typography>
-                <Typography>{newDetail?.description}</Typography>
+                <Typography sx={{ overflow: 'hidden', overflowWrap: 'break-word' }}>
+                    {newDetail?.description}
+                </Typography>
             </Paper>
             <div>
                 <Cmt setResetComment={reset} />

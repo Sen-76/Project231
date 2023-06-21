@@ -5,7 +5,7 @@ import { IUserLogin, defaultUserLogin } from '../../interface/user';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import jwt_decode from 'jwt-decode';
-import { login, setToken, UserLogin } from '../../store/userSlice';
+import { login, UserLogin } from '../../store/userSlice';
 import * as userService from '../../services/userService';
 import {
     Box,
@@ -24,38 +24,60 @@ import routeConfig from '../../config/routes';
 import Alert from '@mui/material/Alert';
 import { useCookies } from 'react-cookie';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { setLoading } from '../../store/controllerSlice';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
     const [userLogin, setUserLogin] = useState<IUserLogin>(defaultUserLogin);
     const [alert, setAlert] = useState<string>('');
-    const dispatch = useDispatch();
+    const [errors, setErrors] = useState<any>({});
     const [cookies, setCookie] = useCookies(['userLogin', 'token']);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        await userService
-            .login(userLogin)
-            .then((result) => {
-                if (result.success === false) {
-                    setAlert(result.message);
-                } else {
-                    const user: UserLogin = jwt_decode(result.data.accessToken);
-                    setCookie('userLogin', user, { path: '/' });
-                    setCookie('token', result.data.accessToken, { path: '/' });
-                    dispatch(login(user));
-                    user.Role === 'Admin' && (window.location.href = routeConfig.adminDashboard);
-                    navigate(location.pathname.split('/signin')[0] + routeConfig.home);
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        if (!validateForm()) {
+        } else {
+            dispatch(setLoading(true));
+            await userService
+                .login(userLogin)
+                .then((result) => {
+                    if (result.success === false) {
+                        setAlert(result.message);
+                    } else {
+                        const user: UserLogin = jwt_decode(result.data.accessToken);
+                        setCookie('userLogin', user, { path: '/' });
+                        setCookie('token', result.data.accessToken, { path: '/' });
+                        dispatch(login(user));
+                        user.Role === 'Admin' && (window.location.href = routeConfig.adminDashboard);
+                        navigate(location.pathname.split('/signin')[0] + routeConfig.home);
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {
+                    dispatch(setLoading(false));
+                });
+        }
     }
+    const validateForm = () => {
+        const newError: any = {};
 
+        if (!userLogin.username.trim()) {
+            newError.username = 'This field is required';
+        }
+
+        if (!userLogin.password.trim()) {
+            newError.password = 'This field is required';
+        }
+        setErrors(newError);
+
+        return Object.keys(newError).length === 0;
+    };
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
@@ -74,7 +96,11 @@ export default function SignIn() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    {alert ?? <Alert severity="error">This is an error alert — check it out!</Alert>}
+                    {alert && (
+                        <Alert severity="error" sx={{ width: '100%' }}>
+                            {alert}
+                        </Alert>
+                    )}
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
@@ -86,6 +112,8 @@ export default function SignIn() {
                             autoComplete="email"
                             autoFocus
                             onChange={(e) => setUserLogin({ ...userLogin, username: e.target.value })}
+                            error={!!errors.username}
+                            helperText={errors.username}
                         />
                         <TextField
                             margin="normal"
@@ -97,6 +125,8 @@ export default function SignIn() {
                             id="password"
                             autoComplete="current-password"
                             onChange={(e) => setUserLogin({ ...userLogin, password: e.target.value })}
+                            error={!!errors.password}
+                            helperText={errors.password}
                         />
                         <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
                         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
@@ -104,7 +134,7 @@ export default function SignIn() {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2">
+                                <Link href="forgot" variant="body2">
                                     Forgot password?
                                 </Link>
                             </Grid>

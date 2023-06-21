@@ -1,0 +1,17 @@
+.loading {
+    width: 100vw;
+    height: 100vh;
+    background: rgb(146 161 77 / 30%);
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+.MuiCircularProgress-root {
+    width: 40px;
+    height: 40px;
+}

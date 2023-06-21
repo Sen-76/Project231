@@ -9,6 +9,7 @@ import ReduxExample from '../pages/ReduxExample';
 import Category from '../pages/Category/category';
 import SignIn from '../pages/SignIn/SignIn';
 import SignUp from '../pages/SignUp/SignUp';
+import Forgot from '../pages/Forgot/Forgot';
 import DashboardAdmin from '../components/Admin/DashboardManagement/DashBoardManagement';
 import ListNewspaper from '../pages/Managerment/NewspaperManagement/listNewspaper';
 import ListUser from '../pages/Managerment/UserManagement/listUser';
@@ -16,6 +17,7 @@ import EditNewspaper from '../pages/Managerment/NewspaperManagement/editNewspape
 import AddNewspaper from '../pages/Managerment/NewspaperManagement/addNewspaper';
 import EditUser from '../pages/Managerment/UserManagement/editUser';
 import AddUser from '../pages/Managerment/UserManagement/addUser';
+import ConfirmForgot from '../pages/Forgot/ConfirmForgot';
 
 //Public Route
 export const publicRoutes = [
@@ -25,6 +27,8 @@ export const publicRoutes = [
     { path: routeConfig.listNewByCategory, component: Category },
     { path: routeConfig.signin, component: SignIn, layout: HeaderOnly },
     { path: routeConfig.signup, component: SignUp, layout: HeaderOnly },
+    { path: routeConfig.forgot, component: Forgot, layout: HeaderOnly },
+    { path: routeConfig.confirmforgot, component: ConfirmForgot, layout: HeaderOnly },
 
     //admin routes
     // { path: routeConfig.adminDashboard, component: Dashboard, layout: HeaderOnly},

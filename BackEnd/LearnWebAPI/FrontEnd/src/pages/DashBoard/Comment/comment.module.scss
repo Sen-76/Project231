@@ -3,6 +3,11 @@
     flex-direction: row;
     align-items: flex-start;
 }
+.commentHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .commentItem {
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

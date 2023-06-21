@@ -1,44 +1,49 @@
-.leftTab{
-  width: 100%;
+.leftTab {
+    width: 70%;
 }
 .all-browsers {
     margin: 0;
     padding: 5px;
     background-color: lightgray;
-  }
-  
-  .all-browsers > h1, .browser {
+}
+
+.all-browsers > h1,
+.browser {
+    background: white;
+    overflow-x: hidden;
+    overflow-wrap: break-word;
     margin: 10px;
     padding: 5px;
     width: 100%;
-  }
-  
-  .browser {
+}
+
+.browser {
     background: white;
-  }
-  
-  .browser > h2, p {
+}
+
+.browser > h2,
+p {
     margin: 4px;
     font-size: 90%;
-  }
-  .containerNewList{
+}
+.containerNewList {
     display: flex;
-  }
-  .imgContainerNewList{
+}
+.imgContainerNewList {
     padding: 10px;
-    width: 300px;
     height: 100px;
-  }
-  .titleNewList{
+}
+.titleNewList {
     font-weight: 900;
-  }
-  .titleListNews{
+}
+.titleListNews {
     font-size: large;
     padding: 10px;
-  }
-  .rightTab{
-    width: 200px;
-  }
-  .all-browsers{
+}
+.rightTab {
+    width: 25%;
+    overflow: hidden;
+}
+.all-browsers {
     display: flex;
-  }
+}

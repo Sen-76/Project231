@@ -11,7 +11,6 @@ interface CmtProps {
 function Cmt({ setResetComment }: CmtProps) {
     const { id } = useParams();
     const [content, setContent] = useState<string>('');
-    console.log('dm');
     async function AddComment() {
         commentService
             .addComment(content, id || '')

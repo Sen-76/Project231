@@ -17,6 +17,22 @@ export const regis = async (user: IUser) => {
         console.log(error);
     }
 };
+export const forgot = async (email: string) => {
+    try {
+        const res = await request.post('User/ForgotPass?Email=' + email);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const resetPassword = async (resetPass: any) => {
+    try {
+        const res = await request.post('User/ResetPass', resetPass);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
 export const userById = async (id: String) => {
     try {
         const res = await request.get('UserAdmin/UserById?id=' + id);

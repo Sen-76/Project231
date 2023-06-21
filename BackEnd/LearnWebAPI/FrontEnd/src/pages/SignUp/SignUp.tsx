@@ -6,29 +6,76 @@ import { useState } from 'react';
 import * as userService from '../../services/userService';
 import routeConfig from '../../config/routes';
 import { IUser, defaultUserState } from '../../interface/user';
-import Alert from '@mui/material/Alert';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setLoading } from '../../store/controllerSlice';
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
     const [userRegis, setUserRegis] = useState<IUser>(defaultUserState);
-    const [alert, setAlert] = useState<string>('');
+    const [errors, setErrors] = useState<any>({});
+    const navigate = useNavigate();
+    const location = useLocation();
+    const dispatch = useDispatch();
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        await userService
-            .regis(userRegis)
-            .then((result) => {
-                if (result.success === false) {
-                    setAlert(result.message);
-                } else {
-                    window.location.href = routeConfig.signin;
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        if (!validateForm()) {
+            console.log('form invalid');
+        } else {
+            dispatch(setLoading(true));
+            await userService
+                .regis(userRegis)
+                .then((result) => {
+                    if (result.success === false) {
+                        result.message === 'Email and Username already exist' &&
+                            setErrors({ ...errors, username: 'Username already exist', email: 'Email already exist' });
+                        result.message === 'Username already exist' &&
+                            setErrors({ ...errors, username: result.message, email: '' });
+                        result.message === 'Email already exist' &&
+                            setErrors({ ...errors, email: result.message, username: '' });
+                    } else {
+                        window.location.href = routeConfig.signin;
+                        navigate(location.pathname.split('/signup')[0] + routeConfig.signin);
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {
+                    dispatch(setLoading(false));
+                });
+        }
     }
+
+    const validateForm = () => {
+        const newError: any = {};
+
+        if (!userRegis.name.trim()) {
+            newError.name = 'This field is required';
+        }
+        if (!userRegis.username.trim()) {
+            newError.username = 'This field is required';
+        }
+
+        if (!userRegis.password.trim()) {
+            newError.password = 'This field is required';
+        }
+        const mailreg =
+            /^[a-zA-Z0-9~!+#$%^&*=`{}.|_'?\/-]{1,64}@(?=[a-zA-Z0-9]{1,253}(\.[a-zA-Z0-9-]{1,253}){1,255}$)[a-zA-Z0-9.-]{1,255}$/;
+        if (userRegis.email && !mailreg.test(userRegis.email)) {
+            newError.email = 'Email is invalid';
+        }
+        const phonereg = /^[0-9]{10}$/;
+        if (userRegis.phone && !phonereg.test(userRegis.phone)) {
+            newError.phone = 'Phone is invalid';
+        }
+
+        setErrors(newError);
+
+        return Object.keys(newError).length === 0;
+    };
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -48,12 +95,6 @@ export default function SignUp() {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    {alert === 'false' ? (
-                        <Alert severity="error">This is an error alert — check it out!</Alert>
-                    ) : (
-                        <div>No</div>
-                    )}
-
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
@@ -65,6 +106,8 @@ export default function SignUp() {
                                     name="name"
                                     autoComplete="name"
                                     onChange={(e) => setUserRegis({ ...userRegis, name: e.target.value })}
+                                    error={!!errors.name}
+                                    helperText={errors.name}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -76,6 +119,8 @@ export default function SignUp() {
                                     name="username"
                                     autoComplete="username"
                                     onChange={(e) => setUserRegis({ ...userRegis, username: e.target.value })}
+                                    error={!!errors.username}
+                                    helperText={errors.username}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -87,6 +132,8 @@ export default function SignUp() {
                                     name="email"
                                     autoComplete="email"
                                     onChange={(e) => setUserRegis({ ...userRegis, email: e.target.value })}
+                                    error={!!errors.email}
+                                    helperText={errors.email}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -99,6 +146,8 @@ export default function SignUp() {
                                     id="password"
                                     autoComplete="new-password"
                                     onChange={(e) => setUserRegis({ ...userRegis, password: e.target.value })}
+                                    error={!!errors.password}
+                                    helperText={errors.password}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -110,28 +159,8 @@ export default function SignUp() {
                                     id="phone"
                                     autoComplete="phone"
                                     onChange={(e) => setUserRegis({ ...userRegis, phone: e.target.value })}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    fullWidth
-                                    name="avatar"
-                                    label="Avatar"
-                                    type="avatar"
-                                    id="avatar"
-                                    autoComplete="avatar"
-                                    // onChange={(e) => setUserRegis({ ...userRegis, avatar: e.target.value })}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    fullWidth
-                                    name="dob"
-                                    label="Date of Birth"
-                                    type="dob"
-                                    id="dob"
-                                    autoComplete="dob"
-                                    onChange={(e) => setUserRegis({ ...userRegis, dateOfBirth: e.target.value })}
+                                    error={!!errors.phone}
+                                    helperText={errors.phone}
                                 />
                             </Grid>
                         </Grid>

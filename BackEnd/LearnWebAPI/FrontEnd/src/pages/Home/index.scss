@@ -9,9 +9,13 @@ License: GPL
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
-.left_content{float:left; display:inline; width:100%}
+.left_content {
+    float: left;
+    display: inline;
+    width: 100%;
+}
 
-.title{
+.title {
     color: #ff05d5;
 }
 * {
@@ -330,6 +334,7 @@ img {
     margin-left: 10px;
     width: 143px;
     text-align: left;
+    overflow: hidden;
 }
 .readmore,
 .single_cat_right_content_meta span {
@@ -357,7 +362,7 @@ img {
     border-bottom: 1px dotted #000;
     margin-left: 10px;
     width: 220px;
-        text-align: left;
+    text-align: left;
 }
 .single_cat_left_content h3 {
     font-size: 15px;
@@ -473,7 +478,7 @@ img {
     width: 730px;
     height: 100px;
     margin: 0 auto;
-    img{
+    img {
         overflow: hidden;
     }
 }
@@ -669,7 +674,6 @@ img {
         margin-left: 3px;
         text-align: left;
     }
-
 }
 
 /*Wide Mobile Layout: 480px.*/

@@ -5,6 +5,7 @@ using BackEnd.Paging;
 using BackEnd.ViewModels.NewFolder;
 using LearnWebAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BackEnd.Services
 {
@@ -29,7 +30,7 @@ namespace BackEnd.Services
             var PaginatedComments = await PaginatedList<Comment>.CreateAsync(AllComments, pageIndex ?? 1, pageSize);
             return PaginatedComments;
         }
-        public async Task<ApiResponse> AddComment(string content, string newspaperId)
+        public async Task<ApiResponse> AddComment(string content, string newspaperId, Guid userId)
         {
             try
             {
@@ -39,7 +40,7 @@ namespace BackEnd.Services
                     Content = content,
                     IsDeleted= false,
                     PostTime= DateTime.UtcNow,
-                    UserId = Guid.Parse("1A6E8503-EE14-4EE9-95C1-9E5D2205E653"),
+                    UserId = userId,
                     NewsPaperId = Guid.Parse(newspaperId),
                 };
                 await _context.AddAsync(comment);
@@ -56,14 +57,15 @@ namespace BackEnd.Services
                 return new ApiResponse
                 {
                     Success= false,
+                    Message= ex.Message
                 };
             }
         }
-        public async Task<ApiResponse> UpdateComment(string content, string commentId)
+        public async Task<ApiResponse> UpdateComment(string content, string commentId, Guid userId)
         {
             try
             {
-                var comment = _context.Comments.Where(x => x.Id == Guid.Parse(commentId)).FirstOrDefault();
+                var comment = _context.Comments.Where(x => x.Id == Guid.Parse(commentId) && x.UserId == userId).FirstOrDefault();
                 comment.Content = content;
                 _context.Update(comment);
                 await _context.SaveChangesAsync();
@@ -82,18 +84,26 @@ namespace BackEnd.Services
                 };
             }
         }
-        public async Task<ApiResponse> DeleteComment(string commentId)
+        public async Task<ApiResponse> DeleteComment(string commentId, Guid userId)
         {
             try
             {
-                var comment = _context.Comments.Where(x => x.Id == Guid.Parse(commentId)).FirstOrDefault();
-                comment.IsDeleted = true;
-                _context.Update(comment);
-                await _context.SaveChangesAsync();
+                var comment = _context.Comments.Where(x => x.Id == Guid.Parse(commentId) && x.UserId == userId).FirstOrDefault();
+                if (comment != null)
+                {
+                    comment.IsDeleted = true;
+                    _context.Update(comment);
+                    await _context.SaveChangesAsync();
+                    return new ApiResponse
+                    {
+                        Success = false,
+                        Data = comment
+                    };
+                }
                 return new ApiResponse
                 {
-                    Success= true,
-                    Data = comment
+                    Success = true,
+                    Message = "Không có quyền đừng có mà vớ vẩn"
                 };
             }
             catch (Exception ex)

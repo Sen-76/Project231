@@ -136,7 +136,9 @@ namespace BackEnd.Controllers
         }
 
         //Admin
+
         [HttpGet("FetchNewsPaper")]
+        [Authorize]
         public IActionResult FetchNewsPaper(int? pageIndex)
         {
             try
@@ -144,7 +146,7 @@ namespace BackEnd.Controllers
                 var listNewsPapers = _newsPaperService.FetchNewsPaper(pageIndex).Result;
                 return Ok(new ApiResponse
                 {
-                    Success= true,
+                    Success = true,
                     Data = listNewsPapers
                 });
             }

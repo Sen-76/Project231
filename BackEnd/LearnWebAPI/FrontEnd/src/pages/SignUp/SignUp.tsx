@@ -1,4 +1,4 @@
-import { Avatar, Button, CssBaseline, TextField, Link, Grid, Box, Typography, Container } from '@mui/material';
+import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container } from '@mui/material';
 import './SignUp.scss';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -6,9 +6,10 @@ import { useState } from 'react';
 import * as userService from '../../services/userService';
 import routeConfig from '../../config/routes';
 import { IUser, defaultUserState } from '../../interface/user';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setLoading } from '../../store/controllerSlice';
+import { setAlert, setLoading } from '../../store/controllerSlice';
+import { enqueueSnackbar, useSnackbar } from 'notistack';
 
 const defaultTheme = createTheme();
 
@@ -18,6 +19,7 @@ export default function SignUp() {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
+    const { enqueueSnackbar } = useSnackbar();
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -36,8 +38,11 @@ export default function SignUp() {
                         result.message === 'Email already exist' &&
                             setErrors({ ...errors, email: result.message, username: '' });
                     } else {
-                        window.location.href = routeConfig.signin;
                         navigate(location.pathname.split('/signup')[0] + routeConfig.signin);
+                        enqueueSnackbar('Đăng kí thành công', {
+                            variant: 'success',
+                            anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                        });
                     }
                 })
                 .catch((error) => {
@@ -170,9 +175,7 @@ export default function SignUp() {
                         <div className="linkToSignIn">
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
-                                    <Link href="/signin" variant="body2">
-                                        Already have an account? Sign in
-                                    </Link>
+                                    <NavLink to={routeConfig.signin}>Already have an account? Sign in</NavLink>
                                 </Grid>
                             </Grid>
                         </div>

@@ -3,9 +3,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import * as userService from '../../services/userService';
-import { Box, Grid, Link, TextField, CssBaseline, Button, Avatar, Container, Typography } from '@mui/material';
+import { Box, Grid, TextField, CssBaseline, Button, Avatar, Container, Typography } from '@mui/material';
 import routeConfig from '../../config/routes';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setVerifyCode } from '../../store/userSlice';
 import { setLoading } from '../../store/controllerSlice';
@@ -93,9 +93,7 @@ export default function Forgot() {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link href="/signin" variant="body2">
-                                    Already remember account? Sign in
-                                </Link>
+                                <NavLink to={routeConfig.signin}>Already remember account? Sign in</NavLink>
                             </Grid>
                         </Grid>
                     </Box>

@@ -10,7 +10,6 @@ import * as userService from '../../services/userService';
 import {
     Box,
     Grid,
-    Link,
     Checkbox,
     FormControlLabel,
     TextField,
@@ -23,7 +22,7 @@ import {
 import routeConfig from '../../config/routes';
 import Alert from '@mui/material/Alert';
 import { useCookies } from 'react-cookie';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { setLoading } from '../../store/controllerSlice';
 
 const defaultTheme = createTheme();
@@ -52,7 +51,8 @@ export default function SignIn() {
                         setCookie('userLogin', user, { path: '/' });
                         setCookie('token', result.data.accessToken, { path: '/' });
                         dispatch(login(user));
-                        user.Role === 'Admin' && (window.location.href = routeConfig.adminDashboard);
+                        user.Role === 'Admin' &&
+                            navigate(location.pathname.split('/signin')[0] + routeConfig.adminDashboard);
                         navigate(location.pathname.split('/signin')[0] + routeConfig.home);
                     }
                 })
@@ -134,14 +134,10 @@ export default function SignIn() {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="forgot" variant="body2">
-                                    Forgot password?
-                                </Link>
+                                <NavLink to={routeConfig.forgot}>Forgot password?</NavLink>
                             </Grid>
                             <Grid item>
-                                <Link href="signup" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
+                                <NavLink to={routeConfig.signup}>{"Don't have an account? Sign Up"}</NavLink>
                             </Grid>
                         </Grid>
                     </Box>

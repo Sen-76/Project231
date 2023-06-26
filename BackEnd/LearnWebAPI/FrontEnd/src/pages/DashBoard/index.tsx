@@ -9,7 +9,7 @@ import { Box, Paper, ThemeProvider, Typography, createTheme } from '@mui/materia
 import Comment from './Comment/comment';
 import Cmt from './Comment/cmt';
 import { IComment } from '../../interface/comment';
-import React from 'react';
+import { useCookies } from 'react-cookie';
 
 const defaultTheme = createTheme();
 function DashBoard() {
@@ -17,6 +17,7 @@ function DashBoard() {
     const [newDetail, setNewDetail] = useState<INewsPaper>();
     const [commentList, setCommentList] = useState<IComment[]>();
     const [resetComment, setResetComment] = useState<boolean>(true);
+    const [cookies, setCookie] = useCookies(['userLogin']);
     const reset = (): void => {
         setResetComment(!resetComment);
     };
@@ -87,12 +88,14 @@ function DashBoard() {
                     {newDetail?.description}
                 </Typography>
             </Paper>
-            <div>
-                <Cmt setResetComment={reset} />
-                {commentList?.map((item: IComment, index) => (
-                    <Comment comment={item} setResetComment={reset} key={index} />
-                ))}
-            </div>
+            {cookies.userLogin && (
+                <div>
+                    <Cmt setResetComment={reset} />
+                    {commentList?.map((item: IComment) => (
+                        <Comment comment={item} setResetComment={reset} key={item.id} />
+                    ))}
+                </div>
+            )}
         </ThemeProvider>
     );
 }

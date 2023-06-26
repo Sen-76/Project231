@@ -139,11 +139,11 @@ namespace BackEnd.Controllers
 
         [HttpGet("FetchNewsPaper")]
         [Authorize]
-        public IActionResult FetchNewsPaper(int? pageIndex)
+        public IActionResult FetchNewsPaper(int? pageIndex, string? search)
         {
             try
             {
-                var listNewsPapers = _newsPaperService.FetchNewsPaper(pageIndex).Result;
+                var listNewsPapers = _newsPaperService.FetchNewsPaper(pageIndex, search).Result;
                 return Ok(new ApiResponse
                 {
                     Success = true,

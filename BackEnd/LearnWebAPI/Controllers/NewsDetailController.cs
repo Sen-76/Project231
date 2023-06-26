@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BackEnd.Interfaces;
 using BackEnd.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,7 @@ namespace BackEnd.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost("Like")]
         public IActionResult Like(string newId)
         {
@@ -34,6 +36,7 @@ namespace BackEnd.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost("DisLike")]
         public IActionResult DisLike(string newId)
         {
@@ -41,6 +44,7 @@ namespace BackEnd.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost("UnLike")]
         public IActionResult UnLike(string newId)
         {
@@ -48,6 +52,7 @@ namespace BackEnd.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost("UnDisLike")]
         public IActionResult UnDisLike(string newId)
         {
@@ -55,6 +60,7 @@ namespace BackEnd.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost("Rate")]
         public IActionResult Rate(string newId, int rate)
         {

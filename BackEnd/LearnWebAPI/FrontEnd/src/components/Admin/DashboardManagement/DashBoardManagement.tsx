@@ -131,7 +131,7 @@ export default function Dashboard({ children }: IDefaultOnlyProps) {
                     }}
                 >
                     <Toolbar />
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                    <Container sx={{ mt: 4, mb: 4 }} style={{ maxWidth: '100%' }} className="sennhe">
                         <Grid container spacing={3}>
                             {/* Recent Orders */}
                             <Grid item xs={12}>

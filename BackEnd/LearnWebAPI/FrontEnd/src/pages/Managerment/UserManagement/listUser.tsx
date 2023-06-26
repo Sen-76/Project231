@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Avatar, Button } from '@mui/material';
+import { Avatar, Button, IconButton, InputBase, Paper } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSearchIcon } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add';
 
 import Title from '../../../components/Admin/DashboardManagement/title';
@@ -11,38 +10,39 @@ import { Link } from 'react-router-dom';
 import * as userService from '../../../services/userService';
 import { useEffect, useState } from 'react';
 import { ERole, EStatus, IUser } from '../../../interface/user';
+import routeConfig from '../../../config/routes';
 
 export default function ListUser() {
     const [userList, setUserList] = useState<IUser[]>([]);
     const [reload, setReloadt] = useState<boolean>(false);
+    const [filter, setFilter] = useState('');
+    async function FetchUser() {
+        try {
+            const result = await userService.fetchUser(1, filter);
+            if (result) {
+                setUserList(
+                    result.map((item: IUser) => ({
+                        name: item.name,
+                        avatar: item.avatar,
+                        dateOfBirth: item.dateOfBirth,
+                        id: item.id,
+                        password: item.password,
+                        phone: item.phone,
+                        role: ERole[item.role as unknown as keyof typeof ERole],
+                        status: EStatus[item.status as unknown as keyof typeof EStatus],
+                        username: item.username,
+                        email: item.email,
+                    })),
+                );
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
     useEffect(() => {
-        userService
-            .fetchUser(1)
-            .then((result) => {
-                if (result) {
-                    result.forEach((item: IUser) => {
-                        setUserList((prevUserList) => [
-                            ...prevUserList,
-                            {
-                                name: item.name,
-                                avatar: item.avatar,
-                                dateOfBirth: item.dateOfBirth,
-                                id: item.id,
-                                password: item.password,
-                                phone: item.phone,
-                                role: ERole[item.role as unknown as keyof typeof ERole],
-                                status: EStatus[item.status as unknown as keyof typeof EStatus],
-                                username: item.username,
-                                email: item.email,
-                            },
-                        ]);
-                    });
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        FetchUser();
     }, [reload]);
+
     const columns: GridColDef[] = [
         {
             field: 'name',
@@ -68,13 +68,13 @@ export default function ListUser() {
                 }
             },
         },
-        { field: 'username', headerName: 'Username', width: 230, filterable: true },
-        { field: 'password', headerName: 'Password', width: 230, filterable: true },
-        { field: 'email', headerName: 'Email', width: 130, filterable: true },
-        { field: 'phone', headerName: 'Phone', width: 130, filterable: true },
-        { field: 'dateOfBirth', headerName: 'Date Of Birth', width: 230, filterable: true },
-        { field: 'role', headerName: 'Role', width: 130, filterable: true },
-        { field: 'status', headerName: 'Status', width: 130, filterable: true },
+        { field: 'username', headerName: 'Username', width: 230 },
+        { field: 'password', headerName: 'Password', width: 230 },
+        { field: 'email', headerName: 'Email', width: 130 },
+        { field: 'phone', headerName: 'Phone', width: 130 },
+        { field: 'dateOfBirth', headerName: 'Date Of Birth', width: 230 },
+        { field: 'role', headerName: 'Role', width: 130 },
+        { field: 'status', headerName: 'Status', width: 130 },
         {
             field: '',
             headerName: 'Action',
@@ -96,9 +96,6 @@ export default function ListUser() {
                         onClick={() => UnBanUser(params.row.id)}
                     >
                         UnBan
-                    </Button>
-                    <Button variant="outlined" startIcon={<VisibilityIcon />}>
-                        View
                     </Button>
                 </div>
             ),
@@ -130,15 +127,39 @@ export default function ListUser() {
                 console.error(error);
             });
     }
+    async function Search() {
+        setReloadt(!reload);
+    }
     return (
         <React.Fragment>
             <Title>User Management</Title>
-            <Link className="edit" to={`/addUser`}>
-                <Button variant="outlined" startIcon={<AddIcon />}>
-                    Add
-                </Button>
-            </Link>
-
+            <div
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}
+            >
+                <Link className="edit" to={routeConfig.addUser}>
+                    <Button variant="outlined" startIcon={<AddIcon />}>
+                        Add
+                    </Button>
+                </Link>
+                <Paper
+                    component="form"
+                    onSubmit={Search}
+                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 300 }}
+                >
+                    <InputBase
+                        sx={{ ml: 1, flex: 1 }}
+                        placeholder="Search User"
+                        inputProps={{ 'aria-label': 'search user' }}
+                        onChange={(e) => {
+                            console.log(e.target.value);
+                            setFilter(e.target.value.trim());
+                        }}
+                    />
+                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={Search}>
+                        <GridSearchIcon />
+                    </IconButton>
+                </Paper>
+            </div>
             <div style={{ height: 650, width: '100%' }}>
                 <DataGrid
                     rows={userList}
@@ -148,6 +169,7 @@ export default function ListUser() {
                             paginationModel: { page: 0, pageSize: 10 },
                         },
                     }}
+                    // hideFooter={true}
                     checkboxSelection
                 />
             </div>

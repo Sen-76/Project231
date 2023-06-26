@@ -41,9 +41,9 @@ export const userById = async (id: String) => {
         console.log(error);
     }
 };
-export const fetchUser = async (page: number) => {
+export const fetchUser = async (page: number, search: string) => {
     try {
-        const res = await request.get('UserAdmin/FetchUser?pageIndex=' + page);
+        const res = await request.get('UserAdmin/FetchUser?pageIndex=' + page + '&search=' + search);
         return res.data;
     } catch (error) {
         console.log(error);

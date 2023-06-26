@@ -1,6 +1,6 @@
 import * as request from '../utils/httpRequest';
 
-export const getnewsPaperList = async (page: Number) => {
+export const getnewsPaperList = async (page: number) => {
     try {
         const res = await request.get('newspaper/getlistnewspaper', {
             params: { page },
@@ -10,7 +10,7 @@ export const getnewsPaperList = async (page: Number) => {
         console.log(error);
     }
 };
-export const getnewsPaperById = async (id: String) => {
+export const getnewsPaperById = async (id: string) => {
     try {
         const res = await request.get('newspaper/GetNewsPaperById', {
             params: { id },
@@ -20,11 +20,9 @@ export const getnewsPaperById = async (id: String) => {
         console.log(error);
     }
 };
-export const fetchnewsPaperList = async (page: Number) => {
+export const fetchnewsPaperList = async (page: number, filter: string) => {
     try {
-        const res = await request.get('NewsPaper/FetchNewsPaper', {
-            params: { page },
-        });
+        const res = await request.get('NewsPaper/FetchNewsPaper?pageIndex=' + page + '&search=' + filter);
         return res.data;
     } catch (error) {
         console.log(error);

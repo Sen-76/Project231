@@ -14,7 +14,7 @@ namespace BackEnd.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserAdminController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -35,10 +35,9 @@ namespace BackEnd.Controllers
         }
 
         [HttpGet("FetchUser")]
-        [EnableQuery]
-        public IActionResult FetchUser(int pageIndex)
+        public IActionResult FetchUser(int pageIndex, string? search)
         {
-            var result = _userService.FetchAllUser(pageIndex).Result;
+            var result = _userService.FetchAllUser(pageIndex, search).Result;
             return Ok(result);
         }
         [HttpPost("BanUser")]

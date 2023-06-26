@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BackEnd.Interfaces;
 using BackEnd.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpPost("AddCate")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddCate(string name)
         {
             var result = _categoryService.AddCategory(name).Result;
@@ -28,6 +30,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpPost("DeleteCate")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteCate(string cateId)
         {
             var result = _categoryService.DeleteCategory(cateId).Result;

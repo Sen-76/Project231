@@ -7,6 +7,7 @@ using BackEnd.ViewModels.NewFolder;
 using BackEnd.ViewModels.NewsPaperViewModels;
 using BackEnd.ViewModels.UserViewModels;
 using LearnWebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -280,13 +281,17 @@ namespace BackEnd.Services
         }
 
         //Admin
-        public async Task<PaginatedList<NewsPaper>> FetchNewsPaper(int? pageIndex)
+        [Authorize(Roles = "Admin")]
+        public async Task<PaginatedList<NewsPaper>> FetchNewsPaper(int? pageIndex, string? search)
         {
-            var AllNews = _context.NewsPapers.Where(x => x.Status != Models.StatusType.Deleted).AsNoTracking();
+            var AllNews = _context.NewsPapers.Where(x => x.Status != Models.StatusType.Deleted && x.Title.ToLower().Contains(search != null ? search.ToLower() : "")).AsNoTracking();
             var pageSize = _configuration.GetValue("PageSize", 10);
             var PaginatedNewsPaper = await PaginatedList<NewsPaper>.CreateAsync(AllNews, pageIndex ?? 1, pageSize);
+            bool hasPreviousPage = PaginatedNewsPaper.HasPreviousPage;
+            bool hasNextPage = PaginatedNewsPaper.HasNextPage;
             return PaginatedNewsPaper;
         }
+        [Authorize(Roles = "Admin")]
         public async Task<ApiResponse> AdminDeleteNewsPaper(Guid id)
         {
             try
@@ -318,6 +323,7 @@ namespace BackEnd.Services
                 };
             }
         }
+        [Authorize(Roles = "Admin")]
         public async Task<ApiResponse> AdminUpdateNewsPaper(NewsPaperUpdateVM newsPaper)
         {
             try
@@ -372,6 +378,7 @@ namespace BackEnd.Services
                 };
             }
         }
+        [Authorize(Roles = "Admin")]
         public async Task<ApiResponse> AdminAddNewsPaper(NewsPaperAddVM newsPaper)
         {
             try
@@ -426,6 +433,7 @@ namespace BackEnd.Services
                 };
             }
         }
+        [Authorize(Roles = "Admin")]
         public async Task<ApiResponse> AdminPublishNewsPaper(Guid id)
         {
             try
@@ -457,6 +465,7 @@ namespace BackEnd.Services
                 };
             }
         }
+        [Authorize(Roles = "Admin")]
         public async Task<ApiResponse> AdminUnPublishNewsPaper(Guid id)
         {
             try

@@ -83,7 +83,6 @@ namespace LearnWebAPI.Services
                 RefreshToken = refreshToken
             };
         }
-
         public async Task<ApiResponse> RenewToken(TokenModel model)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
@@ -439,18 +438,18 @@ namespace LearnWebAPI.Services
             }
         }
         //Admin
-        public async Task<ApiResponse> FetchAllUser(int? pageIndex)
+        public async Task<ApiResponse> FetchAllUser(int? pageIndex, string search)
         {
             try
             {
-                var AllUser = _context.Users.AsNoTracking();
+                var AllUser = _context.Users.Where(x => x.Name.ToLower().Contains(search != null ? search.ToLower() : "")).AsNoTracking();
                 var pageSize = _configuration.GetValue("PageSize", 10);
                 var PaginatedUser = await PaginatedList<User>.CreateAsync(AllUser, pageIndex ?? 1, pageSize);
                 return new ApiResponse
                 {
                     Success = false,
                     Message = "Fetch Success",
-                    Data = PaginatedUser
+                    Data = AllUser
                 };
             }
             catch (Exception ex)

@@ -5,10 +5,15 @@ import Settings from '@mui/icons-material/Settings';
 import { Link } from '@mui/material';
 import { Logout } from '@mui/icons-material';
 import { useCookies } from 'react-cookie';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import routeConfig from '../../../config/routes';
 
 export default function AccountMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [cookies, setCookie, removeCookie] = useCookies(['userLogin', 'token']);
+    const navigate = useNavigate();
+    const location = useLocation();
+    console.log(location);
     const open = Boolean(anchorEl);
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -17,6 +22,7 @@ export default function AccountMenu() {
         setAnchorEl(null);
     };
     function handleLogout() {
+        navigate(routeConfig.signin);
         removeCookie('userLogin');
         removeCookie('token');
     }
@@ -100,12 +106,10 @@ export default function AccountMenu() {
                     Settings
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
-                    <Link href="/signin">
-                        <ListItemIcon>
-                            <Logout fontSize="small" />
-                        </ListItemIcon>
-                        Logout
-                    </Link>
+                    <ListItemIcon>
+                        <Logout fontSize="small" />
+                    </ListItemIcon>
+                    Logout
                 </MenuItem>
             </Menu>
         </React.Fragment>

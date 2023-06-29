@@ -52,7 +52,7 @@ function Featurepost() {
                 }}
             />
             <Grid container>
-                <Grid item md={6}>
+                <Grid item md={8}>
                     <Box
                         sx={{
                             position: 'relative',

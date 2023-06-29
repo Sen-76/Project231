@@ -4,7 +4,7 @@ import * as newspaperService from '../../services/newsPaperService';
 import { INewsPaper } from '../../components/News/PopularNews/model';
 import PopularNews from '../../components/News/PopularNews';
 import { Link, useParams } from 'react-router-dom';
-import LastestArticles from '../../components/News/LastestArticles';
+import LastestArticles from '../../components/News/WorldPart';
 
 function Category() {
     const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
@@ -39,8 +39,9 @@ function Category() {
                                     try {
                                         return <img src={require('../../ImageSave/' + neww.image)} alt={neww.title} />;
                                     } catch (error) {
-                                        console.log('Image not found');
-                                        return null; 
+                                        return (
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930" />
+                                        );
                                     }
                                 })()}
                             </div>

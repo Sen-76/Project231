@@ -2,16 +2,15 @@ import { useEffect, useState } from 'react';
 import * as newspaperService from '../../../services/newsPaperService';
 import { INewsPaper } from '../PopularNews/model';
 import { Link } from 'react-router-dom';
-
-function TechNews() {
+function FromAroundTheWorld() {
     const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
     const [cateName, setCateName] = useState<string>('');
     const [cateid, setCateid] = useState<string>('');
+
     useEffect(() => {
         newspaperService
-            .listnewsPaperByCate('C0A586DB-B35F-4595-B453-7D9537EA1A59')
+            .listnewsPaperByCate('88405f11-8391-4f18-9b6e-6d48bcbeb718')
             .then((result) => {
-                console.log('result: ', result);
                 if (result) {
                     setCateid(result.cate.id);
                     setCateName(result.cate.name);
@@ -22,6 +21,7 @@ function TechNews() {
                 console.error(error);
             });
     }, []);
+
     return (
         <div className="single_left_coloum_wrapper">
             <h2 className="title">{cateName}</h2>
@@ -50,4 +50,4 @@ function TechNews() {
         </div>
     );
 }
-export default TechNews;
+export default FromAroundTheWorld;

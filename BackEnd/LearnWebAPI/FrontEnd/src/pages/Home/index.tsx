@@ -1,9 +1,9 @@
 import styles from './home.module.scss';
 import './index.scss';
 import PopularNews from '../../components/News/PopularNews';
-import FromAroundTheWorld from '../../components/News/FromAroundTheWorld';
+import FromAroundTheWorld from '../../components/News/Sport';
 
-import LastestArticles from '../../components/News/LastestArticles';
+import LastestArticles from '../../components/News/WorldPart';
 import TechNews from '../../components/News/TechNews';
 import Gallery from '../../components/News/Gallery';
 import {  Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material';

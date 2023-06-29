@@ -5,11 +5,10 @@ import { Link } from 'react-router-dom';
 
 function PopularNews() {
     const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
-
     useEffect(() => {
         newspaperService
             .getnewsPaperList(1)
-            .then((result: INewsPaper[]) => {
+            .then((result) => {
                 if (result) {
                     setNewsPaperList(result);
                 }
@@ -22,6 +21,7 @@ function PopularNews() {
         <div className="single_sidebar">
             <div className="popular">
                 <h2 className="title">Popular</h2>
+
                 <ul>
                     {newsPaperList.map((item) => {
                         return (
@@ -29,7 +29,7 @@ function PopularNews() {
                                 <div className="single_popular">
                                     <p>{item.createdDate}</p>
                                     <h3>
-                                        {item.description}
+                                        {item.title}
                                         <Link className="readmore" to={`/newsdetail/${item.id}`}>
                                             read more
                                         </Link>
@@ -39,7 +39,6 @@ function PopularNews() {
                         );
                     })}
                 </ul>
-                <a className="popular_more">more</a>
             </div>
         </div>
     );

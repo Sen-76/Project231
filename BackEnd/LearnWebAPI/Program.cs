@@ -9,11 +9,37 @@ using Microsoft.IdentityModel.Tokens;
 using BackEnd.Interfaces;
 using BackEnd.Services;
 using Microsoft.AspNetCore.OData;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    var securityScheme = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Bearer token for JWT Authorization",
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = JwtBearerDefaults.AuthenticationScheme
+        }
+    };
+    c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+    var securityRequirement = new OpenApiSecurityRequirement
+    {
+        {
+            securityScheme,
+            new string[] {}
+        }
+    };
+    c.AddSecurityRequirement(securityRequirement);
+});
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddDbContext<Project231Context>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("Database")));

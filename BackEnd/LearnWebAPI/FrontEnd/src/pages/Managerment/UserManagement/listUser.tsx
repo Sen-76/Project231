@@ -16,6 +16,7 @@ export default function ListUser() {
     const [userList, setUserList] = useState<IUser[]>([]);
     const [reload, setReloadt] = useState<boolean>(false);
     const [filter, setFilter] = useState('');
+    
     async function FetchUser() {
         try {
             const result = await userService.fetchUser(1, filter);
@@ -40,6 +41,7 @@ export default function ListUser() {
         }
     }
     useEffect(() => {
+        console.log("fsf")
         FetchUser();
     }, [reload]);
 

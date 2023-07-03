@@ -38,7 +38,9 @@ export default function MainListItems() {
                 <ListItemIcon>
                     <PeopleIcon />
                 </ListItemIcon>
-                <ListItemText primary="Author Management" />
+                <Link to="/userManagement">
+                    <ListItemText primary="User Management" />
+                </Link>
             </ListItemButton>
 
             <ListItemButton onClick={handleClick}>
@@ -64,7 +66,9 @@ export default function MainListItems() {
                 <ListItemIcon>
                     <InsertCommentIcon />
                 </ListItemIcon>
-                <ListItemText primary="Comment" />
+                <Link to="/commentManagement">
+                    <ListItemText primary="Comment" />
+                </Link>
             </ListItemButton>
         </React.Fragment>
     );

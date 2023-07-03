@@ -18,6 +18,7 @@ import AddNewspaper from '../pages/Managerment/NewspaperManagement/addNewspaper'
 import EditUser from '../pages/Managerment/UserManagement/editUser';
 import AddUser from '../pages/Managerment/UserManagement/addUser';
 import ConfirmForgot from '../pages/Forgot/ConfirmForgot';
+import ListComment from '../pages/Managerment/CommentManagement/CommentManagement';
 
 //Public Route
 export const publicRoutes = [
@@ -38,7 +39,7 @@ export const publicRoutes = [
     { path: routeConfig.userManagement, component: ListUser, layout: DashboardAdmin },
     { path: routeConfig.editUser, component: EditUser, layout: DashboardAdmin },
     { path: routeConfig.addUser, component: AddUser, layout: DashboardAdmin },
-    { path: routeConfig.commentManagement, component: ListNewspaper, layout: DashboardAdmin },
+    { path: routeConfig.commentManagement, component: ListComment, layout: DashboardAdmin },
     { path: '/', component: Home },
 ];
 export const privateRoutes = [];

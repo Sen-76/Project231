@@ -32,7 +32,7 @@ function Header() {
         <React.Fragment>
             <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Button size="small">Subscribe</Button>
-                <Typography component="h2" variant="h5" color="inherit" align="center" noWrap sx={{ flex: 1 }}>
+                <Typography component="h2" variant="h5" color="inherit" align="center" noWrap sx={{ flex: 8 }}>
                     <Link to={routeConfig.home}>{'M&E Magazine'}</Link>
                 </Typography>
                 <IconButton>

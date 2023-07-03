@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Box, Avatar, Menu, MenuItem, ListItemIcon, Divider, IconButton, Tooltip, Button } from '@mui/material';
+import { Box, Avatar, Menu, MenuItem, ListItemIcon, Divider, IconButton, Tooltip } from '@mui/material';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
-import { Link } from '@mui/material';
 import { Logout } from '@mui/icons-material';
 import { useCookies } from 'react-cookie';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import {  useLocation, useNavigate } from 'react-router-dom';
 import routeConfig from '../../../config/routes';
+
 
 export default function AccountMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -41,7 +41,7 @@ export default function AccountMenu() {
                         {cookies.userLogin.Avatar !== '' ? (
                             <Avatar
                                 alt={cookies.userLogin.Username}
-                                src={require(`../../../ImageSave/` + cookies.userLogin.Avatar)}
+                                // src={require(`../../../ImageSave/` + cookies.userLogin.Avatar)}
                             ></Avatar>
                         ) : (
                             <Avatar sx={{ width: 32, height: 32 }} alt={cookies.userLogin.Username}>

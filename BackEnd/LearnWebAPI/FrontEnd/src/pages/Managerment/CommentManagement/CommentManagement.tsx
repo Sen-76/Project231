@@ -1,40 +1,37 @@
 import * as React from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import * as newspaperService from '../../../services/newsPaperService';
+import * as commentService from '../../../services/commentService';
 import { useEffect, useState } from 'react';
-import { INewsPaper } from '../../../interface/new';
 import { Button, IconButton, InputBase, Paper } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { DataGrid, GridColDef, GridSearchIcon } from '@mui/x-data-grid';
-import { Link } from 'react-router-dom';
-import routeConfig from '../../../config/routes';
 import Title from '../../../components/Admin/DashboardManagement/title';
+import { IComment } from '../../../interface/comment';
+import { Delete } from '@mui/icons-material';
 
 export default function ListComment() {
-    const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
+    const [commentList, setCommentList] = useState<IComment[]>([]);
     const [isRefresh, setIsRefresh] = useState<boolean>(true);
     const [filter, setFilter] = useState('');
     async function Search() {
         setIsRefresh(!isRefresh);
     }
     useEffect(() => {
-        newspaperService
-            .fetchnewsPaperList(1, filter)
-            .then((result: INewsPaper[]) => {
+        commentService
+            .getAllComment(filter)
+            .then((result: IComment[]) => {
                 if (result) {
-                    setNewsPaperList(result);
+                    setCommentList(result);
                 }
             })
             .catch((error) => {
                 console.error(error);
             });
     }, [isRefresh]);
-    async function DeleteNews(id: string) {
-        newspaperService
-            .deletenewsPaper(id)
-            .then((result: INewsPaper[]) => {
-                console.log(result);
+    const Delete = async (id: string) => {
+        await commentService
+            .deleteCommentAdmin(id)
+            .then((result) => {
                 if (result) {
                     setIsRefresh(!isRefresh);
                 }
@@ -42,37 +39,48 @@ export default function ListComment() {
             .catch((error) => {
                 console.error(error);
             });
-    }
+        console.log(id);
+    };
+    const RestoreDelete = async (id: string) => {
+        await commentService
+            .restoreDeleteCommentAdmin(id)
+            .then((result) => {
+                if (result) {
+                    setIsRefresh(!isRefresh);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        console.log(id);
+    };
     const columns: GridColDef[] = [
         {
-            field: 'image',
-            headerName: 'IMG',
-            width: 70,
-            filterable: true,
+            field: 'newsPaper',
+            headerName: 'Newspaper',
+            width: 230,
             renderCell: (params) => {
-                try {
-                    const avatarImage = require(`../../../ImageSave/${params.row.image}`);
-                    return (
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
-                            <img
-                                style={{ width: '40px', height: '40px', objectFit: 'cover' }}
-                                alt={params.row.title}
-                                src={avatarImage}
-                            />
-                        </div>
-                    );
-                } catch (error) {
-                    return (
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}></div>
-                    );
-                }
+                return params.row.newsPaper.title;
             },
         },
-        { field: 'title', headerName: 'Title', width: 230 },
-        { field: 'description', headerName: 'Description', width: 230 },
-        { field: 'createdDate', headerName: 'Created Date', width: 130 },
-        { field: 'modifiedDate', headerName: 'Modified Date', width: 130 },
-        { field: 'publishedDate', headerName: 'Published Date', width: 130 },
+        {
+            field: 'owner',
+            headerName: 'Owner',
+            width: 200,
+            renderCell: (params) => {
+                return params.row.user.name;
+            },
+        },
+        { field: 'content', headerName: 'Content', width: 200 },
+        { field: 'postTime', headerName: 'Post Time', width: 200 },
+        {
+            field: 'isDeleted',
+            headerName: 'Is Deleted',
+            width: 130,
+            renderCell: (params) => {
+                return params.row.isDeleted ? 'Yes' : 'No';
+            },
+        },
         {
             field: '',
             headerName: 'Action',
@@ -80,17 +88,15 @@ export default function ListComment() {
             sortable: false,
             renderCell: (params) => (
                 <div>
-                    <Link className="edit" to={`/editNewspaper/${params.row.id}`}>
-                        <Button variant="outlined" startIcon={<EditIcon />}>
-                            Edit
-                        </Button>{' '}
-                    </Link>
+                    <Button variant="outlined" onClick={() => Delete(params.row.id)} startIcon={<DeleteOutlineIcon />}>
+                        Delete
+                    </Button>
                     <Button
                         variant="outlined"
+                        onClick={() => RestoreDelete(params.row.id)}
                         startIcon={<DeleteOutlineIcon />}
-                        onClick={() => DeleteNews(params.row.id)}
                     >
-                        Delete
+                        Restore
                     </Button>
                 </div>
             ),
@@ -99,14 +105,7 @@ export default function ListComment() {
     return (
         <React.Fragment>
             <Title>Comment Management</Title>
-            <div
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}
-            >
-                <Link className="edit" to={routeConfig.addNewspaper}>
-                    <Button variant="outlined" startIcon={<AddIcon />}>
-                        Add
-                    </Button>
-                </Link>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: '20px' }}>
                 <Paper
                     component="form"
                     onSubmit={Search}
@@ -129,7 +128,7 @@ export default function ListComment() {
 
             <div style={{ height: 650, width: '100%' }}>
                 <DataGrid
-                    rows={newsPaperList}
+                    rows={commentList}
                     columns={columns}
                     initialState={{
                         pagination: {

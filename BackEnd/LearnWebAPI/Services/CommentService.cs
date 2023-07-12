@@ -96,7 +96,7 @@ namespace BackEnd.Services
                     await _context.SaveChangesAsync();
                     return new ApiResponse
                     {
-                        Success = false,
+                        Success = true,
                         Data = comment
                     };
                 }
@@ -112,6 +112,95 @@ namespace BackEnd.Services
                 return new ApiResponse
                 {
                     Success= true,
+                };
+            }
+        }
+
+        public async Task<ApiResponse> GetAllComments(string? filter)
+        {
+            try
+            {
+                var list = await _context.Comments.Include(x => x.User).Include(x => x.NewsPaper)
+                    .Where(x => x.Content.ToLower().Contains(filter)).ToListAsync();
+                if (list != null)
+                {
+                    return new ApiResponse{
+                        Data = list,
+                        Success = true,
+                    };
+                }
+                return new ApiResponse{
+                    Success = false,
+                };
+            }
+            catch(Exception e)
+            {
+                return new ApiResponse{
+                    Success = false,
+                    Message = e.Message
+                };
+            }
+            
+        }
+        public async Task<ApiResponse> DeleteCommentAdmin(string commentId)
+        {
+            try
+            {
+                var comment = _context.Comments.Where(x => x.Id == Guid.Parse(commentId)).FirstOrDefault();
+                if (comment != null)
+                {
+                    comment.IsDeleted = true;
+                    _context.Update(comment);
+                    await _context.SaveChangesAsync();
+                    return new ApiResponse
+                    {
+                        Success = true,
+                        Data = comment
+                    };
+                }
+                return new ApiResponse
+                {
+                    Success = true,
+                    Message = "Không có quyền đừng có mà vớ vẩn"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success = true,
+                };
+            }
+        }
+        public async Task<ApiResponse> RestoreDeleteCommentAdmin(string commentId)
+        {
+            try
+            {
+                var comment = _context.Comments.Where(x => x.Id == Guid.Parse(commentId)).FirstOrDefault();
+                if (comment != null)
+                {
+                    comment.IsDeleted = false;
+                    _context.Update(comment);
+                    await _context.SaveChangesAsync();
+                    return new ApiResponse
+                    {
+                        Success = true,
+                        Data = comment
+                    };
+                }
+                return new ApiResponse
+                {
+                    Success = true,
+                    Message = "Không có quyền đừng có mà vớ vẩn"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new ApiResponse
+                {
+                    Success = true,
                 };
             }
         }

@@ -36,7 +36,10 @@ function FromAroundTheWorld() {
                             return <img src={require('../../../ImageSave/' + item.image)} alt={item.title} />;
                         } catch (error) {
                             return (
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930" />
+                                <img
+                                    src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930"
+                                    alt=""
+                                />
                             );
                         }
                     })()}

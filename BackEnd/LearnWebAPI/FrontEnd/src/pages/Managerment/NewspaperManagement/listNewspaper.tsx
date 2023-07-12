@@ -35,7 +35,6 @@ export default function ListNewspaper() {
         newspaperService
             .deletenewsPaper(id)
             .then((result: INewsPaper[]) => {
-                console.log(result);
                 if (result) {
                     setIsRefresh(!isRefresh);
                 }
@@ -49,7 +48,6 @@ export default function ListNewspaper() {
             field: 'image',
             headerName: 'IMG',
             width: 70,
-            filterable: true,
             renderCell: (params) => {
                 try {
                     const avatarImage = require(`../../../ImageSave/${params.row.image}`);

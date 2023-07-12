@@ -30,6 +30,13 @@ namespace BackEnd.Controllers
             var result = _commentService.GetListComments(pageIndex, newsPaperId).Result;
             return Ok(result);
         }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetAllComments")]
+        public IActionResult GetAllComments(string? filter)
+        {
+            var result = _commentService.GetAllComments(filter != null ? filter.ToLower() : "").Result;
+            return Ok(result);
+        }
 
         [Authorize]
         [HttpPost("AddComment")]
@@ -55,6 +62,22 @@ namespace BackEnd.Controllers
         {
             var user = GetCurrentUser.CurrentUser(HttpContext.User.Identity);
             var result = _commentService.DeleteComment(commentId, user.Id).Result;
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("DeleteCommentAdmin")]
+        public IActionResult DeleteCommentAdmin(string commentId)
+        {
+            var result = _commentService.DeleteCommentAdmin(commentId).Result;
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("RestoreDeleteCommentAdmin")]
+        public IActionResult RestoreDeleteCommentAdmin(string commentId)
+        {
+            var result = _commentService.RestoreDeleteCommentAdmin(commentId).Result;
             return Ok(result);
         }
 

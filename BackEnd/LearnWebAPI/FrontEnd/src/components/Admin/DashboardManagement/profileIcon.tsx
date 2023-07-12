@@ -4,9 +4,8 @@ import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import { Logout } from '@mui/icons-material';
 import { useCookies } from 'react-cookie';
-import {  useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import routeConfig from '../../../config/routes';
-
 
 export default function AccountMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null);

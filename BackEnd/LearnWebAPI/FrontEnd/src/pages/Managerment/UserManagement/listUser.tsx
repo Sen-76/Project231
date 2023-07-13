@@ -41,7 +41,6 @@ export default function ListUser() {
         }
     }
     useEffect(() => {
-        console.log("fsf")
         FetchUser();
     }, [reload]);
 
@@ -153,7 +152,6 @@ export default function ListUser() {
                         placeholder="Search User"
                         inputProps={{ 'aria-label': 'search user' }}
                         onChange={(e) => {
-                            console.log(e.target.value);
                             setFilter(e.target.value.trim());
                         }}
                     />

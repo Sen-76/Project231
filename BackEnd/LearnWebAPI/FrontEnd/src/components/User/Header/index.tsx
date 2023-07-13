@@ -4,15 +4,15 @@ import { ICategory } from '../../../interface/category';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, IconButton, Toolbar, Typography } from '@mui/material';
+import { Avatar, Button, IconButton, Toolbar, Typography } from '@mui/material';
 import routeConfig from '../../../config/routes';
-// import { useCookies } from 'react-cookie';
+import { useCookies } from 'react-cookie';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountMenu from '../../Admin/DashboardManagement/profileIcon';
 
 function Header() {
     const [CategoryList, SetCategoryList] = useState<ICategory[]>([]);
-    // const [cookies] = useCookies(['userLogin']);
+    const [cookies] = useCookies(['userLogin']);
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
@@ -38,7 +38,7 @@ function Header() {
                 <IconButton>
                     <SearchIcon />
                 </IconButton>
-                {/* {cookies.userLogin === undefined ? (
+                {cookies.userLogin === undefined ? (
                     <Link to={`/signin`}>
                         <Button variant="outlined" size="small">
                             Sign In
@@ -51,7 +51,7 @@ function Header() {
                     ></Avatar>
                 ) : (
                     <Avatar alt={cookies.userLogin.Username}>{cookies.userLogin.Username.charAt(0)}</Avatar>
-                )} */}
+                )}
 
                 <IconButton
                     edge="start"

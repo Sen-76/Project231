@@ -107,10 +107,11 @@ export default function Dashboard({ children }: IDefaultOnlyProps) {
                         sx={{
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'flex-end',
+                            justifyContent: 'space-between',
                             px: [1],
                         }}
                     >
+                        <span>M&E Magazine</span>
                         <IconButton onClick={toggleDrawer}>
                             <ChevronLeftIcon />
                         </IconButton>

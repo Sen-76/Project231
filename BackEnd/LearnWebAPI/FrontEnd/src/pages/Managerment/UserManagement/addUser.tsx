@@ -29,7 +29,6 @@ function AddUser() {
         await userService
             .addUser(users)
             .then((result) => {
-                console.log(result);
                 if (result) window.location.href = '/usermanagement';
             })
             .catch((error) => {

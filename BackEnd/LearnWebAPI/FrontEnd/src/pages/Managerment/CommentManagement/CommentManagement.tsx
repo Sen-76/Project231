@@ -39,7 +39,6 @@ export default function ListComment() {
             .catch((error) => {
                 console.error(error);
             });
-        console.log(id);
     };
     const RestoreDelete = async (id: string) => {
         await commentService
@@ -52,7 +51,6 @@ export default function ListComment() {
             .catch((error) => {
                 console.error(error);
             });
-        console.log(id);
     };
     const columns: GridColDef[] = [
         {
@@ -116,7 +114,6 @@ export default function ListComment() {
                         placeholder="Search Comment"
                         inputProps={{ 'aria-label': 'search user' }}
                         onChange={(e) => {
-                            console.log(e.target.value);
                             setFilter(e.target.value.trim());
                         }}
                     />

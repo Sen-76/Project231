@@ -116,7 +116,6 @@ export default function ListNewspaper() {
                         placeholder="Search User"
                         inputProps={{ 'aria-label': 'search user' }}
                         onChange={(e) => {
-                            console.log(e.target.value);
                             setFilter(e.target.value.trim());
                         }}
                     />

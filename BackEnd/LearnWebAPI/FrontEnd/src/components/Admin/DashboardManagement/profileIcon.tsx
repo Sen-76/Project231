@@ -37,16 +37,14 @@ export default function AccountMenu() {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        {cookies.userLogin.Avatar !== '' ? (
-                            <Avatar
-                                alt={cookies.userLogin.Username}
-                                // src={require(`../../../ImageSave/` + cookies.userLogin.Avatar)}
-                            ></Avatar>
-                        ) : (
-                            <Avatar sx={{ width: 32, height: 32 }} alt={cookies.userLogin.Username}>
-                                {cookies.userLogin.Username.charAt(0)}
-                            </Avatar>
-                        )}
+                        {cookies.userLogin &&
+                            (cookies.userLogin.Avatar !== '' ? (
+                                <Avatar alt={cookies.userLogin.Username}></Avatar>
+                            ) : (
+                                <Avatar sx={{ width: 32, height: 32 }} alt={cookies.userLogin.Username}>
+                                    {cookies.userLogin.Username.charAt(0)}
+                                </Avatar>
+                            ))}
                     </IconButton>
                 </Tooltip>
             </Box>

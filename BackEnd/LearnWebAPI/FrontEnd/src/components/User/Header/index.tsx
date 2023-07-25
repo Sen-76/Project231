@@ -4,7 +4,7 @@ import { ICategory } from '../../../interface/category';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { Avatar, Button, IconButton, Toolbar, Typography } from '@mui/material';
+import { Button, IconButton, Toolbar, Typography } from '@mui/material';
 import routeConfig from '../../../config/routes';
 import { useCookies } from 'react-cookie';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -31,28 +31,15 @@ function Header() {
     return (
         <React.Fragment>
             <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Button size="small">Subscribe</Button>
+                {cookies.userLogin?.Role === 'Admin' ? (
+                    <Link to={routeConfig.newspaperManagement}>Managerment</Link>
+                ) : (
+                    <Button size="small">Subscribe</Button>
+                )}
+
                 <Typography component="h2" variant="h5" color="inherit" align="center" noWrap sx={{ flex: 8 }}>
                     <Link to={routeConfig.home}>{'M&E Magazine'}</Link>
                 </Typography>
-                <IconButton>
-                    <SearchIcon />
-                </IconButton>
-                {cookies.userLogin === undefined ? (
-                    <Link to={`/signin`}>
-                        <Button variant="outlined" size="small">
-                            Sign In
-                        </Button>
-                    </Link>
-                ) : cookies.userLogin.Avatar !== '' ? (
-                    <Avatar
-                        alt={cookies.userLogin.Username}
-                        src={require(`../../../ImageSave/` + cookies.userLogin.Avatar)}
-                    ></Avatar>
-                ) : (
-                    <Avatar alt={cookies.userLogin.Username}>{cookies.userLogin.Username.charAt(0)}</Avatar>
-                )}
-
                 <IconButton
                     edge="start"
                     color="inherit"
@@ -65,9 +52,16 @@ function Header() {
                 >
                     <MenuIcon />
                 </IconButton>
-
+                {cookies.userLogin === undefined ? (
+                    <Link to={`/signin`}>
+                        <Button variant="outlined" size="small">
+                            Sign In
+                        </Button>
+                    </Link>
+                ) : (
+                    <AccountMenu></AccountMenu>
+                )}
                 <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}></Typography>
-                <AccountMenu></AccountMenu>
             </Toolbar>
             <Toolbar component="nav" variant="dense" sx={{ justifyContent: 'space-between', overflowX: 'auto' }}>
                 {CategoryList.map((category) => (

@@ -8,6 +8,7 @@ const routeConfig = {
     signup: '/signup',
     forgot: '/forgot',
     confirmforgot: '/confirmforgot',
+    writenew: '/writenew',
 
     //admin routes
     adminDashboard: '/management',

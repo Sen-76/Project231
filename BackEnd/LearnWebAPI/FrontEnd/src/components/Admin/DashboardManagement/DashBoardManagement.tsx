@@ -8,6 +8,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MainListItems from './listItemBar';
 import Profile from './profileIcon';
+import { useCookies } from 'react-cookie';
+import { Link, useNavigate } from 'react-router-dom';
+import routeConfig from '../../../config/routes';
 
 const drawerWidth: number = 240;
 interface IDefaultOnlyProps {
@@ -63,10 +66,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const defaultTheme = createTheme();
 
 export default function Dashboard({ children }: IDefaultOnlyProps) {
+    const [cookies] = useCookies(['userLogin']);
     const [open, setOpen] = React.useState(true);
+    const navigate = useNavigate();
     const toggleDrawer = () => {
         setOpen(!open);
     };
+    React.useEffect(() => {
+        console.log(cookies);
+        cookies.userLogin?.Role !== 'Admin' && navigate('/');
+    }, []);
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -111,7 +120,7 @@ export default function Dashboard({ children }: IDefaultOnlyProps) {
                             px: [1],
                         }}
                     >
-                        <span>M&E Magazine</span>
+                        <Link to={routeConfig.home}>M&E Magazine</Link>
                         <IconButton onClick={toggleDrawer}>
                             <ChevronLeftIcon />
                         </IconButton>

@@ -37,9 +37,8 @@ export default function ConfirmForgot() {
             console.log('Loi kia');
         } else {
             dispatch(setLoading(true));
-            setforgotO({ ...forgotO, NewPass: resetPass.password });
             await userService
-                .resetPassword(forgotO)
+                .resetPassword({ ...forgotO, NewPass: resetPass.password })
                 .then((result) => {
                     if (result.success === false) {
                         setErrors({ ...errors, email: result.message });

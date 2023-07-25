@@ -282,14 +282,15 @@ namespace BackEnd.Services
 
         //Admin
         [Authorize(Roles = "Admin")]
-        public async Task<PaginatedList<NewsPaper>> FetchNewsPaper(int? pageIndex, string? search)
+        public async Task<List<NewsPaper>> FetchNewsPaper(int? pageIndex, string? search)
         {
-            var AllNews = _context.NewsPapers.Where(x => x.Status != Models.StatusType.Deleted && x.Title.ToLower().Contains(search != null ? search.ToLower() : "")).AsNoTracking();
-            var pageSize = _configuration.GetValue("PageSize", 10);
-            var PaginatedNewsPaper = await PaginatedList<NewsPaper>.CreateAsync(AllNews, pageIndex ?? 1, pageSize);
-            bool hasPreviousPage = PaginatedNewsPaper.HasPreviousPage;
-            bool hasNextPage = PaginatedNewsPaper.HasNextPage;
-            return PaginatedNewsPaper;
+            var AllNews = _context.NewsPapers.Where(x => x.Status != Models.StatusType.Deleted && x.Title.ToLower().Contains(search != null ? search.ToLower() : ""))
+                .OrderByDescending(x => x.ModifiedDate).OrderByDescending(x => x.CreatedDate).ToList();
+            //var pageSize = _configuration.GetValue("PageSize", 10);
+            //var PaginatedNewsPaper = await PaginatedList<NewsPaper>.CreateAsync(AllNews, pageIndex ?? 1, pageSize);
+            //bool hasPreviousPage = PaginatedNewsPaper.HasPreviousPage;
+            //bool hasNextPage = PaginatedNewsPaper.HasNextPage;
+            return AllNews;
         }
         [Authorize(Roles = "Admin")]
         public async Task<ApiResponse> AdminDeleteNewsPaper(Guid id)

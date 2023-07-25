@@ -6,7 +6,7 @@ import { Logout } from '@mui/icons-material';
 import { useCookies } from 'react-cookie';
 import { useLocation, useNavigate } from 'react-router-dom';
 import routeConfig from '../../../config/routes';
-
+import image from '../../../ImageSave/021f1d43-6141-4042-b556-0be7b81443f8@$^()_+fgusagfusaigfiuasgfusagufafsaf-sihfiahfisafha.jpg';
 export default function AccountMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [cookies, setCookie, removeCookie] = useCookies(['userLogin', 'token']);
@@ -39,7 +39,10 @@ export default function AccountMenu() {
                     >
                         {cookies.userLogin &&
                             (cookies.userLogin.Avatar !== '' ? (
-                                <Avatar alt={cookies.userLogin.Username}></Avatar>
+                                <Avatar
+                                    src={require(`../../../ImageSave/${cookies.userLogin.Avatar}`)}
+                                    alt={cookies.userLogin.Username}
+                                ></Avatar>
                             ) : (
                                 <Avatar sx={{ width: 32, height: 32 }} alt={cookies.userLogin.Username}>
                                     {cookies.userLogin.Username.charAt(0)}

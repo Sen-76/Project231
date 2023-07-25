@@ -19,6 +19,7 @@ import EditUser from '../pages/Managerment/UserManagement/editUser';
 import AddUser from '../pages/Managerment/UserManagement/addUser';
 import ConfirmForgot from '../pages/Forgot/ConfirmForgot';
 import ListComment from '../pages/Managerment/CommentManagement/CommentManagement';
+import WriteNew from '../pages/WriteNew/WriteNew';
 
 //Public Route
 export const publicRoutes = [
@@ -30,6 +31,7 @@ export const publicRoutes = [
     { path: routeConfig.signup, component: SignUp, layout: HeaderOnly },
     { path: routeConfig.forgot, component: Forgot, layout: HeaderOnly },
     { path: routeConfig.confirmforgot, component: ConfirmForgot, layout: HeaderOnly },
+    { path: routeConfig.writenew, component: WriteNew },
 
     //admin routes
     // { path: routeConfig.adminDashboard, component: Dashboard, layout: HeaderOnly},

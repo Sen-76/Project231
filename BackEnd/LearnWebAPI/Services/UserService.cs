@@ -442,9 +442,9 @@ namespace LearnWebAPI.Services
         {
             try
             {
-                var AllUser = _context.Users.Where(x => x.Name.ToLower().Contains(search != null ? search.ToLower() : "")).AsNoTracking();
-                var pageSize = _configuration.GetValue("PageSize", 10);
-                var PaginatedUser = await PaginatedList<User>.CreateAsync(AllUser, pageIndex ?? 1, pageSize);
+                var AllUser = _context.Users.Where(x => x.Name.ToLower().Contains(search != null ? search.ToLower() : "")).ToList();
+                //var pageSize = _configuration.GetValue("PageSize", 10);
+                //var PaginatedUser = await PaginatedList<User>.CreateAsync(AllUser, pageIndex ?? 1, pageSize);
                 return new ApiResponse
                 {
                     Success = false,

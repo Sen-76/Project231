@@ -44,7 +44,7 @@ function TechNews() {
                         }
                     })()}
                     <h3>{item.title}</h3>
-                    <p>{item.description}</p>
+                    <p style={{maxHeight: "100px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis"}}>{item.description}</p>
                     <Link className="readmore" to={`/newsdetail/${item.id}`}>
                         read more
                     </Link>

@@ -3,7 +3,6 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import * as userService from '../../../services/userService';
 import { useParams } from 'react-router-dom';
 import { IUser, ERole, EStatus, defaultUserState } from '../../../interface/user';
-import React from 'react';
 
 function EditUser() {
     const { id } = useParams();

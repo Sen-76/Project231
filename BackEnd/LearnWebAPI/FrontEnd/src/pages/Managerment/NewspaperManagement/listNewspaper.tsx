@@ -113,8 +113,8 @@ export default function ListNewspaper() {
                 >
                     <InputBase
                         sx={{ ml: 1, flex: 1 }}
-                        placeholder="Search User"
-                        inputProps={{ 'aria-label': 'search user' }}
+                        placeholder="Search"
+                        inputProps={{ 'aria-label': 'search' }}
                         onChange={(e) => {
                             setFilter(e.target.value.trim());
                         }}

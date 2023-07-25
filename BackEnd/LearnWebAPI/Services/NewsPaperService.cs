@@ -283,6 +283,7 @@ namespace BackEnd.Services
         //Admin
         [Authorize(Roles = "Admin")]
         public async Task<List<NewsPaper>> FetchNewsPaper(int? pageIndex, string? search)
+        public async Task<List<NewsPaper>> FetchNewsPaper(int? pageIndex, string? search)
         {
             var AllNews = _context.NewsPapers.Where(x => x.Status != Models.StatusType.Deleted && x.Title.ToLower().Contains(search != null ? search.ToLower() : ""))
                 .OrderByDescending(x => x.ModifiedDate).OrderByDescending(x => x.CreatedDate).ToList();

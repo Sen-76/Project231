@@ -73,7 +73,7 @@ export default function ListNewspaper() {
 
     return (
         <React.Fragment>
-            <div className="titleCategoryM">Add Newspaper:</div>
+            <div className="titleCategoryM">Edit Newspaper:</div>
             <Box sx={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
                 <FormControl fullWidth>
                     <label htmlFor="input-avatar">Image</label>
@@ -92,7 +92,7 @@ export default function ListNewspaper() {
                     <label htmlFor="input-title">Title</label>
                     <TextField
                         id="input-title"
-                        value={newsPaper.title}
+                        // value={newsPaper.title}
                         onBlur={(event: any) => setNewsPaper({ ...newsPaper, title: event.target.value })}
                     />
                 </FormControl>

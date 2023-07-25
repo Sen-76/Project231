@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import * as newspaperService from '../../../services/newsPaperService';
 import { INewsPaper } from '../PopularNews/model';
 import { Link } from 'react-router-dom';
+import { Hidden } from '@mui/material';
 function FromAroundTheWorld() {
     const [newsPaperList, setNewsPaperList] = useState<INewsPaper[]>([]);
     const [cateName, setCateName] = useState<string>('');
@@ -44,7 +45,7 @@ function FromAroundTheWorld() {
                         }
                     })()}
                     <h3>{item.title}</h3>
-                    <p>{item.description}</p>
+                    <p style={{maxHeight: "100px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis"}}>{item.description}</p>
                     <Link className="readmore" to={`/newsdetail/${item.id}`}>
                         read more
                     </Link>
